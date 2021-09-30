@@ -1170,7 +1170,7 @@ do
 			local TLx, TLy, BLx, BLy, TRx, TRy, BRx, BRy
 			local TLx_, TLy_, BLx_, BLy_, TRx_, TRy_, BRx_, BRy_
 
-			local progress = (self.value - self.minValue) / (self.maxValue - self.minValue)
+			local progress = (self.value - self.minValue) / max(0.000001, self.maxValue - self.minValue)
 			local width, height = self:GetSize()
 
 			if self._orientation == "HORIZONTAL" then
@@ -1289,8 +1289,10 @@ do
 		SetFillStyle = function(self, style)
 			if type(style) == "string" and style:upper() == "CENTER" or style:upper() == "REVERSE" then
 				self._fillStyle = style:upper()
-				self:Update()
+			else
+				self._fillStyle = "STANDARD"
 			end
+			self:Update()
 		end,
 		GetFillStyle = function(self)
 			return self._fillStyle
@@ -1334,19 +1336,20 @@ do
 		end
 	}
 
-	local function CreateStatusBar(name, parent)
+	setmetatable(StatusBarPrototype, {__call = function(self, name, parent)
 		local bar = CreateFrame("Frame", name, parent)
 		bar.fg = bar.fg or bar:CreateTexture(name and "$parentTexture", "ARTWORK")
 		bar.bg = bar.bg or bar:CreateTexture(name and "$parentBackground", "BACKGROUND")
 		bar.bg:Hide()
-		for k, v in pairs(StatusBarPrototype) do bar[k] = v end
+		for k, v in pairs(StatusBarPrototype) do
+			bar[k] = v
+		end
 		bar:SetRotatesTexture(false)
 		bar:HookScript("OnSizeChanged", bar.OnSizeChanged)
 		return bar
-	end
+	end})
 
 	LibCompat.StatusBarPrototype = StatusBarPrototype
-	LibCompat.CreateStatusBar = CreateStatusBar
 end
 
 -------------------------------------------------------------------------------
@@ -1456,7 +1459,6 @@ local mixins = {
 	"CreateColor",
 	"WrapTextInColorCode",
 	"StatusBarPrototype",
-	"CreateStatusBar",
 	"GetPhysicalScreenSize"
 }
 

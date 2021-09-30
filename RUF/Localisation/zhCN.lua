@@ -1,5 +1,5 @@
 local L = LibStub("AceLocale-3.0"):NewLocale("RUF", "zhCN")
-L = L or {}
+if not L then return end
 L["%s and class specific resources for other classes."] = "%s 并为其他职业分配职业专用资源"
 L["%s, %s, and class specific resources for other classes."] = "%s, %s, 并为其他职业分配职业专用资源"
 L["0%"] = true

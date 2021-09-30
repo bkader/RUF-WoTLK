@@ -6,9 +6,8 @@ local oUF = ns.oUF
 
 function RUF.SetPowerBar(self, unit) -- Mana, Rage, Insanity, Maelstrom etc.
 	local Texture = LSM:Fetch('statusbar', RUF.db.profile.Appearance.Bars.Power.Texture)
-	local Bar = CreateFrame('StatusBar', nil, self)
+	local Bar = RUF.StatusBarPrototype(nil, self)
 	local Border = CreateFrame('Frame', nil, Bar, BackdropTemplateMixin and 'BackdropTemplate')
-	local Background = Bar:CreateTexture(nil, 'BACKGROUND')
 
 	if RUF.db.profile.unit[unit].Frame.Bars.Power.Position.Anchor == 'TOP' then
 		Bar:SetPoint('TOP', 0, 0)
@@ -31,7 +30,6 @@ function RUF.SetPowerBar(self, unit) -- Mana, Rage, Insanity, Maelstrom etc.
 	Bar.barHeight = RUF.db.profile.unit[unit].Frame.Bars.Power.Height
 	Bar:SetStatusBarTexture(Texture)
 	Bar:SetFrameLevel(15)
-	--Bar:SetFillStyle(RUF.db.profile.unit[unit].Frame.Bars.Power.Fill)
 
 	-- Border
 	local offset = RUF.db.profile.Appearance.Bars.Power.Border.Offset or 0
@@ -45,15 +43,15 @@ function RUF.SetPowerBar(self, unit) -- Mana, Rage, Insanity, Maelstrom etc.
 	-- Background
 	local r, g, b = unpack(RUF.db.profile.Appearance.Bars.Power.Background.CustomColor)
 	local Multiplier = RUF.db.profile.Appearance.Bars.Power.Background.Multiplier
-	Background:SetTexture(LSM:Fetch('background', 'Solid'))
-	Background:SetVertexColor(r*Multiplier, g*Multiplier, b*Multiplier, RUF.db.profile.Appearance.Bars.Power.Background.Alpha)
-	Background:SetAllPoints(Bar)
-	Background.colorSmooth = false
+	Bar.bg:SetTexture(LSM:Fetch('background', 'Solid'))
+	Bar.bg:SetVertexColor(r*Multiplier, g*Multiplier, b*Multiplier, RUF.db.profile.Appearance.Bars.Power.Background.Alpha)
+	Bar.bg:SetAllPoints(Bar)
+	Bar.bg.colorSmooth = false
 
 	-- Register with oUF
 	self.Power = Bar
 	self.Power.Border = Border
-	self.Power.Background = Background
+	self.Power.Background = Bar.bg
 	self.Power.UpdateOptions = RUF.PowerUpdateOptions
 end
 
@@ -134,7 +132,7 @@ function RUF.PowerUpdateOptions(self)
 	Bar.barHeight = RUF.db.profile.unit[unit].Frame.Bars.Power.Height
 	Bar:SetStatusBarTexture(Texture)
 	Bar:SetFrameLevel(15)
-	--Bar:SetFillStyle(RUF.db.profile.unit[unit].Frame.Bars.Power.Fill)
+	Bar:SetFillStyle(RUF.db.profile.unit[unit].Frame.Bars.Power.Fill)
 	RUF.SetBarLocation(self.__owner, unit)
 
 	-- Border

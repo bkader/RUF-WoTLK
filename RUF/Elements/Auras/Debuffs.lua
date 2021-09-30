@@ -5,6 +5,9 @@ local _, ns = ...
 local oUF = ns.oUF
 local _, PlayerClass
 
+local IsInGroup, IsInRaid = RUF.IsInGroup, RUF.IsInRaid
+local GetSpecialization = RUF.GetSpecialization
+
 local DebuffDispel = {-- DISPELLING ALLIES, 10 = Classic since there are no specs in classic.
 	['DEATHKNIGHT'] = {
 		[1] = {'None'},

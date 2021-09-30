@@ -188,7 +188,7 @@ function RUF.SetCastBar(self, unit)
 	local profileReference = RUF.db.profile.Appearance.Bars.Cast
 	local unitProfile = RUF.db.profile.unit[unit].Frame.Bars.Cast
 	local texture = LSM:Fetch('statusbar', profileReference.Texture)
-	local Bar = CreateFrame('StatusBar', nil, self)
+	local Bar = StatusBarPrototype(nil, self)
 	local Border = CreateFrame('Frame', nil, Bar, BackdropTemplateMixin and 'BackdropTemplate')
 	local Background = Bar:CreateTexture(nil, 'BACKGROUND')
 

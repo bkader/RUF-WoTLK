@@ -251,12 +251,7 @@ end
 
 function RUF.SetBuffs(self, unit)
 	_, PlayerClass = UnitClass('player')
-	if RUF.Client == 1 then
-		-- GetSpecialization doesn't exist for Classic. All 'specs' can dispel the same types, so set to 10 to follow those values where appropriate.
-		RUF.Specialization = GetSpecialization()
-	else
-		RUF.Specialization = 10
-	end
+	RUF.Specialization = GetSpecialization()
 	local Buffs = CreateFrame('Frame', nil, self)
 	Buffs:SetPoint(
 		RUF.db.profile.unit[unit].Buffs.Icons.Position.AnchorFrom,

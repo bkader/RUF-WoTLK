@@ -73,9 +73,9 @@ function RUF.SetClassBar(self, unit)
 	local colorAdd = RUF.db.profile.Appearance.Bars.Class.Color.SegmentMultiplier
 
 	for i = 1, unitPowerMaxAmount do
-		local Bar = CreateFrame('StatusBar', name .. i, Holder)
+		local Bar = RUF.StatusBarPrototype(name .. i, Holder)
 		local Border = CreateFrame('Frame', name .. i .. '.Border', Bar, BackdropTemplateMixin and 'BackdropTemplate')
-		local Background = Bar:CreateTexture(name .. i .. '.Background', 'BACKGROUND')
+		local Background = Bar.bg
 		local size = (RUF.db.profile.unit[unit].Frame.Size.Width + (unitPowerMaxAmount-1)) / unitPowerMaxAmount
 		local counter = i
 		if unitPowerMaxAmount == 4 then

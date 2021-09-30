@@ -153,10 +153,10 @@ local function processNPCSpellTable()
         id = next(dataTable, prevID)
     end
     if (id) then
-        C_Timer.After(1, processNPCSpellTable)
+        RUF.After(1, processNPCSpellTable)
     end
 end
-lib.NPCSpellTableTimer = C_Timer.NewTimer(10, processNPCSpellTable)
+lib.NPCSpellTableTimer = RUF.NewTimer(10, processNPCSpellTable)
 
 
 local function isHunterGUID(guid)
@@ -208,7 +208,7 @@ end
 if lib.purgeTicker then
     lib.purgeTicker:Cancel()
 end
-lib.purgeTicker = C_Timer.NewTicker( PURGE_INTERVAL, purgeOldGUIDs)
+lib.purgeTicker = RUF.NewTicker( PURGE_INTERVAL, purgeOldGUIDs)
 
 ------------------------------------
 -- Restore data if using standalone

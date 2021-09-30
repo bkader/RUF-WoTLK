@@ -1,5 +1,5 @@
 local L = LibStub("AceLocale-3.0"):NewLocale("RUF", "koKR")
-L = L or {}
+if not L then return end
 --[[Translation missing --]]
 L["%s and class specific resources for other classes."] = "%s and class specific resources for other classes."
 --[[Translation missing --]]

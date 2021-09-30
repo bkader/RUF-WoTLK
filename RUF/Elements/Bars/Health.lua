@@ -14,24 +14,15 @@ function RUF.HealthUpdateColor(element, unit, cur, max)
 	if not element.__owner then return end
 	local r, g, b = RUF:GetBarColor(element, unit, 'Health', 'Health', cur)
 
-		-- Not ideal, gradient is applied to active portion of statusbar texture
-	--local gradientDirection = 'HORIZONTAL'
-	--local h,s,l = RUF:RGBtoHSL(r/255, g/255, b/255)
-	--local ar, ab, ag = RUF:HSLtoRGB(((h * 360) + 67) / 360 , s, l)
-	--ar, ab, ag = ar *255, ab * 255, ag * 255
-	--local br, bb, bg = r, g, b
-	--element:GetStatusBarTexture():SetGradient(gradientDirection, ar, ab, ag, br, bb, bg)
-	--element:SetStatusBarColor(r,g,b)
-
 	-- Create Ticker per element because that's probably better than looping through all oUF objects to check if it should be enabled for those.
 	if RUF.db.profile.unit[element.__owner.frame].Frame.Bars.Health.rainbow.enabled then
 		if not element.rainbowTimer then
-			element.rainbowTimer = C_Timer.NewTicker(0.001, function()
+			element.rainbowTimer = RUF.NewTicker(0.001, function()
 				DrawRainbow(element)
 			end)
 		end
 		if not RUF.rainbowTicker then -- If no elements are using the Rainbow Mode, there's no point in having the rgb values for rainbow mode to continually update.
-			RUF.rainbowTicker = C_Timer.NewTicker(0.001, RUF.UpdateRainbow)
+			RUF.rainbowTicker = RUF.NewTicker(0.001, RUF.UpdateRainbow)
 		end
 	else
 		if element.rainbowTimer then
@@ -87,7 +78,7 @@ end
 
 function RUF.SetHealthBar(self, unit)
 	local texture = LSM:Fetch('statusbar', RUF.db.profile.Appearance.Bars.Health.Texture)
-	local Bar = CreateFrame('StatusBar', nil, self)
+	local Bar = RUF.StatusBarPrototype(nil, self)
 
 	-- Bar
 	Bar.colorClass = RUF.db.profile.Appearance.Bars.Health.Color.Class
@@ -103,8 +94,6 @@ function RUF.SetHealthBar(self, unit)
 	Bar:SetStatusBarTexture(texture)
 	Bar:SetAllPoints(self)
 	Bar:SetFrameLevel(11)
-	-- Bar:SetFillStyle(RUF.db.profile.unit[self.frame].Frame.Bars.Health.Fill)
-	Bar.FillStyle = RUF.db.profile.unit[self.frame].Frame.Bars.Health.Fill
 
 	-- Register with oUF
 	self.Health = Bar
@@ -129,8 +118,8 @@ function RUF.HealthUpdateOptions(self)
 	Bar:SetStatusBarTexture(texture)
 	Bar:SetAllPoints(self.__owner)
 	Bar:SetFrameLevel(10)
-	-- Bar:SetFillStyle(RUF.db.profile.unit[unit].Frame.Bars.Health.Fill)
 	Bar.FillStyle = RUF.db.profile.unit[unit].Frame.Bars.Health.Fill
+	Bar:SetFillStyle(Bar.FillStyle)
 
 	if Bar.Smooth == true then
 		self.__owner:SmoothBar(Bar)

@@ -1,6 +1,6 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 ..\FrameXML\UI.xsd">
-<!-- <Script file="Plugins\Absorb_Plugin.lua"/> -->
+<Script file="Plugins\Absorb_Plugin.lua"/>
 <Script file="Plugins\Aura_Plugin.lua"/>
 <Script file="Plugins\BarAnimation_Plugin.lua"/>
 <Script file="Plugins\Cast_Plugin.lua"/>

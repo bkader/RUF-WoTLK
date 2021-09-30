@@ -105,7 +105,7 @@ end
 local function updateSafeZone(self)
 	local safeZone = self.SafeZone
 	local width = self:GetWidth()
-	local _, _, _, ms = GetNetStats()
+	local ms = select(3, GetNetStats())
 
 	local safeZoneRatio = (ms / 1e3) / self.max
 	if(safeZoneRatio > 1) then
@@ -121,11 +121,12 @@ local function UNIT_SPELLCAST_START(self, event, unit)
 	local element = self.Cast
 	if not element.Enabled then return end
 
-	local name, _, text, texture, startTime, endTime, notInterruptible, castID, spellIdx = UnitCastingInfo(unit)
-	-- local name, text, texture, startTime, endTime, _, castID, notInterruptible, spellID = UnitCastingInfo(unit)
+	local name, _, text, texture, startTime, endTime, notInterruptible = UnitCastingInfo(unit)
 	if(not name) then
 		return element:Hide()
 	end
+
+	local castID = unit .. name
 
 	endTime = endTime / 1e3
 	startTime = startTime / 1e3
@@ -138,7 +139,7 @@ local function UNIT_SPELLCAST_START(self, event, unit)
 	element.casting = true
 	element.notInterruptible = notInterruptible
 	element.holdTime = 0
-	element.spellID = spellID
+	-- element.spellID = spellID -- FIXME
 
 	element:SetMinMaxValues(0, max)
 	element:SetValue(0)
@@ -205,8 +206,10 @@ local function UNIT_SPELLCAST_FAILED(self, event, unit, castID)
 	end
 end
 
-local function UNIT_SPELLCAST_INTERRUPTED(self, event, unit, castID)
+local function UNIT_SPELLCAST_INTERRUPTED(self, event, unit, spellName)
 	if(self.unit ~= unit and self.realUnit ~= unit) then return end
+	if not spellName then return end
+	local castID = unit .. spellName
 
 	local element = self.Cast
 	if not element.Enabled then return end
@@ -308,8 +311,10 @@ local function UNIT_SPELLCAST_DELAYED(self, event, unit)
 	end
 end
 
-local function UNIT_SPELLCAST_STOP(self, event, unit, castID)
+local function UNIT_SPELLCAST_STOP(self, event, unit, spellName)
 	if(self.unit ~= unit and self.realUnit ~= unit) then return end
+	if not spellName then return end
+	local castID = unit .. spellName
 
 	local element = self.Cast
 	if not element.Enabled then return end

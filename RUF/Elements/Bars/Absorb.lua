@@ -11,9 +11,9 @@ end
 
 function RUF.SetAbsorbBar(self, unit)
 	local Texture = LSM:Fetch('statusbar', RUF.db.profile.Appearance.Bars.Absorb.Texture)
-	local Bar = CreateFrame('StatusBar', nil, self)
+	local Bar = RUF.StatusBarPrototype(nil, self)
 	local Border = CreateFrame('Frame', nil, Bar)
-	local Background = Bar:CreateTexture(nil, 'BACKGROUND')
+	local Background = Bar.bg
 
 	-- Bar
 	Bar.colorClass = RUF.db.profile.Appearance.Bars.Absorb.Color.Class
@@ -27,7 +27,6 @@ function RUF.SetAbsorbBar(self, unit)
 	Bar.hideAtZero = RUF.db.profile.unit[unit].Frame.Bars.Absorb.Enabled == 1
 	Bar:SetStatusBarTexture(Texture)
 	Bar:SetFrameLevel(12)
-	-- Bar:SetFillStyle(RUF.db.profile.unit[self.frame].Frame.Bars.Absorb.Fill)
 
 	if RUF.db.profile.Appearance.Bars.Absorb.Type == 1 then
 		local a = RUF.db.profile.Appearance.Bars.Absorb.Color.Alpha
@@ -109,7 +108,7 @@ function RUF.AbsorbUpdateOptions(self)
 	Bar.hideAtZero = RUF.db.profile.unit[unit].Frame.Bars.Absorb.Enabled == 1
 	Bar:SetStatusBarTexture(Texture)
 	Bar:SetFrameLevel(12)
-	-- Bar:SetFillStyle(RUF.db.profile.unit[unit].Frame.Bars.Absorb.Fill)
+	Bar:SetFillStyle(RUF.db.profile.unit[unit].Frame.Bars.Absorb.Fill)
 
 	if Bar.Smooth == true then
 		self.__owner:SmoothBar(Bar)
