@@ -1,0 +1,36 @@
+## Interface: 30300
+## Title: RUF [|c5500DBBDRaeli's Unit Frames|r]
+## Notes: Raeli's Unit Frames. Simple lightweight unitframes using oUF
+## Author: Raeli
+## Version: r254-Release
+## SavedVariables: RUFDB
+## X-SavedVariables: RUFDB
+## OptionalDeps: oUF, Ace3, AceGUI-3.0-SharedMediaWidgets, LibDualSpec-1.0, LibRangeCheck-2.0, LibSharedMedia-3.0, NickTag-1.0
+## X-Credits: Icon Font created with IcoMoon.io using icons from Freepik & Plainicon, from www.flaticon.com
+## X-Curse-Project-ID: 283389
+## X-WOWI-ID: 25717
+
+#@no-lib-strip@
+Embeds.xml
+#@end-no-lib-strip@
+EmbedAlways.xml
+
+Elements\Plugins.xml
+
+Localisation\Localisation.xml
+
+Fonts.xml
+Initialize.lua
+Defaults.lua
+Utilities.lua
+DisableBlizzard.lua
+
+Elements\Frame.xml
+Elements\Bars.xml
+Elements\Auras.xml
+Elements\Icons.xml
+Elements\Text.xml
+
+Enable.lua
+
+Options\Options.xml

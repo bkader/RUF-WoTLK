@@ -1,0 +1,17 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+..\FrameXML\UI.xsd">
+<Script file="Icons\Indicators.lua"/>
+<Script file="Icons\Assist.lua"/>
+<Script file="Icons\Combat.lua"/>
+<Script file="Icons\GroupRole.lua"/>
+<Script file="Icons\Honor.lua"/>
+<Script file="Icons\Leader.lua"/>
+<Script file="Icons\LootMaster.lua"/>
+<Script file="Icons\MainTankAssist.lua"/>
+<Script file="Icons\PetHappiness.lua"/>
+<Script file="Icons\PvPStatus.lua"/>
+<Script file="Icons\QuestObjective.lua"/>
+<Script file="Icons\ReadyCheck.lua"/>
+<Script file="Icons\Resting.lua"/>
+<Script file="Icons\TargetMark.lua"/>
+</Ui>

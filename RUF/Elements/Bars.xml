@@ -1,0 +1,13 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+..\FrameXML\UI.xsd">
+<Script file="Bars\Shared.lua"/>
+<Script file="Bars\Absorb.lua"/>
+<Script file="Bars\Cast.lua"/>
+<Script file="Bars\Class.lua"/>
+<Script file="Bars\ClassicClass.lua"/>
+<Script file="Bars\FakeClass.lua"/>
+<Script file="Bars\Health.lua"/>
+<Script file="Bars\HealPrediction.lua"/>
+<Script file="Bars\Power.lua"/>
+<Script file="Bars\Runes.lua"/>
+</Ui>
