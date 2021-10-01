@@ -4,7 +4,6 @@
 <Script file="Plugins\Aura_Plugin.lua"/>
 <Script file="Plugins\BarAnimation_Plugin.lua"/>
 <Script file="Plugins\Cast_Plugin.lua"/>
-<Script file="Plugins\FakeClassPower_Plugin.lua"/>
 <Script file="Plugins\HealPrediction_Plugin.lua"/>
-<!-- <Script file="Plugins\Range_Plugin.lua"/> -->
+<Script file="Plugins\Range_Plugin.lua"/>
 </Ui>

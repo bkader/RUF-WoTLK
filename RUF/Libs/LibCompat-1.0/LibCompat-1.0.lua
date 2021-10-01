@@ -1338,14 +1338,12 @@ do
 
 	setmetatable(StatusBarPrototype, {__call = function(self, name, parent)
 		local bar = CreateFrame("Frame", name, parent)
-		bar.fg = bar.fg or bar:CreateTexture(name and "$parentTexture", "ARTWORK")
-		bar.bg = bar.bg or bar:CreateTexture(name and "$parentBackground", "BACKGROUND")
-		bar.bg:Hide()
-		for k, v in pairs(StatusBarPrototype) do
-			bar[k] = v
-		end
+		bar.fg = bar.fg or bar:CreateTexture(name and "$parent.Texture", "ARTWORK")
+		bar.bg = bar.bg or bar:CreateTexture(name and "$parent.Background", "BACKGROUND")
+		for k, v in pairs(StatusBarPrototype) do bar[k] = v end
 		bar:SetRotatesTexture(false)
 		bar:HookScript("OnSizeChanged", bar.OnSizeChanged)
+		bar.bg:Hide()
 		return bar
 	end})
 

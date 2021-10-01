@@ -89,12 +89,6 @@ HarmSpells["DEATHKNIGHT"] = {
     49576, -- ["Death Grip"], -- 30
 }
 
-FriendSpells["DEMONHUNTER"] = {
-}
-HarmSpells["DEMONHUNTER"] = {
-    185123, -- ["Throw Glaive"], -- 30
-}
-
 FriendSpells["DRUID"] = {
     774, -- ["Rejuvenation"], -- 40
     2782, -- ["Remove Corruption"], -- 40
@@ -117,16 +111,6 @@ FriendSpells["MAGE"] = {
 HarmSpells["MAGE"] = {
     44614, --["Frostfire Bolt"], -- 40
     5019, -- ["Shoot"], -- 30
-}
-
-FriendSpells["MONK"] = {
-    115450, -- ["Detox"], -- 40
-    115546, -- ["Provoke"], -- 30
-}
-HarmSpells["MONK"] = {
-    115546, -- ["Provoke"], -- 30
-    115078, -- ["Paralysis"], -- 20
-    100780, -- ["Tiger Palm"], -- Melee
 }
 
 FriendSpells["PALADIN"] = {
@@ -196,7 +180,6 @@ local FriendItems  = {
     },
     [5] = {
         8149, -- Voodoo Charm
-        136605, -- Solendra's Compassion
         63427, -- Worgsaw
     },
     [7] = {
@@ -392,7 +375,6 @@ local tinsert = tinsert
 local tremove = tremove
 local BOOKTYPE_SPELL = BOOKTYPE_SPELL
 local GetSpellInfo = GetSpellInfo
-local GetSpellBookItemName = GetSpellBookItemName
 local GetNumSpellTabs = GetNumSpellTabs
 local GetSpellTabInfo = GetSpellTabInfo
 local GetItemInfo = GetItemInfo
@@ -506,7 +488,7 @@ local function findSpellIdx(spellName)
         return nil
     end
     for i = 1, getNumSpells() do
-        local spell, rank = GetSpellBookItemName(i, BOOKTYPE_SPELL)
+        local spell, rank = GetSpellInfo(i, BOOKTYPE_SPELL)
         if spell == spellName then return i end
     end
     return nil
@@ -543,7 +525,7 @@ local function createCheckerList(spellList, itemList, interactList)
     if spellList then
         for i = 1, #spellList do
             local sid = spellList[i]
-            local name, _, _, _, minRange, range = GetSpellInfo(sid)
+            local name, _, _, _, _, _, _, minRange, range = GetSpellInfo(sid)
             local spellIdx = findSpellIdx(name)
             if spellIdx and range then
                 minRange = math_floor(minRange + 0.5)

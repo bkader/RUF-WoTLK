@@ -42,7 +42,7 @@ local function Update(self, event)
 	local isTank, isHealer, isDamage = UnitGroupRolesAssigned(self.unit)
 	if(isTank or isHealer or isDamage) then
 		local role = isTank and "tank" or isHealer and "healer" or isDamage and "dps"
-		element:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\" .. role)
+		element:SetTexture("Interface\\AddOns\\RUF\\Media\\role-" .. role)
 		element:Show()
 	else
 		element:Hide()

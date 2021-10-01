@@ -414,7 +414,7 @@ local function initObject(unit, style, styleFunc, header, ...)
 			end
 		end
 
-		activeElements[object] = {} -- ElvUI: styleFunc on headers break before this is set when they try to enable elements before it's set.
+		activeElements[object] = {}
 
 		Private.UpdateUnits(object, objectUnit)
 
@@ -431,13 +431,10 @@ local function initObject(unit, style, styleFunc, header, ...)
 			func(object)
 		end
 
-		-- ElvUI block
 		if object.PostCreate then
 			object:PostCreate(object)
 		end
-		-- end block
 
-		-- Make Clique kinda happy
 		_G.ClickCastFrames = ClickCastFrames or {}
 		ClickCastFrames[object] = true
 	end

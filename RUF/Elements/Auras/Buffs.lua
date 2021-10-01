@@ -15,11 +15,6 @@ local BuffDispel = {-- PURGES
 		[3] = {'None'},
 		[10] = {'None'},
 	},
-	['DEMONHUNTER'] = {
-		[1] = {'Magic'},
-		[2] = {'Magic'},
-		[10] = {'None'},
-	},
 	['DRUID'] = {
 		[1] = {'Enrage'},
 		[2] = {'Enrage'},
@@ -37,12 +32,6 @@ local BuffDispel = {-- PURGES
 		[1] = {'Magic'},
 		[2] = {'Magic'},
 		[3] = {'Magic'},
-		[10] = {'None'},
-	},
-	['MONK'] = {
-		[1] = {'None'},
-		[2] = {'None'},
-		[3] = {'None'},
 		[10] = {'None'},
 	},
 	['PALADIN'] = {

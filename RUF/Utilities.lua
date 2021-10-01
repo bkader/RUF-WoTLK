@@ -330,23 +330,6 @@ function RUF.GetLevelColor(self, level, unit)
 		index = 4
 	end
 
-	-- if RUF.Client == 1 and unit then
-	-- 	if UnitIsWildBattlePet(unit) or UnitIsBattlePetCompanion(unit) then
-	-- 		local petLevel = UnitBattlePetLevel(unit)
-	-- 		if petLevel < 9 then
-	-- 			index = 4
-	-- 		elseif petLevel < 17 then
-	-- 			index = 3
-	-- 		elseif petLevel < 21 then
-	-- 			index = 2
-	-- 		elseif petLevel < 24 then
-	-- 			index = 1
-	-- 		else
-	-- 			index = 0
-	-- 		end
-	-- 	end
-	-- end
-
 	local r, g, b = unpack(RUF.db.profile.Appearance.Colors.DifficultyColors[index])
 	return r, g, b
 end

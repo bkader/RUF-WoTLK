@@ -6,6 +6,8 @@ local oUF = ns.oUF
 local elementName = 'Objective'
 local elementString = RUF.IndicatorGlyphs['Objective']
 
+local function UnitIsQuestBoss(unit) return false end
+
 local function Update(self, event, unit)
 	if(unit ~= self.unit) then return end
 	local element = self.ObjectiveIndicator

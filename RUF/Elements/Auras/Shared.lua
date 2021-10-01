@@ -6,14 +6,10 @@ local oUF = ns.oUF
 
 local GetSpecialization = RUF.GetSpecialization
 
-if RUF.Client == 1 then
-	local function GetCurrentSpec()
-		RUF.Specialization = GetSpecialization()
-	end
-
+do
 	local TalenMonitor = CreateFrame('Frame')
 	TalenMonitor:RegisterEvent('ACTIVE_TALENT_GROUP_CHANGED')
-	TalenMonitor:SetScript('OnEvent', GetCurrentSpec)
+	TalenMonitor:SetScript('OnEvent', function() RUF.Specialization = GetSpecialization() end)
 end
 
 local function UpdateTooltip(self)

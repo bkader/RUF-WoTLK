@@ -117,7 +117,7 @@ tags['RUF:CurManaPerc'] = function(unit)
 	end
 	if RUF.db.profile.Appearance.Text.CurManaPerc.HideWhenPrimaryIsMana == true then
 		local _,PlayerClass = UnitClass(unit)
-		if pToken == 'MANA' or PlayerClass == 'MONK' then
+		if pToken == 'MANA' then
 			return ''
 		end
 	end
@@ -161,7 +161,7 @@ tags['RUF:ManaPerc'] = function(unit)
 	end
 	if RUF.db.profile.Appearance.Text.ManaPerc.HideWhenPrimaryIsMana == true then
 		local _,PlayerClass = UnitClass(unit)
-		if pToken == 'MANA' or PlayerClass == 'MONK' then
+		if pToken == 'MANA' then
 			return ''
 		end
 	end
@@ -183,7 +183,7 @@ tags['RUF:CurMana'] = function(unit)
 	end
 	if RUF.db.profile.Appearance.Text.CurMana.HideWhenPrimaryIsMana == true then
 		local _,PlayerClass = UnitClass(unit)
-		if pToken == 'MANA' or PlayerClass == 'MONK' then
+		if pToken == 'MANA' then
 			return ''
 		end
 	end

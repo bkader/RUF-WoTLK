@@ -18,10 +18,7 @@ local function Update(self, event)
 	if element.Enabled == true then
 		self:EnableElement(elementName..'Indicator')
 		local unit = self.unit
-		local unitVehicleUI = false
-		if RUF.Client == 1 then
-			unitVehicleUI = UnitHasVehicleUI(unit)
-		end
+		local unitVehicleUI = UnitHasVehicleUI(unit)
 		if UnitInRaid(unit) and not unitVehicleUI then
 			if GetPartyAssignment('MAINTANK', unit) then
 				element:SetText(elementStringMAINTANK)

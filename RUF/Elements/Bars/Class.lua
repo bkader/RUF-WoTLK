@@ -14,29 +14,11 @@ local classPowerData = {
 		classPowerID = 4,
 		classPowerType = 'COMBO_POINTS',
 	},
-	MAGE = {
-		classPowerID = 16,
-		classPowerType = 'ARCANE_CHARGES',
-	},
-	MONK = {
-		classPowerID = 12,
-		classPowerType = 'CHI',
-		unitPowerMaxAmount = 6,
-	},
-	PALADIN = {
-		classPowerID = 9,
-		classPowerType = 'HOLY_POWER',
-		unitPowerMaxAmount = 5,
-	},
 	ROGUE = {
 		classPowerID = 4,
 		classPowerType = 'COMBO_POINTS',
 		unitPowerMaxAmount = 6,
-	},
-	WARLOCK = {
-		classPowerID = 7,
-		classPowerType = 'SOUL_SHARDS',
-	},
+	}
 }
 
 function RUF.SetClassBar(self, unit)
@@ -114,6 +96,7 @@ function RUF.SetClassBar(self, unit)
 		Background:SetAllPoints(Bar)
 		Background:SetTexture(LSM:Fetch('background', 'Solid'))
 		Background:SetVertexColor(r*bgMult, g*bgMult, b*bgMult, RUF.db.profile.Appearance.Bars.Class.Background.Alpha)
+		Background:Show()
 
 		classPowerBar[i] = Bar
 		classPowerBorder[i] = Border

@@ -10,10 +10,7 @@
 ## X-Curse-Project-ID: 283389
 ## X-WOWI-ID: 25717
 
-#@no-lib-strip@
 Embeds.xml
-#@end-no-lib-strip@
-EmbedAlways.xml
 
 Elements\Plugins.xml
 

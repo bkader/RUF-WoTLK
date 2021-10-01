@@ -343,6 +343,7 @@ L["Simple Border"] = true
 L["Size"] = true
 L["Size relative to the aura icon"] = true
 L["Smooth transitions"] = true
+L["Combat Points"] = true
 L["Smoothly animate bar changes. Does not affect class resources that are split into chunks such as Combo Points, or Holy Power."] = true
 L["Sort By"] = true
 L["Sort Direction"] = true

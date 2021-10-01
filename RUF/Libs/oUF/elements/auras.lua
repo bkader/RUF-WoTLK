@@ -73,7 +73,6 @@ local oUF = ns.oUF
 local VISIBLE = 1
 local HIDDEN = 0
 
--- ElvUI changed block
 local CREATED = 2
 local pcall = pcall
 local tinsert = tinsert
@@ -82,8 +81,6 @@ local GetSpellInfo = GetSpellInfo
 local UnitAura = UnitAura
 local UnitIsUnit = UnitIsUnit
 local floor, min = math.floor, math.min
--- GLOBALS: GameTooltip
--- end block
 
 local function UpdateTooltip(self)
 	GameTooltip:SetUnitAura(self:GetParent().__owner.unit, self:GetID(), self.filter)
@@ -162,7 +159,6 @@ local function updateIcon(element, unit, index, offset, filter, isDebuff, visibl
 	-- count may be nil sometimes
 	count = count or 0
 
-	-- ElvUI block
 	if element.forceShow or element.forceCreate then
 		spellID = 47540
 		name, rank, texture = GetSpellInfo(spellID)
@@ -170,7 +166,6 @@ local function updateIcon(element, unit, index, offset, filter, isDebuff, visibl
 			count, debuffType, duration, expiration, caster, isStealable, shouldConsolidate = 5, 'Magic', 0, 60, 'player', nil, nil
 		end
 	end
-	-- end Block
 
 	if(name) then
 		local position = visible + offset + 1
@@ -210,12 +205,10 @@ local function updateIcon(element, unit, index, offset, filter, isDebuff, visibl
 		* show - indicates whether the aura button should be shown (boolean)
 		--]]
 
-		-- ElvUI changed block
 		local show = not element.forceCreate
 		if not (element.forceShow or element.forceCreate) then
 			show = (element.CustomFilter or customFilter) (element, unit, button, name, rank, texture, count, debuffType, duration, expiration, caster, isStealable, shouldConsolidate, spellID)
 		end
-		-- end block
 
 		if(show) then
 			-- We might want to consider delaying the creation of an actual cooldown
@@ -277,7 +270,6 @@ local function updateIcon(element, unit, index, offset, filter, isDebuff, visibl
 			end
 
 			return VISIBLE
-		-- ElvUI changed block
 		elseif element.forceCreate then
 			local size = element.size or 16
 			button:SetSize(size, size)
@@ -288,7 +280,6 @@ local function updateIcon(element, unit, index, offset, filter, isDebuff, visibl
 			end
 
 			return CREATED
-		-- end block
 		else
 			return HIDDEN
 		end
@@ -321,9 +312,7 @@ local function filterIcons(element, unit, filter, limit, isDebuff, offset, dontH
 	local index = 1
 	local visible = 0
 	local hidden = 0
-	-- ElvUI changed block
 	local created = 0
-	-- end block
 	while(visible < limit) do
 		local result = updateIcon(element, unit, index, offset, filter, isDebuff, visible)
 		if(not result) then
@@ -332,19 +321,15 @@ local function filterIcons(element, unit, filter, limit, isDebuff, offset, dontH
 			visible = visible + 1
 		elseif(result == HIDDEN) then
 			hidden = hidden + 1
-		-- ElvUI changed block
 		elseif result == CREATED then
 			visible = visible + 1
 			created = created + 1
-		-- end block
 		end
 
 		index = index + 1
 	end
 
-	-- ElvUI changed block
 	visible = visible - created
-	-- end block
 
 	if(not dontHide) then
 		for i = visible + offset + 1, #element do

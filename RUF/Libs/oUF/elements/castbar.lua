@@ -93,7 +93,7 @@ local GetNetStats = GetNetStats
 local GetTime = GetTime
 local UnitCastingInfo = UnitCastingInfo
 local UnitChannelInfo = UnitChannelInfo
-local tradeskillCurrent, tradeskillTotal, mergeTradeskill = 0, 0, false -- ElvUI
+local tradeskillCurrent, tradeskillTotal, mergeTradeskill = 0, 0, false
 
 local DEFAULT_ICON = [[Interface\ICONS\INV_Misc_QuestionMark]]
 
@@ -102,15 +102,13 @@ local function resetAttributes(self)
 	self.casting = nil
 	self.channeling = nil
 	self.notInterruptible = nil
-	self.spellName = nil -- ElvUI
+	self.spellName = nil
 end
 
--- ElvUI block
 local UNIT_SPELLCAST_SENT = function (self, event, unit, _, _, target)
 	local castbar = self.Castbar
 	castbar.curTarget = (target and target ~= "") and target or nil
 end
--- end block
 
 local function CastStart(self, event, unit)
 	if(self.unit ~= unit) then return end
@@ -141,7 +139,7 @@ local function CastStart(self, event, unit)
 	element.notInterruptible = notInterruptible
 	element.holdTime = 0
 	element.castID = castID
-	element.spellName = name -- ElvUI
+	element.spellName = name
 
 	if(element.casting) then
 		element.duration = GetTime() - startTime
@@ -265,13 +263,11 @@ local function CastStop(self, event, unit, _, _, castID)
 		return
 	end
 
-	-- ElvUI block
 	if(mergeTradeskill and self.unit == 'player') then
 		if(tradeskillCurrent == tradeskillTotal) then
 			mergeTradeskill = false
 		end
 	end
-	-- end block
 
 	resetAttributes(element)
 
@@ -302,12 +298,10 @@ local function CastFail(self, event, unit, _, _, castID)
 
 	element.holdTime = element.timeToHold or 0
 
-	-- ElvUI block
 	if(mergeTradeskill and self.unit == 'player') then
 		mergeTradeskill = false
 		element.tradeSkillCastId = nil
 	end
-	-- end block
 
 	resetAttributes(element)
 	element:SetValue(element.max)
@@ -425,9 +419,7 @@ local function Enable(self, unit)
 		self:RegisterEvent('UNIT_SPELLCAST_INTERRUPTIBLE', CastInterruptible)
 		self:RegisterEvent('UNIT_SPELLCAST_NOT_INTERRUPTIBLE', CastInterruptible)
 
-		-- ElvUI block
 		self:RegisterEvent('UNIT_SPELLCAST_SENT', UNIT_SPELLCAST_SENT, true)
-		-- end block
 
 		element.holdTime = 0
 
@@ -490,13 +482,11 @@ local function Disable(self)
 	end
 end
 
--- ElvUI block
 hooksecurefunc('DoTradeSkill', function(_, num)
 	tradeskillCurrent = 0
 	tradeskillTotal = num or 1
 	mergeTradeskill = true
 end)
--- end block
 
 oUF:AddElement('Castbar', Update, Enable, Disable)
 

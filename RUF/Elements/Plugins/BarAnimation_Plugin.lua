@@ -77,11 +77,11 @@ f:SetScript('OnUpdate', function()
 				local width = frameWidth * (pVal/maxVal)
 				local fillStyle = bar.FillStyle
 				if fillStyle == 'REVERSE' then
-					Portrait:SetViewInsets((-frameWidth)+width,0,0,0) -- Right
+					-- Portrait:SetTexCoord((-frameWidth)+width,0,0,0) -- Right -- FIXME
 				elseif fillStyle == 'CENTER' then
-					Portrait:SetViewInsets(((-frameWidth)+width)/2,((-frameWidth)+width)/2,0,0)
+					-- Portrait:SetTexCoord(((-frameWidth)+width)/2,((-frameWidth)+width)/2,0,0) -- FIXME
 				else
-					Portrait:SetViewInsets(0,(-frameWidth)+width,0,0) -- Left
+					-- Portrait:SetTexCoord(0,(-frameWidth)+width,0,0) -- Left -- FIXME
 				end
 			end
 		end

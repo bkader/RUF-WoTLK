@@ -43,11 +43,7 @@ local function SetupFrames(self, unit)
 	local profileReference = RUF.db.profile.unit[unit]
 
 	self:SetFrameLevel(5)
-
-	-- Set Colors
-	if RUF.Client == 1 then
-		SetClassColors()
-	end
+	SetClassColors()
 
 	self:RegisterForClicks('AnyUp')
 	self:SetScript('OnEnter', UnitFrame_OnEnter)
@@ -80,7 +76,6 @@ local function SetupFrames(self, unit)
 	-- Frame Background
 	RUF.SetFrameBackground(self, unit)
 
-
 	-- Setup Bars
 	RUF.SetHealthBar(self, unit)
 	self.Health.Override = RUF.HealthUpdate
@@ -93,26 +88,17 @@ local function SetupFrames(self, unit)
 	RUF.SetPowerBar(self, unit)
 	self.Power.Override = RUF.PowerUpdate
 
-	if RUF.Client == 1 then
-		-- Prevents trying to load these elements for Classic since they don't exist in Classic.
-		RUF.SetAbsorbBar(self, unit)
-		self.Absorb.Override = RUF.AbsorbUpdate
+	-- Prevents trying to load these elements for Classic since they don't exist in Classic.
+	RUF.SetAbsorbBar(self, unit)
+	self.Absorb.Override = RUF.AbsorbUpdate
 
-		if unit == 'player' then
-			self:SetAttribute('toggleForVehicle', profileReference.toggleForVehicle or false) -- TODO Implement option for this
-			RUF.SetClassBar(self, unit) -- Normal Class Power bar
-			RUF.SetFakeClassBar(self, unit) -- Fake Clone Bar for Insanity/Maelstrom/Lunar Power
-			RUF.SetRunes(self, unit)
-			RUF.SetStagger(self, unit)
-		end
-		if unit == 'pet' then
-			self:SetAttribute('toggleForVehicle', RUF.db.profile.unit['player'].toggleForVehicle or false)
-		end
-
-	else
-		if unit == 'player' then
-			RUF.SetClassicClassBar(self, unit)
-		end
+	if unit == 'player' then
+		self:SetAttribute('toggleForVehicle', profileReference.toggleForVehicle or false) -- TODO Implement option for this
+		RUF.SetClassBar(self, unit) -- Normal Class Power bar
+		RUF.SetRunes(self, unit)
+	end
+	if unit == 'pet' then
+		self:SetAttribute('toggleForVehicle', RUF.db.profile.unit['player'].toggleForVehicle or false)
 	end
 
 	-- Frame Portrait
@@ -122,7 +108,7 @@ local function SetupFrames(self, unit)
 	if unit == 'player' or unit == 'target' then
 		RUF.SetCastBar(self, unit)
 	end
-	if RUF.Client == 1 and unit == 'focus' then
+	if unit == 'focus' then
 		RUF.SetCastBar(self, unit)
 	end
 
@@ -164,10 +150,8 @@ local function SetupFrames(self, unit)
 	-- Indicators
 	RUF.SetIndicators(self, unit)
 
-	if RUF.Client == 1 then
-		self:RegisterEvent('ACTIVE_TALENT_GROUP_CHANGED', RUF.SetBarLocation, true)
-		self:RegisterEvent('PLAYER_ENTERING_WORLD', RUF.SetBarLocation, true)
-	end
+	self:RegisterEvent('ACTIVE_TALENT_GROUP_CHANGED', RUF.SetBarLocation, true)
+	self:RegisterEvent('PLAYER_ENTERING_WORLD', RUF.SetBarLocation, true)
 
 	RUF.SetBarLocation(self, unit)
 

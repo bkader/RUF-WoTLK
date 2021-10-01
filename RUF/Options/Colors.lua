@@ -29,44 +29,13 @@ function RUF_Options.Colors()
 		[3] = L["Easy"],
 		[4] = L["Trivial"],
 	}
-	local Powers = {}
-	if RUF.Client == 1 then
-		Powers = {
-			[0] = _G['MANA'] or MANA,
-			[1] = _G['RAGE'] or RAGE,
-			[2] = _G['FOCUS'] or FOCUS,
-			[3] = _G['ENERGY'] or ENERGY,
-			[4] = _G['COMBO_POINTS'] or COMBO_POINTS,
-			--[5] = _G['RUNES'] or RUNES,
-			[6] = _G['RUNIC_POWER'] or RUNIC_POWER,
-			[7] = _G['SOUL_SHARDS'] or SOUL_SHARDS,
-			[8] = _G['LUNAR_POWER'] or LUNAR_POWER,
-			[9] = _G['HOLY_POWER'] or HOLY_POWER,
-			--[10] = 'Alternate Power',
-			[11] = _G['MAELSTROM'] or MAELSTROM,
-			[12] = _G['CHI'] or CHI,
-			[13] = _G['INSANITY'] or INSANITY,
-			--[14] = _G['UNUSED'] or UNUSED,
-			--[15] = _G['UNUSED'] or UNUSED,
-			[16] = _G['ARCANE_CHARGES'] or ARCANE_CHARGES,
-			[17] = _G['FURY'] or FURY,
-			[18] = _G['PAIN'] or PAIN,
-			[50] = L["Runes - Blood"],
-			[51] = L["Runes - Frost"],
-			[52] = L["Runes - Unholy"],
-			[75] = L["Stagger - Low"],
-			[76] = L["Stagger - Medium"],
-			[77] = L["Stagger - High"],
-		}
-	else
-		Powers = {
-			[0] = _G['MANA'] or MANA,
-			[1] = _G['RAGE'] or RAGE,
-			[2] = _G['FOCUS'] or FOCUS,
-			[3] = _G['ENERGY'] or ENERGY,
-			[14] = _G['COMBO_POINTS'] or COMBO_POINTS,
-		}
-	end
+	local Powers = {
+		[0] = _G['MANA'] or MANA,
+		[1] = _G['RAGE'] or RAGE,
+		[2] = _G['FOCUS'] or FOCUS,
+		[3] = _G['ENERGY'] or ENERGY,
+		[14] = _G['COMBO_POINTS'] or L["Combat Points"]
+	}
 	local classData = {
 		[0] = GetClassInfo("DEATHKNIGHT"), -- Death Knight
 		[2] = GetClassInfo("DRUID"), -- Druid

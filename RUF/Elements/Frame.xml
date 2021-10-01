@@ -4,5 +4,5 @@
 <Script file="Frame\Border.lua"/>
 <Script file="Frame\CombatFader.lua"/>
 <Script file="Frame\Portrait.lua"/>
-<!-- <Script file="Frame\RangeCheck.lua"/> -->
+<Script file="Frame\RangeCheck.lua"/>
 </Ui>

@@ -62,31 +62,44 @@ local function Update(self, event, unit)
 	if(event ~= 'OnUpdate' or element.guid ~= guid or element.state ~= isAvailable) then
 		if(element:IsObjectType('PlayerModel')) then
 			if(not isAvailable) then
-				-- element:SetCamDistanceScale(0.25) -- FIXME
-				-- element:SetPortraitZoom(0) -- FIXME
-				element:SetPosition(0, 0, 0.25)
-				element:ClearModel()
-				element:SetModel([[Interface\Buttons\TalkToMeQuestionMark.m2]])
+				element:SetModelScale(4.25)
+				element:SetPosition(0, 0, -0.4)
+				element:SetModel([[Interface\Buttons\TalktoMeQuestionMark.mdx]])
 			else
-				local profileReference = RUF.db.profile.unit[self.frame].Frame.Portrait
-				local desaturate = 0
-				if profileReference.Model.Desaturate == true then
-					desaturate = 1
-				end
-				-- element:SetPortraitZoom(profileReference.Model.PortraitZoom) -- FIXME
-				-- element:SetCamDistanceScale(profileReference.Model.CameraDistance) -- FIXME
-				element:SetPosition(profileReference.Model.z/10, profileReference.Model.x/10, -profileReference.Model.y/10)
-				element:ClearModel()
 				element:SetUnit(unit)
-				-- element:SetPaused(profileReference.Model.Animation.Paused) -- FIXME
-				-- element:SetViewInsets(0, 0, 0, 0) -- FIXME
-				-- element:MakeCurrentCameraCustom() -- FIXME
-				-- element:SetCameraFacing(math.rad(-profileReference.Model.Rotation)) -- FIXME
-				-- SetDesaturation(element, desaturate)
+				element:SetCamera(0)
 			end
 		else
 			SetPortraitTexture(element, unit)
 		end
+		-- FIXME
+		-- if(element:IsObjectType('PlayerModel')) then
+		-- 	if(not isAvailable) then
+		-- 		element:SetCamDistanceScale(0.25)
+		-- 		element:SetPortraitZoom(0)
+		-- 		element:SetPosition(0, 0, 0.25)
+		-- 		element:ClearModel()
+		-- 		element:SetModel([[Interface\Buttons\talktomequestionmark.mdx]])
+		-- 	else
+		-- 		local profileReference = RUF.db.profile.unit[self.frame].Frame.Portrait
+		-- 		local desaturate = 0
+		-- 		if profileReference.Model.Desaturate == true then
+		-- 			desaturate = 1
+		-- 		end
+		-- 		element:SetPortraitZoom(profileReference.Model.PortraitZoom)
+		-- 		element:SetCamDistanceScale(profileReference.Model.CameraDistance)
+		-- 		element:SetPosition(profileReference.Model.z/10, profileReference.Model.x/10, -profileReference.Model.y/10)
+		-- 		element:ClearModel()
+		-- 		element:SetUnit(unit)
+		-- 		element:SetPaused(profileReference.Model.Animation.Paused)
+		-- 		element:SetViewInsets(0, 0, 0, 0)
+		-- 		element:MakeCurrentCameraCustom()
+		-- 		element:SetCameraFacing(math.rad(-profileReference.Model.Rotation))
+		-- 		-- SetDesaturation(element, desaturate)
+		-- 	end
+		-- else
+		-- 	SetPortraitTexture(element, unit)
+		-- end
 
 		element.guid = guid
 		element.state = isAvailable
@@ -154,10 +167,9 @@ function RUF.SetFramePortrait(self, unit)
 		Portrait:SetAlpha(profileReference.Alpha)
 		if profileReference.Cutaway == true then
 			Portrait:ClearAllPoints()
-			local healthBar = self.Health:GetStatusBarTexture()
 			local ofs = -0.15
-			Portrait:SetPoint('TOPLEFT', healthBar, 'TOPLEFT', -ofs, ofs)
-			Portrait:SetPoint('BOTTOMRIGHT', healthBar, 'BOTTOMRIGHT', ofs, -ofs)
+			Portrait:SetPoint('TOPLEFT', self.Health.fg, 'TOPLEFT', -ofs, ofs)
+			Portrait:SetPoint('BOTTOMRIGHT', self.Health.fg, 'BOTTOMRIGHT', ofs, -ofs)
 			Portrait.Cutaway = true
 		else
 			Portrait:ClearAllPoints()
@@ -202,10 +214,9 @@ function RUF.PortraitUpdateOptions(self)
 			Portrait:SetAlpha(profileReference.Alpha)
 			if profileReference.Cutaway == true then
 				Portrait:ClearAllPoints()
-				local healthBar = self.__owner.Health:GetStatusBarTexture()
 				local offset = -0.15
-				Portrait:SetPoint('TOPLEFT', healthBar, 'TOPLEFT', -offset, offset)
-				Portrait:SetPoint('BOTTOMRIGHT', healthBar, 'BOTTOMRIGHT', offset, -offset)
+				Portrait:SetPoint('TOPLEFT', self.__owner.Health.fg, 'TOPLEFT', -offset, offset)
+				Portrait:SetPoint('BOTTOMRIGHT', self.__owner.Health.fg, 'BOTTOMRIGHT', offset, -offset)
 				RUF.PortraitHealthUpdate(Portrait)
 			else
 				Portrait:ClearAllPoints()

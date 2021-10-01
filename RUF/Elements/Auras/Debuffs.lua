@@ -15,11 +15,6 @@ local DebuffDispel = {-- DISPELLING ALLIES, 10 = Classic since there are no spec
 		[3] = {'None'},
 		[10] = {'None'},
 	},
-	['DEMONHUNTER'] = {
-		[1] = {'None'},
-		[2] = {'None'},
-		[10] = {'None'},
-	},
 	['DRUID'] = {
 		[1] = {'Curse', 'Poison'},
 		[2] = {'Curse', 'Poison'},
@@ -38,12 +33,6 @@ local DebuffDispel = {-- DISPELLING ALLIES, 10 = Classic since there are no spec
 		[2] = {'Curse'},
 		[3] = {'Curse'},
 		[10] = {'Curse'},
-	},
-	['MONK'] = {
-		[1] = {'Disease', 'Poison'},
-		[2] = {'Disease', 'Magic', 'Poison'},
-		[3] = {'Disease', 'Poison'},
-		[10] = {'None'},
 	},
 	['PALADIN'] = {
 		[1] = {'Disease', 'Magic', 'Poison'},
@@ -252,13 +241,8 @@ local function PostUpdateDebuffIcon(self, unit, button, index, position, duratio
 end
 
 function RUF.SetDebuffs(self, unit)
-	_, PlayerClass = UnitClass('player')
-	if RUF.Client == 1 then
-		-- GetSpecialization doesn't exist for Classic. All 'specs' can dispel the same types, so set to 10 to follow those values where appropriate.
-		RUF.Specialization = GetSpecialization()
-	else
-		RUF.Specialization = 10
-	end
+	PlayerClass = select(2, UnitClass('player'))
+	RUF.Specialization = GetSpecialization()
 	local Debuffs = CreateFrame('Frame', nil, self)
 	Debuffs:SetPoint(
 		RUF.db.profile.unit[unit].Debuffs.Icons.Position.AnchorFrom,

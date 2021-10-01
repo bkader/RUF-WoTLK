@@ -22,48 +22,28 @@ variant = WOW_PROJECT_CLASSIC
 
 RUF.Client = 2
 
-local frames = {}
-local groupFrames = {}
-local headers = {}
-if RUF.Client == 1 then
-	frames = {
-		'Player',
-		'Pet',
-		'PetTarget',
-		'Focus',
-		'FocusTarget',
-		'Target',
-		'TargetTarget',
-		'TargetTargetTarget',
-	}
-	groupFrames = {
-		'Boss',
-		'BossTarget',
-		'Arena',
-		'ArenaTarget',
-		'PartyTarget',
-		'PartyPet',
-	}
-	headers = {
-		'Party',
-	}
-else
-	frames = {
-		'Player',
-		'Pet',
-		'PetTarget',
-		'Target',
-		'TargetTarget',
-		'TargetTargetTarget',
-	}
-	groupFrames = {
-		'PartyTarget',
-		'PartyPet',
-	}
-	headers = {
-		'Party',
-	}
-end
+local frames = {
+	'Player',
+	'Pet',
+	'PetTarget',
+	'Focus',
+	'FocusTarget',
+	'Target',
+	'TargetTarget',
+	'TargetTargetTarget',
+}
+local groupFrames = {
+	'Boss',
+	'BossTarget',
+	'Arena',
+	'ArenaTarget',
+	'PartyTarget',
+	'PartyPet',
+}
+local headers = {
+	'Party',
+}
+
 RUF.frameList = {}
 RUF.frameList.frames = frames
 RUF.frameList.groupFrames = groupFrames
@@ -77,16 +57,10 @@ function RUF:OnInitialize()
 
 	self.db = LibStub('AceDB-3.0'):New('RUFDB', RUF.Layout.cfg, true) -- Setup Saved Variables
 
-	if RUF.Client == 1 then
-		local LibDualSpec = LibStub('LibDualSpec-1.0')
+	local LibDualSpec = LibStub('LibDualSpec-1.0', true)
+	if LibDualSpec then
 		LibDualSpec:EnhanceDatabase(self.db, 'RUF')
-	else
-		local LibClassicDurations = LibStub('LibClassicDurations', true)
-		if LibClassicDurations then
-			LibClassicDurations:Register(RUF)
-		end
 	end
-
 
 	-- Register /RUF command
 	self:RegisterChatCommand('RUF', 'ChatCommand')

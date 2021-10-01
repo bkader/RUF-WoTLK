@@ -37,64 +37,25 @@ local anchorSwaps = {
 
 local function CopyList(singleFrame, groupFrame, header, section)
 	-- Generate list of units we can copy text elements from
-	local copyList = {}
-	if RUF.Client == 1 then
-		copyList = {
-			['Player'] = L["player"],
-			['Pet'] = L["pet"],
-			['PetTarget'] = L["pettarget"],
-			['Focus'] = L["focus"],
-			['FocusTarget'] = L["focustarget"],
-			['Target'] = L["target"],
-			['TargetTarget'] = L["targettarget"],
-			['TargetTargetTarget'] = L["targettargettarget"],
-			['Boss'] = L["boss"],
-			['BossTarget'] = L["bosstarget"],
-			['Arena'] = L["arena"],
-			['ArenaTarget'] = L["arenatarget"],
-			['Party'] = L["party"],
-			['PartyPet'] = L["partypet"],
-			['PartyTarget'] = L["partytarget"],
-		}
-	else
-		copyList = {
-			['Player'] = L["player"],
-			['Pet'] = L["pet"],
-			['PetTarget'] = L["pettarget"],
-			['Target'] = L["target"],
-			['TargetTarget'] = L["targettarget"],
-			['TargetTargetTarget'] = L["targettargettarget"],
-			['Party'] = L["party"],
-			['PartyPet'] = L["partypet"],
-			['PartyTarget'] = L["partytarget"],
-		}
-	end
+	local copyList = {
+		['Player'] = L["player"],
+		['Pet'] = L["pet"],
+		['PetTarget'] = L["pettarget"],
+		['Target'] = L["target"],
+		['TargetTarget'] = L["targettarget"],
+		['TargetTargetTarget'] = L["targettargettarget"],
+		['Party'] = L["party"],
+		['PartyPet'] = L["partypet"],
+		['PartyTarget'] = L["partytarget"],
+	}
 
 	if section then
 		if section == 'Cast' then
-			copyList = nil
-			copyList = {}
-			if RUF.Client == 1 then
-				copyList = {
-					['Player'] = L["player"],
-					--['Pet'] = L["pet"],
-					['Focus'] = L["focus"],
-					['Target'] = L["target"],
-					--['Boss'] = L["boss"],
-					--['Arena'] = L["arena"],
-					--['Party'] = L["party"],
-					--['PartyPet'] = L["partypet"],
-				}
-			else
-				copyList = {
-					['Player'] = L["player"],
-					--['Pet'] = L["pet"],
-					['Target'] = L["target"],
-					--['Party'] = L["party"],
-					--['PartyPet'] = L["partypet"],
-					--['PartyTarget'] = L["partytarget"],
-				}
-			end
+			copyList = {
+				['Player'] = L["player"],
+				['Focus'] = L["focus"],
+				['Target'] = L["target"],
+			}
 		end
 	end
 
@@ -220,10 +181,7 @@ local function UnitGroup(singleFrame, groupFrame, header)
 						desc = L["Enable to replace this unit frame with the vehicle frame when in a vehicle. If disabled, the pet frame will become the vehicle frame instead."],
 						type = 'toggle',
 						order = 0.004,
-						hidden = function()
-							if RUF.Client ~= 1 then return true end
-							if profileName ~= 'player' then return true end
-						end,
+						hidden = function() return (profileName ~= 'player') end,
 						get = function(info)
 							return RUF.db.profile.unit[profileName].toggleForVehicle
 						end,
@@ -682,35 +640,8 @@ local function BarSettings(singleFrame, groupFrame, header)
 	local ord, referenceUnit, profileName
 	singleFrame, groupFrame, header, ord, referenceUnit, profileName = ProfileData(singleFrame, groupFrame, header)
 
-	local Powers = {}
+	local Powers = {["DRUID"] = _G['COMBO_POINTS'] or COMBO_POINTS, ["ROGUE"] = _G['COMBO_POINTS'] or COMBO_POINTS}
 	local PowerDesc = {}
-
-	if RUF.Client == 1 then
-		Powers = {
-			["ROGUE"] = _G['COMBO_POINTS'] or COMBO_POINTS,
-			["DEATHKNIGHT"] = _G['RUNES'] or RUNES,
-			["WARLOCK"] = _G['SOUL_SHARDS'] or SOUL_SHARDS,
-			["PALADIN"] = _G['HOLY_POWER'] or HOLY_POWER,
-			["SHAMAN"] = _G['MAELSTROM'] or MAELSTROM,
-			["PRIEST"] = _G['INSANITY'] or INSANITY,
-			["MAGE"] = _G['ARCANE_CHARGES'] or ARCANE_CHARGES,
-		}
-		PowerDesc = {
-			["DRUID"] = {
-				_G['COMBO_POINTS'] or COMBO_POINTS,
-				_G['LUNAR_POWER'] or LUNAR_POWER,
-			},
-			["MONK"] = {
-				_G['CHI'] or CHI,
-				_G["STAGGER"] or STAGGER,
-			},
-		}
-	else
-		Powers = {
-			["DRUID"] = _G['COMBO_POINTS'] or COMBO_POINTS,
-			["ROGUE"] = _G['COMBO_POINTS'] or COMBO_POINTS,
-		}
-	end
 
 	local barOptions = {
 		name = L["Bars"],
@@ -754,7 +685,6 @@ local function BarSettings(singleFrame, groupFrame, header)
 				name = L["Absorb"],
 				type = 'group',
 				order = 25,
-				hidden = RUF.Client ~= 1,
 				args = {},
 			},
 		},
@@ -1325,15 +1255,11 @@ end
 
 local function HideIndicatorOptions(profileName,indicator)
 	if indicator == 'Honor' then return true end -- Not implemented
-	if RUF.Client == 1 then
-		if indicator == 'LootMaster' or indicator == 'PetHappiness' then
-			return true
-		end
+	if indicator == 'LootMaster' or indicator == 'PetHappiness' then
+		return true
 	end
-	if RUF.Client == 2 then
-		if indicator == 'Role' or indicator == 'Objective' or indicator == 'Honor' then
-			return true
-		end
+	if indicator == 'Role' or indicator == 'Objective' or indicator == 'Honor' then
+		return true
 	end
 	if (indicator == 'InCombat' or indicator == 'Rest') and profileName ~= 'player' then return true end
 	if indicator == 'PetHappiness' then
@@ -2476,7 +2402,7 @@ local function CastBarSettings(singleFrame, groupFrame, header)
 		hidden = function()
 			if profileName == 'player' or profileName == 'target' then
 				return false
-			elseif RUF.Client == 1 and profileName == 'focus' then
+			elseif profileName == 'focus' then
 				return false
 			else
 				return true

@@ -56,12 +56,6 @@ function RUF.SetIndicators(self, unit)
 	RUF.Indicators.Ready(self, unit)
 	RUF.Indicators.Rest(self, unit)
 	RUF.Indicators.TargetMark(self, unit)
-	if RUF.Client == 1 then -- Only load on Standard, not Classic
-		 -- Required API functions do not exist in Classic
-		RUF.Indicators.Objective(self, unit) -- No UnitIsQuestBoss()
-		RUF.Indicators.Role(self, unit) -- No UnitGroupRolesAssigned()
-	else
-		RUF.Indicators.PetHappiness(self, unit)
-		RUF.Indicators.LootMaster(self, unit) -- We have master looting in Classic!
-	end
+	RUF.Indicators.Objective(self, unit) -- No UnitIsQuestBoss()
+	RUF.Indicators.Role(self, unit) -- No UnitGroupRolesAssigned()
 end

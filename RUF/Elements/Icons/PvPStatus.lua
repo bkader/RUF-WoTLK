@@ -22,16 +22,6 @@ local function Update(self, event, unit)
 		if(UnitIsPVPFreeForAll(unit)) then
 			status = 'FFA'
 		elseif(factionGroup and factionGroup ~= 'Neutral' and UnitIsPVP(unit)) then
-			if RUF.Client == 1 then
-				-- UnitIsMercenary() does not exist in Classic, so only run this test on Standard version.
-				if(unit == 'player' and UnitIsMercenary(unit)) then
-					if(factionGroup == 'Horde') then
-						factionGroup = 'Alliance'
-					elseif(factionGroup == 'Alliance') then
-						factionGroup = 'Horde'
-					end
-				end
-			end
 			status = factionGroup
 		end
 		if element:IsObjectType('FontString') then

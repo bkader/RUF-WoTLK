@@ -16,34 +16,8 @@ function RUF_Options.Bars()
 		[5] = L["Cast Bar"],
 	}
 
-	local Powers = {}
+	local Powers = {["DRUID"] = _G['COMBO_POINTS'] or COMBO_POINTS, ["ROGUE"] = _G['COMBO_POINTS'] or COMBO_POINTS,}
 	local PowerDesc = {}
-	if RUF.Client == 1 then
-		Powers = {
-			["ROGUE"] = _G['COMBO_POINTS'] or COMBO_POINTS,
-			["DEATHKNIGHT"] = _G['RUNES'] or RUNES,
-			["WARLOCK"] = _G['SOUL_SHARDS'] or SOUL_SHARDS,
-			["PALADIN"] = _G['HOLY_POWER'] or HOLY_POWER,
-			["SHAMAN"] = _G['MAELSTROM'] or MAELSTROM,
-			["PRIEST"] = _G['INSANITY'] or INSANITY,
-			["MAGE"] = _G['ARCANE_CHARGES'] or ARCANE_CHARGES,
-		}
-		PowerDesc = {
-			["DRUID"] = {
-				_G['COMBO_POINTS'] or COMBO_POINTS,
-				_G['LUNAR_POWER'] or LUNAR_POWER,
-			},
-			["MONK"] = {
-				_G['CHI'] or CHI,
-				_G["STAGGER"] or STAGGER,
-			},
-		}
-	else
-		Powers = {
-			["DRUID"] = _G['COMBO_POINTS'] or COMBO_POINTS,
-			["ROGUE"] = _G['COMBO_POINTS'] or COMBO_POINTS,
-		}
-	end
 
 	if Powers[uClass] then
 		LocalisedBar[3] = Powers[uClass]

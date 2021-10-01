@@ -19,12 +19,7 @@ local classPowerData = {
 }
 
 function RUF.SetClassicClassBar(self, unit)
-	if RUF.Client == 1 then
-		return
-	end
-	if not classPowerData[uClass] then
-		return
-	end
+	if not classPowerData[uClass] then return end
 	local classPowerBar = {}
 	local classPowerBorder = {}
 	local classPowerBackground = {}
@@ -102,6 +97,7 @@ function RUF.SetClassicClassBar(self, unit)
 		Background:SetAllPoints(Bar)
 		Background:SetTexture(LSM:Fetch("background", "Solid"))
 		Background:SetVertexColor(r * bgMult, g * bgMult, b * bgMult, RUF.db.profile.Appearance.Bars.Class.Background.Alpha)
+		Background:Show()
 
 		classPowerBar[i] = Bar
 		classPowerBorder[i] = Border

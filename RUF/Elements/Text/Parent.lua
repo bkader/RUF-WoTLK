@@ -21,10 +21,6 @@ local oUF = ns.oUF
 	for a in mstring:gmatch(pattern) do
 	end
 
-
-	Make text 'dumb' - just like ElvUI, it has it's position, and that's that. Allow anchoring to other text elements though.
-	When everything else is working, come back and add resizing as per above.
-
 ]]--
 
 local anchorSwaps = {

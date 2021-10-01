@@ -14,11 +14,6 @@ local DebuffDispel = {-- DISPELLING ALLIES, 10 = Classic since there are no spec
 		[3] = {'None'},
 		[10] = {'None'},
 	},
-	['DEMONHUNTER'] = {
-		[1] = {'None'},
-		[2] = {'None'},
-		[10] = {'None'},
-	},
 	['DRUID'] = {
 		[1] = {'Curse','Poison'},
 		[2] = {'Curse','Poison'},
@@ -37,12 +32,6 @@ local DebuffDispel = {-- DISPELLING ALLIES, 10 = Classic since there are no spec
 		[2] = {'Curse'},
 		[3] = {'Curse'},
 		[10] = {'Curse'},
-	},
-	['MONK'] = {
-		[1] = {'Disease','Poison'},
-		[2] = {'Disease','Magic','Poison'},
-		[3] = {'Disease','Poison'},
-		[10] = {'None'},
 	},
 	['PALADIN'] = {
 		[1] = {'Disease','Magic','Poison'},
@@ -88,11 +77,6 @@ local BuffDispel = {-- PURGES
 		[3] = {'None'},
 		[10] = {'None'},
 	},
-	['DEMONHUNTER'] = {
-		[1] = {'Magic'},
-		[2] = {'Magic'},
-		[10] = {'None'},
-	},
 	['DRUID'] = {
 		[1] = {'Enrage'},
 		[2] = {'Enrage'},
@@ -110,12 +94,6 @@ local BuffDispel = {-- PURGES
 		[1] = {'Magic'},
 		[2] = {'Magic'},
 		[3] = {'Magic'},
-		[10] = {'None'},
-	},
-	['MONK'] = {
-		[1] = {'None'},
-		[2] = {'None'},
-		[3] = {'None'},
 		[10] = {'None'},
 	},
 	['PALADIN'] = {
@@ -177,14 +155,7 @@ function RUF.UpdateGlowBorder(self, event)
 	if event == 'UNIT_TARGET' then
 		self.GlowBorder:Hide() -- Immediately hide until we check the new unit.
 	end
-	if RUF.Client == 1 then
-		RUF.Specialization = GetSpecialization()
-		if RUF.Specialization > 3 then -- Newly created characters have a spec of 5 as of 9.0.1
-			RUF.Specialization = 10
-		end
-	else
-		RUF.Specialization = 10 -- GetSpecialization doesn't exist for Classic. All 'specs' can dispel the same types, so set to 10 to follow those values where appropriate.
-	end
+	RUF.Specialization = GetSpecialization()
 	local removable = false
 	local dispelType
 	local auraTypes
@@ -197,10 +168,9 @@ function RUF.UpdateGlowBorder(self, event)
 		buffFilter = "HELPFUL"
 	end
 	for i = 1,40 do
-		local name, texture, count, debuffType, duration, expiration, caster, isStealable,
-		nameplateShowSelf, spellID, canApply, isBossDebuff, casterIsPlayer, nameplateShowAll,
-		timeMod, effect1, effect2, effect3 = UnitAura(unit, i,buffFilter)
-		if auraTypes == 'None' then
+		local name, rank, icon, count, debuffType, duration, expirationTime, unitCaster,
+		isStealable, shouldConsolidate, spellId = UnitAura(unit, i, buffFilter)
+		if name == nil or auraTypes == 'None' then
 			removable = false
 			break
 		else

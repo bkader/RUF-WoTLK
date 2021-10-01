@@ -7,8 +7,6 @@ local oUF = ns.oUF
 local UnitCastingInfo = UnitCastingInfo
 local UnitChannelInfo = UnitChannelInfo
 
-local StatusBarPrototype = RUF.StatusBarPrototype
-
 local LibClassicCasterino = LibStub('LibClassicCasterino', true)
 if LibClassicCasterino then
 	UnitCastingInfo = function(unit)
@@ -188,9 +186,9 @@ function RUF.SetCastBar(self, unit)
 	local profileReference = RUF.db.profile.Appearance.Bars.Cast
 	local unitProfile = RUF.db.profile.unit[unit].Frame.Bars.Cast
 	local texture = LSM:Fetch('statusbar', profileReference.Texture)
-	local Bar = StatusBarPrototype(nil, self)
+	local Bar = RUF.StatusBarPrototype(nil, self)
 	local Border = CreateFrame('Frame', nil, Bar, BackdropTemplateMixin and 'BackdropTemplate')
-	local Background = Bar:CreateTexture(nil, 'BACKGROUND')
+	local Background = Bar.bg
 
 	-- Bar
 	Bar.colorClass = profileReference.Color.Class
@@ -202,7 +200,7 @@ function RUF.SetCastBar(self, unit)
 	Bar.colorHealth = true -- BaseColor, always enabled, so if none of the other colors match, it falls back to this.
 	Bar:SetStatusBarTexture(texture)
 	Bar:SetFrameLevel(200)
-	-- Bar:SetFillStyle(unitProfile.Fill)
+	Bar:SetFillStyle(unitProfile.Fill)
 	Bar:SetWidth(unitProfile.Width)
 	Bar:SetHeight(unitProfile.Height)
 	Bar:SetClampedToScreen(true)
@@ -236,6 +234,7 @@ function RUF.SetCastBar(self, unit)
 	Background:SetVertexColor(r*Multiplier, g*Multiplier, b*Multiplier, profileReference.Background.Alpha)
 	Background:SetAllPoints(Bar)
 	Background.colorSmooth = false
+	Background:Show()
 
 	-- Text
 	local Time = Bar:CreateFontString(nil, 'OVERLAY', 'Raeli')
@@ -268,14 +267,14 @@ function RUF.SetCastBar(self, unit)
 	Text:SetFont(font, size, outline)
 
 	-- Spark
-	--local Spark = Bar:CreateTexture(nil, 'OVERLAY')
-	--Spark:SetSize(10, unitProfile.Height*1.5)
-	--Spark:SetBlendMode('ADD')
+	-- local Spark = Bar:CreateTexture(nil, 'OVERLAY')
+	-- Spark:SetSize(10, unitProfile.Height*1.5)
+	-- Spark:SetBlendMode('ADD')
 
 	-- Icon
-	--local Icon = Castbar:CreateTexture(nil, 'OVERLAY')
-	--Icon:SetSize(20, 20)
-	--Icon:SetPoint('TOPLEFT', Castbar, 'TOPLEFT')
+	-- local Icon = Bar:CreateTexture(nil, 'OVERLAY')
+	-- Icon:SetSize(20, 20)
+	-- Icon:SetPoint('TOPLEFT', Bar, 'TOPLEFT')
 
 	-- Safe Zone
 	if unit == 'player' then
@@ -291,8 +290,8 @@ function RUF.SetCastBar(self, unit)
 	Bar.Border = Border
 	Bar.Time = Time
 	Bar.Text = Text
-	--Bar.Spark = Spark
-	--Bar.Icon = Icon
+	-- Bar.Spark = Spark
+	-- Bar.Icon = Icon
 	self.Cast = Bar
 
 	self.Cast.OnUpdate = onUpdate
@@ -454,7 +453,7 @@ function RUF.CastUpdateOptions(self)
 	local texture = LSM:Fetch('statusbar', RUF.db.profile.Appearance.Bars.Cast.Texture)
 	Bar:SetStatusBarTexture(texture)
 	Bar:SetFrameLevel(15)
-	-- Bar:SetFillStyle(unitProfile.Fill)
+	Bar:SetFillStyle(unitProfile.Fill)
 	Bar:PostCastStart(unit)
 	Bar:OnUpdate()
 

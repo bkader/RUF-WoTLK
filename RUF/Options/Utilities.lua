@@ -95,7 +95,7 @@ function RUF:OptionsUpdateCastbars()
 		if v.Cast then
 			local Bar = v.Cast
 			local Border = Bar.Border
-			local Background = Bar.Background
+			local Background = Bar.bg
 			local Time = Bar.Time
 			local Text = Bar.Text
 			local profileReference = RUF.db.profile.Appearance.Bars.Cast
@@ -103,7 +103,7 @@ function RUF:OptionsUpdateCastbars()
 			local texture = LSM:Fetch("statusbar",profileReference.Texture)
 
 			Bar:SetStatusBarTexture(texture)
-			-- Bar:SetFillStyle(unitProfile.Fill)
+			Bar:SetFillStyle(unitProfile.Fill)
 			Bar:SetWidth(unitProfile.Width)
 			Bar:SetHeight(unitProfile.Height)
 			local anchorFrame
@@ -694,9 +694,7 @@ function RUF:OptionsUpdateFrame(singleFrame,groupFrame,header)
 
 		if unitFrame:GetWidth() ~= profileReference.Frame.Size.Width then
 			unitFrame:SetWidth(profileReference.Frame.Size.Width)
-			if unitFrame.ClassPower and RUF.Client == 1 then
-				unitFrame.ClassPower.UpdateOptions(unitFrame.ClassPower)
-			elseif unitFrame.ClassicClassPower and RUF.Client == 2 then
+			if unitFrame.ClassicClassPower then -- and RUF.Client == 2 then
 				unitFrame.ClassicClassPower.UpdateOptions(unitFrame.ClassicClassPower)
 			end
 		end
@@ -842,15 +840,9 @@ function RUF:OptionsUpdateAllBars()
 			RUF:OptionsUpdateBars(frames[i],nil,nil,'Health')
 			RUF:OptionsUpdateBars(frames[i],nil,nil,'Power')
 			RUF:OptionsUpdateBars(frames[i],nil,nil,'HealPrediction')
-			if RUF.Client == 1 then
-				RUF:OptionsUpdateBars(frames[i],nil,nil,'Absorb')
-				if i == 1 then
-					RUF:OptionsUpdateBars(frames[i],nil,nil,'Class')
-				end
-			else
-				if i == 1 then
-					RUF:OptionsUpdateBars(frames[i],nil,nil,'Class')
-				end
+			RUF:OptionsUpdateBars(frames[i],nil,nil,'Absorb')
+			if i == 1 then
+				RUF:OptionsUpdateBars(frames[i],nil,nil,'Class')
 			end
 		end
 	end
@@ -858,17 +850,13 @@ function RUF:OptionsUpdateAllBars()
 		RUF:OptionsUpdateBars(nil,groupFrames[i],nil,'Health')
 		RUF:OptionsUpdateBars(nil,groupFrames[i],nil,'Power')
 		RUF:OptionsUpdateBars(nil,groupFrames[i],nil,'HealPrediction')
-		if RUF.Client == 1 then
-			RUF:OptionsUpdateBars(nil,groupFrames[i],nil,'Absorb')
-		end
+		RUF:OptionsUpdateBars(nil,groupFrames[i],nil,'Absorb')
 	end
 	for i = 1,#headers do
 		RUF:OptionsUpdateBars(nil,nil,headers[i],'Health')
 		RUF:OptionsUpdateBars(nil,nil,headers[i],'Power')
 		RUF:OptionsUpdateBars(nil,nil,headers[i],'HealPrediction')
-		if RUF.Client == 1 then
-			RUF:OptionsUpdateBars(nil,nil,headers[i],'Absorb')
-		end
+		RUF:OptionsUpdateBars(nil,nil,headers[i],'Absorb')
 	end
 
 	RUF:OptionsUpdateCastbars()
@@ -903,29 +891,14 @@ function RUF:OptionsUpdateBars(singleFrame,groupFrame,header,bar)
 
 		local originalBar = bar
 		if bar == 'Class' then
-			if RUF.Client == 1 then
-				if PlayerClass == 'DEATHKNIGHT' then
-					bar = 'Runes'
-				elseif PlayerClass == 'PRIEST' or PlayerClass == 'SHAMAN' then
-					bar = 'FakeClassPower'
-				else
-					bar = 'ClassPower'
-				end
-			else
-				bar = 'ClassicClassPower'
-			end
+			bar = 'ClassicClassPower'
 		end
 		if not unitFrame[bar] then return end
 		unitFrame[bar].UpdateOptions(unitFrame[bar])
 		unitFrame[bar]:ForceUpdate()
 		if bar then
 			unitFrame[bar].UpdateOptions(unitFrame[bar])
-			if PlayerClass == 'MONK' and RUF.Client == 1 then
-				if unitFrame['Stagger'] then
-					unitFrame['Stagger'].UpdateOptions(unitFrame['Stagger'])
-				end
-			end
-			if PlayerClass == 'DRUID' and RUF.Client == 1 then
+			if PlayerClass == 'DRUID' then
 				if unitFrame['FakeClassPower'] then
 					unitFrame['FakeClassPower'].UpdateOptions(unitFrame['FakeClassPower'])
 				end
@@ -951,20 +924,13 @@ function RUF:OptionsUpdateBars(singleFrame,groupFrame,header,bar)
 				if unitFrame[bar] then
 					unitFrame[bar]:ForceUpdate()
 				end
-				if PlayerClass == 'MONK' and RUF.Client == 1 then
-					unitFrame:EnableElement('Stagger')
-					unitFrame['Stagger']:ForceUpdate()
-				end
-				if PlayerClass == 'DRUID' and RUF.Client == 1 then
+				if PlayerClass == 'DRUID'then
 					unitFrame:EnableElement('FakeClassPower')
 					unitFrame['FakeClassPower']:ForceUpdate()
 				end
 			else
 				unitFrame:DisableElement(bar)
-				if PlayerClass == 'MONK' and RUF.Client == 1 then
-					unitFrame:DisableElement('Stagger')
-				end
-				if PlayerClass == 'DRUID' and RUF.Client == 1 then
+				if PlayerClass == 'DRUID'then
 					unitFrame:DisableElement('FakeClassPower')
 				end
 			end

@@ -272,11 +272,9 @@ local cfg = {
 				UseClassColors = true, -- Use ClassColors Addon
 				ClassColors = { -- !ClassColors Addon Overrides these values.
 					DEATHKNIGHT = {196/255,31/255,59/255},
-					DEMONHUNTER = {163/255,48/255,201/255},
 					DRUID = {1,125/255,10/255},
 					HUNTER = {171/255,212/255,115/255},
 					MAGE = {64/255,199/255,235/255},
-					MONK = {0,1,150/255},
 					PALADIN = {245/255,140/255,186/255},
 					PRIEST = {1,1,1},
 					ROGUE = {1,245/255,105/255},
@@ -770,18 +768,6 @@ local cfg = {
 								["AnchorFrame"] = "Frame",
 							},
 						},
-						["Phased"] = {
-							["Enabled"] = true,
-							["Size"] = 26,
-							["Style"] = "RUF",
-							["Position"] = {
-								["y"] = 0,
-								["x"] = 0,
-								["AnchorTo"] = "CENTER",
-								["AnchorFrom"] = "CENTER",
-								["AnchorFrame"] = "Frame",
-							},
-						},
 						["Role"] = {
 							["Enabled"] = true,
 							["Size"] = 26,
@@ -1248,18 +1234,6 @@ local cfg = {
 								["y"] = 0,
 								["x"] = 0,
 								["AnchorTo"] = "TOPLEFT",
-								["AnchorFrom"] = "CENTER",
-								["AnchorFrame"] = "Frame",
-							},
-						},
-						["Phased"] = {
-							["Enabled"] = true,
-							["Size"] = 26,
-							["Style"] = "RUF",
-							["Position"] = {
-								["y"] = 0,
-								["x"] = 0,
-								["AnchorTo"] = "CENTER",
 								["AnchorFrom"] = "CENTER",
 								["AnchorFrame"] = "Frame",
 							},
@@ -7562,11 +7536,6 @@ local Alidie = {
 					0.5294106006622314, -- [2]
 					0.9294097423553467, -- [3]
 				},
-				["DEMONHUNTER"] = {
-					0.639214277267456, -- [1]
-					0.188234880566597, -- [2]
-					0.7882335782051086, -- [3]
-				},
 				["ROGUE"] = {
 					0.9999977946281433, -- [1]
 					0.9568606615066528, -- [2]
@@ -7576,11 +7545,6 @@ local Alidie = {
 					0.9999977946281433, -- [1]
 					0.4862734377384186, -- [2]
 					0.03921560198068619, -- [3]
-				},
-				["MONK"] = {
-					nil, -- [1]
-					0.9999977946281433, -- [2]
-					0.588234007358551, -- [3]
 				},
 				["PALADIN"] = {
 					0.9568606615066528, -- [1]
@@ -13844,11 +13808,6 @@ local Raeli = {
 					0.466666666666667, -- [2]
 					0.898039215686275, -- [3]
 				},
-				["DEMONHUNTER"] = {
-					0.6, -- [1]
-					1, -- [2]
-					0, -- [3]
-				},
 				["ROGUE"] = {
 					nil, -- [1]
 					0.847058823529412, -- [2]
@@ -13858,11 +13817,6 @@ local Raeli = {
 					nil, -- [1]
 					0.513725490196078, -- [2]
 					0.196078431372549, -- [3]
-				},
-				["MONK"] = {
-					nil, -- [1]
-					0.662745098039216, -- [2]
-					0.541176470588235, -- [3]
 				},
 				["HUNTER"] = {
 					0.631372549019608, -- [1]

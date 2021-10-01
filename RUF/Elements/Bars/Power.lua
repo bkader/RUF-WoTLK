@@ -8,6 +8,7 @@ function RUF.SetPowerBar(self, unit) -- Mana, Rage, Insanity, Maelstrom etc.
 	local Texture = LSM:Fetch('statusbar', RUF.db.profile.Appearance.Bars.Power.Texture)
 	local Bar = RUF.StatusBarPrototype(nil, self)
 	local Border = CreateFrame('Frame', nil, Bar, BackdropTemplateMixin and 'BackdropTemplate')
+	local Background = Bar.bg
 
 	if RUF.db.profile.unit[unit].Frame.Bars.Power.Position.Anchor == 'TOP' then
 		Bar:SetPoint('TOP', 0, 0)
@@ -43,15 +44,15 @@ function RUF.SetPowerBar(self, unit) -- Mana, Rage, Insanity, Maelstrom etc.
 	-- Background
 	local r, g, b = unpack(RUF.db.profile.Appearance.Bars.Power.Background.CustomColor)
 	local Multiplier = RUF.db.profile.Appearance.Bars.Power.Background.Multiplier
-	Bar.bg:SetTexture(LSM:Fetch('background', 'Solid'))
-	Bar.bg:SetVertexColor(r*Multiplier, g*Multiplier, b*Multiplier, RUF.db.profile.Appearance.Bars.Power.Background.Alpha)
-	Bar.bg:SetAllPoints(Bar)
-	Bar.bg.colorSmooth = false
+	Background:SetTexture(LSM:Fetch('background', 'Solid'))
+	Background:SetVertexColor(r*Multiplier, g*Multiplier, b*Multiplier, RUF.db.profile.Appearance.Bars.Power.Background.Alpha)
+	Background:SetAllPoints(Bar)
+	Background.colorSmooth = false
 
 	-- Register with oUF
 	self.Power = Bar
 	self.Power.Border = Border
-	self.Power.Background = Bar.bg
+	self.Power.Background = Background
 	self.Power.UpdateOptions = RUF.PowerUpdateOptions
 end
 
@@ -72,19 +73,11 @@ function RUF.PowerUpdate(self, event, unit)
 	element.tapped = tapped
 
 	-- Update Statusbar colour
-	if UnitIsUnit('player', unit) and (self.frame == 'player') and (pType == 'INSANITY' or pType == 'MAELSTROM' or pType == 'LUNAR_POWER') then
-		cur, max = UnitPower(unit, 0), UnitPowerMax(unit, 0)
-		r, g, b = RUF:GetBarColor(element, unit, 'Power', 0)
-		element:SetStatusBarColor(r, g, b)
-		a = RUF.db.profile.Appearance.Bars.Class.Background.Alpha
-		bgMult = RUF.db.profile.Appearance.Bars.Class.Background.Multiplier
-	else
-		cur, max = UnitPower(unit), UnitPowerMax(unit)
-		r, g, b = RUF:GetBarColor(element, unit, 'Power')
-		element:SetStatusBarColor(r, g, b)
-		a = RUF.db.profile.Appearance.Bars.Power.Background.Alpha
-		bgMult = RUF.db.profile.Appearance.Bars.Power.Background.Multiplier
-	end
+	cur, max = UnitPower(unit), UnitPowerMax(unit)
+	r, g, b = RUF:GetBarColor(element, unit, 'Power')
+	element:SetStatusBarColor(r, g, b)
+	a = RUF.db.profile.Appearance.Bars.Power.Background.Alpha
+	bgMult = RUF.db.profile.Appearance.Bars.Power.Background.Multiplier
 
 	-- Update background
 	if RUF.db.profile.Appearance.Bars.Power.Background.UseBarColor == false then

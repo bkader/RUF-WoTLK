@@ -341,7 +341,7 @@ local function UNIT_SPELLCAST_CHANNEL_START(self, event, unit, _, spellID)
 
 	local element = self.Cast
 	if not element.Enabled then return end
-	local name, _, texture, startTime, endTime, _, notInterruptible = UnitChannelInfo(unit)
+	local name, _, _, texture, startTime, endTime, _, notInterruptible = UnitChannelInfo(unit)
 	if(not name) then
 		return
 	end
