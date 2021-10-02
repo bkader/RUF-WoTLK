@@ -1,9 +1,9 @@
 local _, ns = ...
 local oUF = ns.oUF
-local LSA = LibStub("SpecializedAbsorbs-1.0", true)
+local SA = LibStub("SpecializedAbsorbs-1.0", true)
 
 local UnitGetTotalAbsorbs = function(unit)
-	return LSA and LSA.UnitTotal(UnitGUID(unit)) or 0
+	return (SA and unit) and SA.UnitTotal(UnitGUID(unit)) or 0
 end
 
 local function Update(self, event, unit)

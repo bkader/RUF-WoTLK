@@ -86,8 +86,8 @@ A default texture will be applied to the Texture widgets if they don't have a te
 local _, ns = ...
 local oUF = ns.oUF
 
-local HealComm = LibStub('LibHealComm-4.0', true)
-local LSA = LibStub("SpecializedAbsorbs-1.0")
+local HealComm = LibStub('LibHealComm-4.0')
+local SA = LibStub("SpecializedAbsorbs-1.0")
 
 
 local function Update(self, event, unit)
@@ -110,7 +110,7 @@ local function Update(self, event, unit)
 	myIncomingHeal = (HealComm:GetHealAmount(unitGUID, HealComm.ALL_HEALS, GetTime() + lookAhead, UnitGUID('player')) or 0) * (HealComm:GetHealModifier(unitGUID) or 1) or 0
 	otherIncomingHeal = (HealComm:GetHealAmount(unitGUID, HealComm.ALL_HEALS, GetTime() + lookAhead) or 0) * (HealComm:GetHealModifier(unitGUID) or 1) or 0
 	otherIncomingHeal = otherIncomingHeal - myIncomingHeal
-	absorb = LSA.UnitTotal(UnitGUID(unit))
+	absorb = SA.UnitTotal(UnitGUID(unit))
 	healAbsorb = 0
 	health, maxHealth = UnitHealth(unit), UnitHealthMax(unit)
 	allIncomingHeal = myIncomingHeal + otherIncomingHeal
@@ -233,6 +233,12 @@ local function HealCommUpdate(self, event, casterGUID, spellID, type, endTime, .
 	end
 end
 
+local function AbsorbUpdate(self, event, ...)
+	if ... == UnitGUID(self.unit) then
+		Path(self, event, self.unit)
+	end
+end
+
 local function ForceUpdate(element)
 	return Path(element.__owner, 'ForceUpdate', element.__owner.unit)
 end
@@ -251,12 +257,16 @@ local function Enable(self)
 
 		self:RegisterEvent('UNIT_MAXHEALTH', Path)
 
-		local HealComm = LibStub('LibHealComm-4.0', true)
+		HealComm = HealComm or LibStub('LibHealComm-4.0')
 		self.HealCommUpdate = HealCommUpdate
 		HealComm.RegisterCallback(self, 'HealComm_HealStarted', 'HealCommUpdate')
 		HealComm.RegisterCallback(self, 'HealComm_HealUpdated', 'HealCommUpdate')
 		HealComm.RegisterCallback(self, 'HealComm_HealDelayed', 'HealCommUpdate')
 		HealComm.RegisterCallback(self, 'HealComm_HealStopped', 'HealCommUpdate')
+
+		SA = SA or LibStub('SpecializedAbsorbs-1.0')
+		self.AbsorbUpdate = AbsorbUpdate
+		SA.RegisterUnitCallbacks(self, "AbsorbUpdate")
 
 		if(not element.maxOverflow) then
 			element.maxOverflow = 1.05
@@ -339,11 +349,14 @@ local function Disable(self)
 		self:UnregisterEvent('UNIT_HEALTH', Path)
 		self:UnregisterEvent('UNIT_MAXHEALTH', Path)
 
-		local HealComm = LibStub('LibHealComm-4.0', true)
+		HealComm = HealComm or LibStub('LibHealComm-4.0')
 		HealComm.UnregisterCallback(self, 'HealComm_HealStarted')
 		HealComm.UnregisterCallback(self, 'HealComm_HealUpdated')
 		HealComm.UnregisterCallback(self, 'HealComm_HealDelayed')
 		HealComm.UnregisterCallback(self, 'HealComm_HealStopped')
+
+		SA = SA or LibStub('SpecializedAbsorbs-1.0')
+		SA.UnregisterAllCallbacks(self)
 	end
 end
 

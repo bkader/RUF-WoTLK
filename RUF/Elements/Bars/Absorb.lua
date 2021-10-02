@@ -1,12 +1,12 @@
 assert(RUF, "RUF not found!")
 local RUF = RUF
-local LSA = LibStub("SpecializedAbsorbs-1.0")
+local SA = LibStub("SpecializedAbsorbs-1.0", true)
 local LSM = LibStub('LibSharedMedia-3.0')
 local _, ns = ...
 local oUF = ns.oUF
 
 local UnitGetTotalAbsorbs = function(unit)
-	return LSA.UnitTotal(UnitGUID(unit))
+	return (SA and unit) and SA.UnitTotal(UnitGUID(unit)) or 0
 end
 
 function RUF.SetAbsorbBar(self, unit)

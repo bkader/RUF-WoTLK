@@ -44,11 +44,6 @@ function RUF_Options.Bars()
 			name = LocalisedBar[i],
 			type = 'group',
 			order = i,
-			hidden = function()
-				if RUF.Client ~= 1 then
-					if i == 4 then return true end
-				end
-			end,
 			desc = function()
 				if i == 3 then
 					if PowerDesc[uClass] then

@@ -17,10 +17,7 @@ function RUF:PopUp(name, message, button1value, button2value, acceptfunc)
 		text = message,
 		button1 = button1value,
 		button2 = button2value,
-		OnAccept = acceptfunc, --function()
-			--GreetTheWorld()
-			--ReloadUI()
-		--end,
+		OnAccept = acceptfunc,
 		timeout = 0,
 		whileDead = true,
 		hideOnEscape = false,
