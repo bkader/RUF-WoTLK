@@ -171,22 +171,10 @@ function RUF.SetBarLocation(self, unit)
 				table.insert(barsAtBottom, 'Runes')
 			end
 		end
-		if self.Stagger and profileReference.Class.Enabled == true then
-			if profileReference.Class.Position.Anchor == 'TOP' then
-				table.insert(barsAtTop, 'Stagger')
-			else
-				table.insert(barsAtBottom, 'Stagger')
-			end
-		end
 
 		if profileReference.Power.Enabled == 1 then
 			if RUF.db.global.TestMode == true then
 				powerShouldShow = true
-			end
-			if pType == 'INSANITY' or pType == 'MAELSTROM' or pType == 'LUNAR_POWER' then
-				if UnitPower(unit, 0) > 0 then
-					powerShouldShow = true
-				end
 			end
 			if UnitPower(unit) > 0 then
 				powerShouldShow = true
@@ -214,8 +202,6 @@ function RUF.SetBarLocation(self, unit)
 				element = self.FakeClassPower
 			elseif barsAtTop[i] == 'Runes' then
 				element = self.Runes.Holder
-			elseif barsAtTop[i] == 'Stagger' then
-				element = self.Stagger
 			elseif barsAtTop[i] == 'Power' then
 				profileName = 'Power'
 				element = self.Power
@@ -242,8 +228,6 @@ function RUF.SetBarLocation(self, unit)
 				element = self.FakeClassPower
 			elseif barsAtBottom[i] == 'Runes' then
 				element = self.Runes.Holder
-			elseif barsAtBottom[i] == 'Stagger' then
-				element = self.Stagger
 			elseif barsAtBottom[i] == 'Power' then
 				profileName = 'Power'
 				element = self.Power

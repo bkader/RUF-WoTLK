@@ -12,10 +12,6 @@ local cfg = {
 			},
 		},
 	},
-	char = {
-		Nickname = "",
-		NickCache = {},
-	},
 	profile = {
 		Appearance = {
 			Border = {
@@ -326,9 +322,6 @@ local cfg = {
 					[50] = {180/255,0,20/255}, -- Blood Runes
 					[51] = {60/255,205/255,1}, -- Frost Runes
 					[52] = {145/255,190/255,15/255}, -- Unholy Runes
-					[75] = {132/255,1,132/255}, -- Stagger Low (Green)
-					[76] = {1, 250/255, 184/255}, -- Stagger Medium (Yellow)
-					[77] = {1, 107/255, 107/255}, -- Stagger High (Red)
 				},
 				ReactionColors = {
 					[1] = {230/255,77/255,56/255}, -- Hated
@@ -541,9 +534,6 @@ local cfg = {
 						},
 						PowerType = false,
 						Reaction = true,
-					},
-					Nickname = {
-						Enabled = true,
 					},
 				},
 				CurPowerPerc = {

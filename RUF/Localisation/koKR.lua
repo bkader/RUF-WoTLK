@@ -157,7 +157,7 @@ L["CurPower"] = "자원: 현재"
 L["CurPowerPerc"] = "자원: 현재 - % < 100"
 L["Current Version: %s"] = "현재 버전: %s"
 L["Curse"] = "저주"
-L["Curseforge"] = true
+L["GitHub"] = "GitHub"
 L["Custom Width"] = "사용자정의 너비"
 --[[Translation missing --]]
 L["Damaged alpha"] = "Damaged alpha"
@@ -183,8 +183,6 @@ L["Duration"] = "지속시간"
 L["Easy"] = "Easy"
 --[[Translation missing --]]
 L["Elipsis"] = "Elipsis"
---[[Translation missing --]]
-L["Enable Nicknames"] = "Enable Nicknames"
 --[[Translation missing --]]
 L["Enable player damaged alpha"] = "Enable player damaged alpha"
 L["Enable targeting alpha"] = "대상 선택 투명도 사용"
@@ -294,7 +292,6 @@ L["Monochrome"] = "단색화"
 L["Monochrome Outline"] = "단색 외곽선"
 L["Monochrome Thick Outline"] = "단색 두꺼운 외곽선"
 L["Name"] = "상태: 이름"
-L["Nickname"] = "닉네임"
 L["None"] = "없음"
 L["Normal"] = "표준"
 L["Not Interruptible Color"] = "차단 불가 색상"
@@ -418,12 +415,6 @@ L["Sorting"] = "정렬"
 L["Sound"] = "소리"
 --[[Translation missing --]]
 L["Spell Name"] = "Spell Name"
---[[Translation missing --]]
-L["Stagger - High"] = "Stagger - High"
---[[Translation missing --]]
-L["Stagger - Low"] = "Stagger - Low"
---[[Translation missing --]]
-L["Stagger - Medium"] = "Stagger - Medium"
 L["Standard"] = "보통"
 --[[Translation missing --]]
 L["Starts the cooldown spirals as empty, filling up as the aura runs out."] = "Starts the cooldown spirals as empty, filling up as the aura runs out."
@@ -450,13 +441,10 @@ L["The unit frame border that glows when the unit has a dispellable buff or debu
 L["These settings affect all frames."] = "이 설정은 모든 프레임에 적용됩니다."
 L["Thick Outline"] = "두꺼운 외곽선"
 L["Thickness of the highlight."] = "강조의 두께입니다."
-L["This syncs with other addons that support NickTag-1.0 such as Details!"] = "이것은 Details!와 같이 NickTag-1.0을 지원하는 다른 애드온과 동기화됩니다."
 --[[Translation missing --]]
 L["Time"] = "Time"
 L["Time Remaining"] = "남은 시간"
 L["Toggle on to force text element to be set to a custom width. If the text is longer than the width, truncation will occur."] = "문자 요소가 사용자정의 너비로 설정되도록 설정합니다. 만약 문자가 너비보다 길면 잘립니다."
---[[Translation missing --]]
-L["Toggles the display of Nicknames from players with addons that use NickTag-1.0 such as Details!"] = "Toggles the display of Nicknames from players with addons that use NickTag-1.0 such as Details!"
 L["Top"] = "상단"
 L["Top-left"] = "왼쪽 상단"
 L["Top-right"] = "오른쪽 상단"
@@ -506,5 +494,4 @@ L["X Offset"] = "X 좌표"
 L["X Spacing"] = "X 간격"
 L["Y Offset"] = "Y 좌표"
 L["Y Spacing"] = "Y 간격"
-L["You have the %s version of RUF installed, but you are playing %s. Please install a compatible version."] = "당신은 RUF %s 버전이 설치되어 있습니다. 그러나 당신은 %s에서 사용중 입니다. 호환되는 버전을 설치하시길 바랍니다."
 L["Z Offset"] = "Z 좌표"

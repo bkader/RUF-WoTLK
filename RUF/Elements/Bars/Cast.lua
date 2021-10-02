@@ -7,17 +7,6 @@ local oUF = ns.oUF
 local UnitCastingInfo = UnitCastingInfo
 local UnitChannelInfo = UnitChannelInfo
 
-local LibClassicCasterino = LibStub('LibClassicCasterino', true)
-if LibClassicCasterino then
-	UnitCastingInfo = function(unit)
-		return LibClassicCasterino:UnitCastingInfo(unit)
-	end
-
-	UnitChannelInfo = function(unit)
-		return LibClassicCasterino:UnitChannelInfo(unit)
-	end
-end
-
 local function onUpdate(self, elapsed)
 	if self.Enabled ~= true then self:Hide() return end
 	elapsed = elapsed or 0
@@ -187,7 +176,7 @@ function RUF.SetCastBar(self, unit)
 	local unitProfile = RUF.db.profile.unit[unit].Frame.Bars.Cast
 	local texture = LSM:Fetch('statusbar', profileReference.Texture)
 	local Bar = RUF.StatusBarPrototype(nil, self)
-	local Border = CreateFrame('Frame', nil, Bar, BackdropTemplateMixin and 'BackdropTemplate')
+	local Border = CreateFrame('Frame', nil, Bar)
 	local Background = Bar.bg
 
 	-- Bar

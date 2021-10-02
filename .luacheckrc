@@ -42133,4 +42133,5 @@ globals = {
 	"ClassTrainerSkillRequirements",
 	"ClassTrainerSubSkillName",
 	"ClassTrainerTrainButtonText",
+	"BackdropTemplateMixin",
 }

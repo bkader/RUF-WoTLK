@@ -185,7 +185,7 @@ L["Current Version: %s"] = "Current Version: %s"
 --[[Translation missing --]]
 L["Curse"] = "Curse"
 --[[Translation missing --]]
-L["Curseforge"] = "Curseforge"
+L["GitHub"] = "GitHub"
 --[[Translation missing --]]
 L["Custom Width"] = "Custom Width"
 --[[Translation missing --]]
@@ -212,8 +212,6 @@ L["Duration"] = "Dauer"
 L["Easy"] = "Einfach"
 --[[Translation missing --]]
 L["Elipsis"] = "Elipsis"
---[[Translation missing --]]
-L["Enable Nicknames"] = "Enable Nicknames"
 --[[Translation missing --]]
 L["Enable player damaged alpha"] = "Enable player damaged alpha"
 --[[Translation missing --]]
@@ -341,7 +339,6 @@ L["Monochrome"] = "Einfarbig"
 L["Monochrome Outline"] = "Einfarbig Outline"
 L["Monochrome Thick Outline"] = "Einfarbig Thick Outline"
 L["Name"] = true
-L["Nickname"] = true
 L["None"] = "Nichts"
 L["Normal"] = true
 --[[Translation missing --]]
@@ -489,9 +486,6 @@ L["Sorting"] = "Sortierung"
 L["Sound"] = "Sound"
 --[[Translation missing --]]
 L["Spell Name"] = "Spell Name"
-L["Stagger - High"] = "Stagger - Hoch"
-L["Stagger - Low"] = "Stagger - Niedrig"
-L["Stagger - Medium"] = "Stagger - Mittel"
 L["Standard"] = true
 --[[Translation missing --]]
 L["Starts the cooldown spirals as empty, filling up as the aura runs out."] = "Starts the cooldown spirals as empty, filling up as the aura runs out."
@@ -524,14 +518,10 @@ L["Thick Outline"] = true
 --[[Translation missing --]]
 L["Thickness of the highlight."] = "Thickness of the highlight."
 --[[Translation missing --]]
-L["This syncs with other addons that support NickTag-1.0 such as Details!"] = "This syncs with other addons that support NickTag-1.0 such as Details!"
---[[Translation missing --]]
 L["Time"] = "Time"
 L["Time Remaining"] = "Verbleibende Zeit"
 --[[Translation missing --]]
 L["Toggle on to force text element to be set to a custom width. If the text is longer than the width, truncation will occur."] = "Toggle on to force text element to be set to a custom width. If the text is longer than the width, truncation will occur."
---[[Translation missing --]]
-L["Toggles the display of Nicknames from players with addons that use NickTag-1.0 such as Details!"] = "Toggles the display of Nicknames from players with addons that use NickTag-1.0 such as Details!"
 L["Top"] = "Oben"
 L["Top-left"] = "Oben-Links"
 L["Top-right"] = "Oben-Rechts"
@@ -584,7 +574,5 @@ L["X Offset"] = true
 L["X Spacing"] = "X Abstand"
 L["Y Offset"] = true
 L["Y Spacing"] = "Y Abstand"
---[[Translation missing --]]
-L["You have the %s version of RUF installed, but you are playing %s. Please install a compatible version."] = "You have the %s version of RUF installed, but you are playing %s. Please install a compatible version."
 --[[Translation missing --]]
 L["Z Offset"] = "Z Offset"

@@ -123,39 +123,6 @@ local function UnitGroup(singleFrame, groupFrame, header)
 				childGroups = 'tab',
 				order = 0,
 				args = {
-					nickName = {
-						type = 'input',
-						name = L["Nickname"],
-						desc = L["This syncs with other addons that support NickTag-1.0 such as Details!"],
-						width = 'full',
-						hidden = function() return (profileName ~= 'player') end,
-						order = 0.0,
-						multiline = false,
-						validate = function(info, value)
-							local trimString = string.match(value,"^%s*(.-)%s*$")
-							local valid = RUF:NickValidator(trimString)
-							if valid == true then return true end
-							if valid == 'Length' then return L["Nickname cannot be more than 14 characters long."] end
-							if valid == 'Letters' then return L["Nickname can only contain letters and spaces."] end
-							if valid == 'Spaces' then return L["Nickname cannot have repeating spaces or more than two total spaces."] end
-						end,
-						get = function(info)
-							return RUF.db.char.Nickname
-						end,
-						set = function(info, value)
-							local trimString = string.match(value,"^%s*(.-)%s*$")
-							local toStore = trimString
-							if string.len(trimString) < 1 then
-								toStore = UnitName('Player')
-							end
-							RUF:SetNickname(toStore)
-							if toStore ~= UnitName('Player') then
-								RUF.db.char.Nickname = toStore
-							else
-								RUF.db.char.Nickname = ""
-							end
-						end,
-					},
 					enabled = {
 						name = function()
 							if RUF.db.profile.unit[profileName].Enabled == true then
@@ -768,20 +735,10 @@ local function BarSettings(singleFrame, groupFrame, header)
 				type = 'select',
 				order = 1,
 				values = function()
-					local table = {}
 					if i == 2 then
-						table = {
-							['STANDARD'] = L["Standard"],
-							['REVERSE'] = L["Reverse"],
-						}
-					else
-						table = {
-							['STANDARD'] = L["Standard"],
-							['REVERSE'] = L["Reverse"],
-							['CENTER'] = L["Center"],
-						}
+						return {['STANDARD'] = L["Standard"], ['REVERSE'] = L["Reverse"]}
 					end
-					return table
+					return {['STANDARD'] = L["Standard"], ['REVERSE'] = L["Reverse"], ['CENTER'] = L["Center"]}
 				end,
 				get = function(info)
 					return RUF.db.profile.unit[profileName].Frame.Bars[barList[i]].Fill
@@ -2453,14 +2410,7 @@ local function CastBarSettings(singleFrame, groupFrame, header)
 				name = L["Fill Type"],
 				type = 'select',
 				order = 1.01,
-				values = function()
-					local table = {
-						['STANDARD'] = L["Standard"],
-						['REVERSE'] = L["Reverse"],
-						['CENTER'] = L["Center"],
-					}
-					return table
-				end,
+				values = {['STANDARD'] = L["Standard"], ['REVERSE'] = L["Reverse"], ['CENTER'] = L["Center"]},
 				get = function(info)
 					return RUF.db.profile.unit[profileName].Frame.Bars.Cast.Fill
 				end,

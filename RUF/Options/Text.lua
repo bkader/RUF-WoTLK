@@ -271,19 +271,6 @@ function RUF_Options.Texts()
 						RUF.db.profile.Appearance.Text.Name.CharLimit = value
 					end,
 				},
-				enableNicknames = {
-					name = L["Enable Nicknames"],
-					desc = L["Toggles the display of Nicknames from players with addons that use NickTag-1.0 such as Details!"],
-					type = 'toggle',
-					order = 10.03,
-					hidden = function() return TagList[i] ~= 'Name' end,
-					get = function(info)
-						return RUF.db.profile.Appearance.Text.Name.Nickname.Enabled
-					end,
-					set = function(info, value)
-						RUF.db.profile.Appearance.Text.Name.Nickname.Enabled = value
-					end,
-				},
 				abbreviateAboveCharacterLimit = {
 					name = L["Abbreviate Style"],
 					desc = L["Trim simply removes any letters above the limit.\nElipsis adds an elipsis to the end of the trimmed name to signify it has been cut short.\nAbbreviate turns any words that would be trimmed into an initial.\nInitialism turns the entire name into initials if it would be trimmed."],

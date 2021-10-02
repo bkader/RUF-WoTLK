@@ -917,21 +917,21 @@ function RUF_Options.MainOptions()
 						type = 'description',
 						order = 1,
 					},
-					Curseforge_Header = {
-						name = '|cff91BE0F'..L["Curseforge"]..'|r',
+					GitHub_Header = {
+						name = '|cff91BE0F'..L["GitHub"]..'|r',
 						type = 'description',
 						order = 50,
 						fontSize = 'large',
 					},
-					Curseforge_URL = {
+					GitHub_URL = {
 						name = L["URL"],
 						type = 'input',
 						order = 50.2,
 						width = 'full',
-						get = function() return 'https://wow.curseforge.com/projects/ruf/issues' end,
-						set = function() return 'https://wow.curseforge.com/projects/ruf/issues' end,
+						get = function() return 'https://github.com/bkader/RUF-WoTLK' end,
+						set = function() return 'https://github.com/bkader/RUF-WoTLK' end,
 					},
-					Spacer_OnlineCommunity = {
+					Spacer_OnlineCommunity1 = {
 						name = '\n\n',
 						type = 'description',
 						order = 75,
@@ -947,8 +947,27 @@ function RUF_Options.MainOptions()
 						type = 'input',
 						order = 100.2,
 						width = 'full',
-						get = function() return 'https://discord.gg/99QZ6sd' end,
-						set = function() return 'https://discord.gg/99QZ6sd' end,
+						get = function() return 'https://discord.gg/a8z5CyS3eW' end,
+						set = function() return 'https://discord.gg/a8z5CyS3eW' end,
+					},
+					Spacer_OnlineCommunity2 = {
+						name = '\n\n',
+						type = 'description',
+						order = 125,
+					},
+					Donate_Header = {
+						name = '|cffffa500Donation|r',
+						type = 'description',
+						order = 150,
+						fontSize = 'large',
+					},
+					Donate_URL = {
+						name = "PayPal/Paysera Email",
+						type = 'input',
+						order = 150.2,
+						width = 'full',
+						get = function() return 'bkader@mail.com' end,
+						set = function() return 'bkader@mail.com' end,
 					},
 				},
 			},

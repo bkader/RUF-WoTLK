@@ -1,14 +1,11 @@
-local RUF = LibStub("AceAddon-3.0"):NewAddon("RUF", "LibCompat-1.0", "AceConsole-3.0", "AceComm-3.0", "AceEvent-3.0", "AceSerializer-3.0", "AceTimer-3.0", "NickTag-1.0")
+local RUF = LibStub("AceAddon-3.0"):NewAddon("RUF", "LibCompat-1.0", "AceConsole-3.0", "AceComm-3.0", "AceEvent-3.0", "AceSerializer-3.0", "AceTimer-3.0")
 _G.RUF = RUF
 local _, ns = ...
 local oUF = ns.oUF
 local L = LibStub('AceLocale-3.0'):GetLocale('RUF')
 local ACD = LibStub('AceConfigDialog-3.0')
 local LSM = LibStub('LibSharedMedia-3.0')
-local includedLayouts = {
-	"Alidie's Layout",
-	"Raeli's Layout",
-}
+local includedLayouts = {"Alidie's Layout", "Raeli's Layout",}
 
 RUF.UIParent = CreateFrame("Frame", "RUFParent", UIParent)
 RUF.UIParent:SetFrameLevel(UIParent:GetFrameLevel())
@@ -51,9 +48,6 @@ RUF.frameList.headers = headers
 
 function RUF:OnInitialize()
 	RUF.Variant = variant or 1
-	if variant ~= WOW_PROJECT_ID then
-		return
-	end
 
 	self.db = LibStub('AceDB-3.0'):New('RUFDB', RUF.Layout.cfg, true) -- Setup Saved Variables
 
@@ -97,16 +91,16 @@ function RUF:OnInitialize()
 	--project-revision
 	RUF.db.global.Version = string.match(GetAddOnMetadata('RUF','Version'),'%d+')
 
-	if not RUFDB.profiles then
+	if not self.db.profiles then
 		RUF.FirstRun = true
-		RUFDB.profiles = {}
+		self.db.profiles = {}
 		for i = 1,#includedLayouts do
-			RUFDB.profiles[includedLayouts[i]] = RUF.Layout[includedLayouts[i]]
+			self.db.profiles[includedLayouts[i]] = RUF.Layout[includedLayouts[i]]
 		end
 	else
 		for i = 1,#includedLayouts do
-			if not RUFDB.profiles[includedLayouts[i]] then
-				RUFDB.profiles[includedLayouts[i]] = RUF.Layout[includedLayouts[i]]
+			if not self.db.profiles[includedLayouts[i]] then
+				self.db.profiles[includedLayouts[i]] = RUF.Layout[includedLayouts[i]]
 			end
 		end
 	end

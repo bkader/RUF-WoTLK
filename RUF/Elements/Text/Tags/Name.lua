@@ -11,29 +11,11 @@ local events = oUF.TagEvents or oUF.Tags.Events
 tags['RUF:Name'] = function(unit, realUnit)
 	if not UnitName(unit) then return end
 	local name = UnitName(unit)
-	if RUF.db.profile.Appearance.Text.Name.Nickname.Enabled then
-		local nickName = RUF:GetNickname(UnitName(unit), false, true)
-		if nickName then
-			name = nickName
-		end
-	end
 	if RUF.db.profile.Appearance.Text.Name.Case == 1 then
 		name = string.upper(name)
 	elseif RUF.db.profile.Appearance.Text.Name.Case == 2 then
 		name = string.lower(name)
 	end
-
-
-	--[[local player = string.upper(UnitName('player'))
-	if RUF.db.char.NickName and string.upper(name) == player and string.len(RUF.db.char.NickName) > 0 then
-		if RUF.db.profile.Appearance.Text.Name.Case == 1 then
-			name = string.upper(RUF.db.char.NickName)
-		elseif RUF.db.profile.Appearance.Text.Name.Case == 2 then
-			name = string.lower(RUF.db.char.NickName)
-		else
-			name = RUF.db.char.NickName
-		end
-	end]]--
 
 	local cur, max = UnitHealth(unit), UnitHealthMax(unit)
 	local r,g,b = RUF:ReturnTextColors(unit, 'Name', cur, max)

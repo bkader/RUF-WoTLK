@@ -90,17 +90,6 @@ local GetNetStats = GetNetStats
 local GetTime = GetTime
 local UnitCastingInfo = UnitCastingInfo
 local UnitChannelInfo = UnitChannelInfo
-local LibClassicCasterino = LibStub('LibClassicCasterino', true)
-
-if LibClassicCasterino then
-	UnitCastingInfo = function(unit)
-		return LibClassicCasterino:UnitCastingInfo(unit)
-	end
-
-	UnitChannelInfo = function(unit)
-		return LibClassicCasterino:UnitChannelInfo(unit)
-	end
-end
 
 local function updateSafeZone(self)
 	local safeZone = self.SafeZone
@@ -569,33 +558,14 @@ local function Enable(self, unit)
 		element.ForceUpdate = ForceUpdate
 
 		if(not (unit and unit:match'%wtarget$')) then
-			if unit ~= 'player' and LibClassicCasterino then
-				self['UNIT_SPELLCAST_START'] = UNIT_SPELLCAST_START
-				self['UNIT_SPELLCAST_DELAYED'] = UNIT_SPELLCAST_DELAYED
-				self['UNIT_SPELLCAST_STOP'] = UNIT_SPELLCAST_STOP
-				self['UNIT_SPELLCAST_FAILED'] = UNIT_SPELLCAST_FAILED
-				self['UNIT_SPELLCAST_INTERRUPTED'] = UNIT_SPELLCAST_INTERRUPTED
-				self['UNIT_SPELLCAST_CHANNEL_START'] = UNIT_SPELLCAST_CHANNEL_START
-				self['UNIT_SPELLCAST_CHANNEL_UPDATE'] = UNIT_SPELLCAST_CHANNEL_UPDATE
-				self['UNIT_SPELLCAST_CHANNEL_STOP'] = UNIT_SPELLCAST_CHANNEL_STOP
-				LibClassicCasterino.RegisterCallback(self, 'UNIT_SPELLCAST_START')
-				LibClassicCasterino.RegisterCallback(self, 'UNIT_SPELLCAST_DELAYED')
-				LibClassicCasterino.RegisterCallback(self, 'UNIT_SPELLCAST_STOP')
-				LibClassicCasterino.RegisterCallback(self, 'UNIT_SPELLCAST_FAILED')
-				LibClassicCasterino.RegisterCallback(self, 'UNIT_SPELLCAST_INTERRUPTED')
-				LibClassicCasterino.RegisterCallback(self, 'UNIT_SPELLCAST_CHANNEL_START')
-				LibClassicCasterino.RegisterCallback(self, 'UNIT_SPELLCAST_CHANNEL_UPDATE')
-				LibClassicCasterino.RegisterCallback(self, 'UNIT_SPELLCAST_CHANNEL_STOP')
-			else
-				self:RegisterEvent('UNIT_SPELLCAST_START', UNIT_SPELLCAST_START)
-				self:RegisterEvent('UNIT_SPELLCAST_FAILED', UNIT_SPELLCAST_FAILED)
-				self:RegisterEvent('UNIT_SPELLCAST_STOP', UNIT_SPELLCAST_STOP)
-				self:RegisterEvent('UNIT_SPELLCAST_INTERRUPTED', UNIT_SPELLCAST_INTERRUPTED)
-				self:RegisterEvent('UNIT_SPELLCAST_DELAYED', UNIT_SPELLCAST_DELAYED)
-				self:RegisterEvent('UNIT_SPELLCAST_CHANNEL_START', UNIT_SPELLCAST_CHANNEL_START)
-				self:RegisterEvent('UNIT_SPELLCAST_CHANNEL_UPDATE', UNIT_SPELLCAST_CHANNEL_UPDATE)
-				self:RegisterEvent('UNIT_SPELLCAST_CHANNEL_STOP', UNIT_SPELLCAST_CHANNEL_STOP)
-			end
+			self:RegisterEvent('UNIT_SPELLCAST_START', UNIT_SPELLCAST_START)
+			self:RegisterEvent('UNIT_SPELLCAST_FAILED', UNIT_SPELLCAST_FAILED)
+			self:RegisterEvent('UNIT_SPELLCAST_STOP', UNIT_SPELLCAST_STOP)
+			self:RegisterEvent('UNIT_SPELLCAST_INTERRUPTED', UNIT_SPELLCAST_INTERRUPTED)
+			self:RegisterEvent('UNIT_SPELLCAST_DELAYED', UNIT_SPELLCAST_DELAYED)
+			self:RegisterEvent('UNIT_SPELLCAST_CHANNEL_START', UNIT_SPELLCAST_CHANNEL_START)
+			self:RegisterEvent('UNIT_SPELLCAST_CHANNEL_UPDATE', UNIT_SPELLCAST_CHANNEL_UPDATE)
+			self:RegisterEvent('UNIT_SPELLCAST_CHANNEL_STOP', UNIT_SPELLCAST_CHANNEL_STOP)
 		end
 
 		element.horizontal = element:GetOrientation() == 'HORIZONTAL'
@@ -639,33 +609,14 @@ local function Disable(self)
 	local element = self.Cast
 	if(element) then
 		element:Hide()
-		if LibClassicCasterino then
-			LibClassicCasterino.UnregisterCallback(self, 'UNIT_SPELLCAST_START')
-			LibClassicCasterino.UnregisterCallback(self, 'UNIT_SPELLCAST_DELAYED')
-			LibClassicCasterino.UnregisterCallback(self, 'UNIT_SPELLCAST_STOP')
-			LibClassicCasterino.UnregisterCallback(self, 'UNIT_SPELLCAST_FAILED')
-			LibClassicCasterino.UnregisterCallback(self, 'UNIT_SPELLCAST_INTERRUPTED')
-			LibClassicCasterino.UnregisterCallback(self, 'UNIT_SPELLCAST_CHANNEL_START')
-			LibClassicCasterino.UnregisterCallback(self, 'UNIT_SPELLCAST_CHANNEL_UPDATE')
-			LibClassicCasterino.UnregisterCallback(self, 'UNIT_SPELLCAST_CHANNEL_STOP')
-			--[[self['UNIT_SPELLCAST_START'] = nil
-			self['UNIT_SPELLCAST_DELAYED'] = nil
-			self['UNIT_SPELLCAST_STOP'] = nil
-			self['UNIT_SPELLCAST_FAILED'] = nil
-			self['UNIT_SPELLCAST_INTERRUPTED'] = nil
-			self['UNIT_SPELLCAST_CHANNEL_START'] = nil
-			self['UNIT_SPELLCAST_CHANNEL_UPDATE'] = nil
-			self['UNIT_SPELLCAST_CHANNEL_STOP'] = nil]]--
-		else
-			self:UnregisterEvent('UNIT_SPELLCAST_START', UNIT_SPELLCAST_START)
-			self:UnregisterEvent('UNIT_SPELLCAST_FAILED', UNIT_SPELLCAST_FAILED)
-			self:UnregisterEvent('UNIT_SPELLCAST_STOP', UNIT_SPELLCAST_STOP)
-			self:UnregisterEvent('UNIT_SPELLCAST_INTERRUPTED', UNIT_SPELLCAST_INTERRUPTED)
-			self:UnregisterEvent('UNIT_SPELLCAST_DELAYED', UNIT_SPELLCAST_DELAYED)
-			self:UnregisterEvent('UNIT_SPELLCAST_CHANNEL_START', UNIT_SPELLCAST_CHANNEL_START)
-			self:UnregisterEvent('UNIT_SPELLCAST_CHANNEL_UPDATE', UNIT_SPELLCAST_CHANNEL_UPDATE)
-			self:UnregisterEvent('UNIT_SPELLCAST_CHANNEL_STOP', UNIT_SPELLCAST_CHANNEL_STOP)
-		end
+		self:UnregisterEvent('UNIT_SPELLCAST_START', UNIT_SPELLCAST_START)
+		self:UnregisterEvent('UNIT_SPELLCAST_FAILED', UNIT_SPELLCAST_FAILED)
+		self:UnregisterEvent('UNIT_SPELLCAST_STOP', UNIT_SPELLCAST_STOP)
+		self:UnregisterEvent('UNIT_SPELLCAST_INTERRUPTED', UNIT_SPELLCAST_INTERRUPTED)
+		self:UnregisterEvent('UNIT_SPELLCAST_DELAYED', UNIT_SPELLCAST_DELAYED)
+		self:UnregisterEvent('UNIT_SPELLCAST_CHANNEL_START', UNIT_SPELLCAST_CHANNEL_START)
+		self:UnregisterEvent('UNIT_SPELLCAST_CHANNEL_UPDATE', UNIT_SPELLCAST_CHANNEL_UPDATE)
+		self:UnregisterEvent('UNIT_SPELLCAST_CHANNEL_STOP', UNIT_SPELLCAST_CHANNEL_STOP)
 
 		element:SetScript('OnUpdate', nil)
 	end

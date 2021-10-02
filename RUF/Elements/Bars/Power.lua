@@ -4,7 +4,7 @@ local LSM = LibStub('LibSharedMedia-3.0')
 local _, ns = ...
 local oUF = ns.oUF
 
-function RUF.SetPowerBar(self, unit) -- Mana, Rage, Insanity, Maelstrom etc.
+function RUF.SetPowerBar(self, unit) -- Mana, Rage etc.
 	local Texture = LSM:Fetch('statusbar', RUF.db.profile.Appearance.Bars.Power.Texture)
 	local Bar = RUF.StatusBarPrototype(nil, self)
 	local Border = CreateFrame('Frame', nil, Bar, BackdropTemplateMixin and 'BackdropTemplate')

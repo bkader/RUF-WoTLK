@@ -38,9 +38,6 @@ local function hook(frame)
 	if frame.FakeClassPower and frame.FakeClassPower.Smooth then
 		frame:SmoothBar(frame.FakeClassPower)
 	end
-	if frame.Stagger and frame.Stagger.Smooth then
-		frame:SmoothBar(frame.Stagger)
-	end
 	if frame.Absorb and frame.Absorb.Smooth then
 		frame:SmoothBar(frame.Absorb)
 	end

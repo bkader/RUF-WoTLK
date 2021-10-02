@@ -1,75 +1,65 @@
 assert(RUF, "RUF not found!")
 local RUF = RUF
-local LSM = LibStub('LibSharedMedia-3.0')
+local LSM = LibStub("LibSharedMedia-3.0")
 local _, ns = ...
 local oUF = ns.oUF
-local _, PlayerClass
+local PlayerClass
 
 local IsInGroup, IsInRaid = RUF.IsInGroup, RUF.IsInRaid
 local GetSpecialization = RUF.GetSpecialization
 
-local BuffDispel = {-- PURGES
-	['DEATHKNIGHT'] = {
-		[1] = {'None'},
-		[2] = {'None'},
-		[3] = {'None'},
-		[10] = {'None'},
+local BuffDispel = { -- PURGES
+	DEATHKNIGHT = {
+		[1] = {"None"},
+		[2] = {"None"},
+		[3] = {"None"}
 	},
-	['DRUID'] = {
-		[1] = {'Enrage'},
-		[2] = {'Enrage'},
-		[3] = {'Enrage'},
-		[4] = {'Enrage'},
-		[10] = {'None'},
+	DRUID = {
+		[1] = {"Enrage"},
+		[2] = {"Enrage"},
+		[3] = {"Enrage"},
+		[4] = {"Enrage"}
 	},
-	['HUNTER'] = {
-		[1] = {'Enrage'},
-		[2] = {'Enrage'},
-		[3] = {'Enrage'},
-		[10] = {'Enrage'},
+	HUNTER = {
+		[1] = {"Enrage"},
+		[2] = {"Enrage"},
+		[3] = {"Enrage"}
 	},
-	['MAGE'] = {
-		[1] = {'Magic'},
-		[2] = {'Magic'},
-		[3] = {'Magic'},
-		[10] = {'None'},
+	MAGE = {
+		[1] = {"Magic"},
+		[2] = {"Magic"},
+		[3] = {"Magic"}
 	},
-	['PALADIN'] = {
-		[1] = {'None'},
-		[2] = {'None'},
-		[3] = {'None'},
-		[10] = {'None'},
+	PALADIN = {
+		[1] = {"None"},
+		[2] = {"None"},
+		[3] = {"None"}
 	},
-	['PRIEST'] = {
-		[1] = {'Magic'},
-		[2] = {'Magic'},
-		[3] = {'Magic'},
-		[10] = {'Magic'},
+	PRIEST = {
+		[1] = {"Magic"},
+		[2] = {"Magic"},
+		[3] = {"Magic"}
 	},
-	['ROGUE'] = {
-		[1] = {'None'},
-		[2] = {'None'},
-		[3] = {'None'},
-		[10] = {'None'},
+	ROGUE = {
+		[1] = {"None"},
+		[2] = {"None"},
+		[3] = {"None"}
 	},
-	['SHAMAN'] = {
-		[1] = {'Magic'},
-		[2] = {'Magic'},
-		[3] = {'Magic'},
-		[10] = {'Magic'},
+	SHAMAN = {
+		[1] = {"Magic"},
+		[2] = {"Magic"},
+		[3] = {"Magic"}
 	},
-	['WARLOCK'] = {
-		[1] = {'Magic'},
-		[2] = {'Magic'},
-		[3] = {'Magic'},
-		[10] = {'Magic'},
+	WARLOCK = {
+		[1] = {"Magic"},
+		[2] = {"Magic"},
+		[3] = {"Magic"}
 	},
-	['WARRIOR'] = {
-		[1] = {'None'},
-		[2] = {'None'},
-		[3] = {'None'},
-		[10] = {'None'},
-	},
+	WARRIOR = {
+		[1] = {"None"},
+		[2] = {"None"},
+		[3] = {"None"}
+	}
 }
 
 local function CustomBuffFilter(element, unit, button, ...)
@@ -80,19 +70,18 @@ local function CustomBuffFilter(element, unit, button, ...)
 	end
 
 	-- If unit is party1, boss2, arena3 etc. we the group's profile.
-	local profileUnit = string.gsub(frame.frame, '%d+', '')
+	local profileUnit = frame.frame:gsub("%d+", "")
 
-	local name, icon, count, debuffType, duration, expirationTime, source, isStealable,
-	nameplateShowPersonal, spellId, canApplyAura, isBossDebuff, nameplateShowAll, timeMod, value1, value2, value3 = ...
+	local name, icon, count, debuffType, duration, expirationTime, source, isStealable, nameplateShowPersonal, spellId, canApplyAura, isBossDebuff, nameplateShowAll, timeMod, value1, value2, value3 = ...
 
 	local BuffTypes
-	if UnitIsFriend('player', unit) then
-		BuffTypes = 'None' -- Cannot dispel friendly buffs
+	if UnitIsFriend("player", unit) then
+		BuffTypes = "None" -- Cannot dispel friendly buffs
 	else
 		BuffTypes = BuffDispel[PlayerClass][RUF.Specialization]
 	end
 	local removable = false
-	if BuffTypes == 'None' then
+	if BuffTypes == "None" then
 		removable = false
 	else
 		for k, v in pairs(BuffTypes) do
@@ -101,50 +90,57 @@ local function CustomBuffFilter(element, unit, button, ...)
 			end
 		end
 	end
-	if not source or source == nil then source = unit end
+	if not source or source == nil then
+		source = unit
+	end
 	local affiliation
-	if source == 'player' then affiliation = 'player'
-	elseif source == unit then affiliation = 'unit'
-	elseif IsInGroup() and UnitPlayerOrPetInParty(source) then affiliation = 'group'
-	elseif IsInRaid() and UnitInRaid(source) then affiliation = 'group'
-	else affiliation = 'other'
+	if source == "player" then
+		affiliation = "player"
+	elseif source == unit then
+		affiliation = "unit"
+	elseif IsInGroup() and UnitPlayerOrPetInParty(source) then
+		affiliation = "group"
+	elseif IsInRaid() and UnitInRaid(source) then
+		affiliation = "group"
+	else
+		affiliation = "other"
 	end
 
-	if duration == 0 and RUF.db.profile.unit[profileUnit].Buffs.Icons.Filter.Time.Unlimited == false then
 		-- Unlimited
+	if duration == 0 and RUF.db.profile.unit[profileUnit].Buffs.Icons.Filter.Time.Unlimited == false then
 		button.shoudShow = false
 		return false
+	-- Shorter than Minimum duration.
 	elseif tonumber(duration) and duration < RUF.db.profile.unit[profileUnit].Buffs.Icons.Filter.Time.Min and RUF.db.profile.unit[profileUnit].Buffs.Icons.Filter.Time.Min > 0 then
-		-- Shorter than Minimum duration.
 		button.shoudShow = false
 		return false
+	-- Longer than Max duration.
 	elseif (tonumber(duration) or 0) > RUF.db.profile.unit[profileUnit].Buffs.Icons.Filter.Time.Max and RUF.db.profile.unit[profileUnit].Buffs.Icons.Filter.Time.Max > 0 then
-		-- Longer than Max duration.
 		button.shoudShow = false
 		return false
 	end
 
 	if (RUF.db.profile.unit[profileUnit].Buffs.Icons.Filter.Dispellable == true and removable == true) or RUF.db.profile.unit[profileUnit].Buffs.Icons.Filter.Dispellable == false then
 		if RUF.db.profile.unit[profileUnit].Buffs.Icons.Filter.Caster.Player == true then
-			if affiliation == 'player' then
+			if affiliation == "player" then
 				button.shoudShow = true
 				return true
 			end
 		end
 		if RUF.db.profile.unit[profileUnit].Buffs.Icons.Filter.Caster.Unit == true then
-			if affiliation == 'unit' then
+			if affiliation == "unit" then
 				button.shoudShow = true
 				return true
 			end
 		end
 		if RUF.db.profile.unit[profileUnit].Buffs.Icons.Filter.Caster.Group == true then
-			if affiliation == 'group' then
+			if affiliation == "group" then
 				button.shoudShow = true
 				return true
 			end
 		end
 		if RUF.db.profile.unit[profileUnit].Buffs.Icons.Filter.Caster.Other == true then
-			if affiliation == 'other' then
+			if affiliation == "other" then
 				button.shoudShow = true
 				return true
 			end
@@ -162,13 +158,13 @@ local function PostUpdateBuffIcon(self, unit, button, index, position, duration,
 	if button.shoudShow and button.shoudShow == false then return end
 
 	local BuffTypes
-	if UnitIsFriend('player', unit) then
-		BuffTypes = 'None' -- Cannot dispel friendly buffs
+	if UnitIsFriend("player", unit) then
+		BuffTypes = "None" -- Cannot dispel friendly buffs
 	else
 		BuffTypes = BuffDispel[PlayerClass][RUF.Specialization]
 	end
 	local removable = false
-	if BuffTypes == 'None' then
+	if BuffTypes == "None" then
 		removable = false
 	else
 		for k, v in pairs(BuffTypes) do
@@ -191,18 +187,24 @@ local function PostUpdateBuffIcon(self, unit, button, index, position, duration,
 		local left, right, top, bottom = RUF:IconTextureTrim(true, profileReference.Width, profileReference.Height)
 		icon:SetTexCoord(left, right, top, bottom)
 		local border = self[position].border
-		border:SetBackdrop({edgeFile = LSM:Fetch('border', RUF.db.profile.Appearance.Aura.Border.Style.edgeFile), edgeSize = RUF.db.profile.Appearance.Aura.Border.Style.edgeSize})
+		border:SetBackdrop({
+			edgeFile = LSM:Fetch("border", RUF.db.profile.Appearance.Aura.Border.Style.edgeFile),
+			edgeSize = RUF.db.profile.Appearance.Aura.Border.Style.edgeSize
+		})
 		border:SetBackdropBorderColor(r, g, b, a)
 		local borderOffset = RUF.db.profile.Appearance.Aura.Border.Offset
 		if borderOffset == 0 then
-			border:SetPoint('TOPLEFT', button, 'TOPLEFT', 0, 0)
-			border:SetPoint('BOTTOMRIGHT', button, 'BOTTOMRIGHT', 0, 0)
+			border:SetPoint("TOPLEFT", button, "TOPLEFT", 0, 0)
+			border:SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", 0, 0)
 		else
-			border:SetPoint('TOPLEFT', button, 'TOPLEFT', -borderOffset, borderOffset)
-			border:SetPoint('BOTTOMRIGHT', button, 'BOTTOMRIGHT', borderOffset, -borderOffset)
+			border:SetPoint("TOPLEFT", button, "TOPLEFT", -borderOffset, borderOffset)
+			border:SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", borderOffset, -borderOffset)
 		end
 		local pixel = self[position].pixel
-		pixel:SetBackdrop({edgeFile = LSM:Fetch('border', RUF.db.profile.Appearance.Aura.Pixel.Style.edgeFile), edgeSize = RUF.db.profile.Appearance.Aura.Pixel.Style.edgeSize})
+		pixel:SetBackdrop({
+			edgeFile = LSM:Fetch("border", RUF.db.profile.Appearance.Aura.Pixel.Style.edgeFile),
+			edgeSize = RUF.db.profile.Appearance.Aura.Pixel.Style.edgeSize
+		})
 		local pixelr, pixelg, pixelb, pixela = unpack(RUF.db.profile.Appearance.Colors.Aura.Pixel)
 		pixel:SetBackdropBorderColor(pixelr, pixelg, pixelb, pixela)
 		if RUF.db.profile.Appearance.Aura.Pixel.Enabled == true then
@@ -212,11 +214,11 @@ local function PostUpdateBuffIcon(self, unit, button, index, position, duration,
 		end
 		local PixelOffset = RUF.db.profile.Appearance.Aura.Pixel.Offset
 		if PixelOffset == 0 then
-			pixel:SetPoint('TOPLEFT', button, 'TOPLEFT', 0, 0)
-			pixel:SetPoint('BOTTOMRIGHT', button, 'BOTTOMRIGHT', 0, 0)
+			pixel:SetPoint("TOPLEFT", button, "TOPLEFT", 0, 0)
+			pixel:SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", 0, 0)
 		else
-			pixel:SetPoint('TOPLEFT', button, 'TOPLEFT', -PixelOffset, PixelOffset)
-			pixel:SetPoint('BOTTOMRIGHT', button, 'BOTTOMRIGHT', PixelOffset, -PixelOffset)
+			pixel:SetPoint("TOPLEFT", button, "TOPLEFT", -PixelOffset, PixelOffset)
+			pixel:SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", PixelOffset, -PixelOffset)
 		end
 		local spiral = RUF.db.profile.Appearance.Aura.spiral
 		if spiral.enabled ~= true then
@@ -227,7 +229,7 @@ local function PostUpdateBuffIcon(self, unit, button, index, position, duration,
 		else
 			local cd
 			if not self[position].cd then
-				cd = CreateFrame('Cooldown', '$parentCooldown', button, 'CooldownFrameTemplate')
+				cd = CreateFrame("Cooldown", "$parentCooldown", button, "CooldownFrameTemplate")
 				cd:SetAllPoints(button.border)
 				button.cd = cd
 			end
@@ -235,29 +237,32 @@ local function PostUpdateBuffIcon(self, unit, button, index, position, duration,
 			cd:SetReverse(spiral.reverse)
 		end
 	end
-
 end
 
 function RUF.SetBuffs(self, unit)
-	_, PlayerClass = UnitClass('player')
+	PlayerClass = PlayerClass or select(2, UnitClass("player"))
 	RUF.Specialization = GetSpecialization()
-	local Buffs = CreateFrame('Frame', nil, self)
+	local Buffs = CreateFrame("Frame", nil, self)
 	Buffs:SetPoint(
 		RUF.db.profile.unit[unit].Buffs.Icons.Position.AnchorFrom,
 		self,
 		RUF.db.profile.unit[unit].Buffs.Icons.Position.AnchorTo,
 		RUF.db.profile.unit[unit].Buffs.Icons.Position.x,
-		RUF.db.profile.unit[unit].Buffs.Icons.Position.y)
+		RUF.db.profile.unit[unit].Buffs.Icons.Position.y
+	)
 
-	Buffs:SetSize((RUF.db.profile.unit[unit].Buffs.Icons.Width*RUF.db.profile.unit[unit].Buffs.Icons.Columns), (RUF.db.profile.unit[unit].Buffs.Icons.Height*RUF.db.profile.unit[unit].Buffs.Icons.Rows) + 2)
+	Buffs:SetSize(
+		(RUF.db.profile.unit[unit].Buffs.Icons.Width * RUF.db.profile.unit[unit].Buffs.Icons.Columns),
+		(RUF.db.profile.unit[unit].Buffs.Icons.Height * RUF.db.profile.unit[unit].Buffs.Icons.Rows) + 2
+	)
 	Buffs.size = RUF.db.profile.unit[unit].Buffs.Icons.Width
 	Buffs.width = RUF.db.profile.unit[unit].Buffs.Icons.Width
 	Buffs.height = RUF.db.profile.unit[unit].Buffs.Icons.Height
-	Buffs['growth-x'] = RUF.db.profile.unit[unit].Buffs.Icons.Growth.x
-	Buffs['growth-y'] = RUF.db.profile.unit[unit].Buffs.Icons.Growth.y
+	Buffs["growth-x"] = RUF.db.profile.unit[unit].Buffs.Icons.Growth.x
+	Buffs["growth-y"] = RUF.db.profile.unit[unit].Buffs.Icons.Growth.y
 	Buffs.initialAnchor = RUF.db.profile.unit[unit].Buffs.Icons.Position.AnchorFrom -- Where icons spawn from in the buff frame
-	Buffs['spacing-x'] = RUF.db.profile.unit[unit].Buffs.Icons.Spacing.x
-	Buffs['spacing-y'] = RUF.db.profile.unit[unit].Buffs.Icons.Spacing.y
+	Buffs["spacing-x"] = RUF.db.profile.unit[unit].Buffs.Icons.Spacing.x
+	Buffs["spacing-y"] = RUF.db.profile.unit[unit].Buffs.Icons.Spacing.y
 
 	if RUF.db.profile.unit[unit].Buffs.Icons.ClickThrough == true then
 		Buffs.disableMouse = true

@@ -37,6 +37,7 @@ local function SetClassColors()
 end
 
 local function SetupFrames(self, unit)
+	self:SetParent(RUF.UIParent or UIParent)
 	unit = unit:gsub('%d+', '') or unit
 
 	self.frame = unit
@@ -171,73 +172,13 @@ local function SetupFrames(self, unit)
 
 end
 
-local function VariantWarning()
-	local variantString, clientString
-	if RUF.variant == WOW_PROJECT_CLASSIC then
-		variantString = L["Classic"]
-	else
-		variantString = L["Retail"]
-	end
-	if WOW_PROJECT_ID == WOW_PROJECT_CLASSIC then
-		clientString = L["Classic"]
-	else
-		clientString = L["Retail"]
-	end
-
-	local message = L["You have the %s version of RUF installed, but you are playing %s. Please install a compatible version."]:format(variantString, clientString)
-	local messagePrefix = "|c5500DBBDRaeli's Unit Frames|r: "
-
-	RUF.After(10, function() ChatFrame1:AddMessage(messagePrefix .. message) end)
-
-	local window = CreateFrame('Frame', 'RUF_VariantWarning', UIParent)
-	window:SetWidth(500)
-	window:SetHeight(250)
-	window:SetPoint('CENTER')
-
-	local text = window:CreateFontString(nil, 'OVERLAY', 'Raeli')
-	local font = LSM:Fetch('font', 'RUF')
-	text:SetFont('Interface\\Addons\\RUF\\Media\\TGL.ttf', 28, 'OUTLINE')
-	text:SetText(messagePrefix .. message)
-	text:SetAllPoints(window)
-
-	-- local windowAnimation = window:CreateAnimationGroup()
-	-- local alphaAnimation = windowAnimation:CreateAnimation("Alpha")
-	-- alphaAnimation:SetFromAlpha(1)
-	-- alphaAnimation:SetToAlpha(0)
-	-- alphaAnimation:SetDuration(3)
-	-- alphaAnimation:SetStartDelay(20)
-	-- alphaAnimation:SetSmoothing("OUT")
-
-	-- window.windowAnimation = windowAnimation
-	-- window.alphaAnimation = alphaAnimation
-	window:RegisterEvent('PLAYER_ENTERING_WORLD')
-	-- window:SetScript("OnEvent", function() window.windowAnimation:Play() end)
-	-- windowAnimation:SetScript("OnFinished", function() window:Hide() end)
-end
-
 function RUF:OnEnable()
-	-- if RUF.Variant ~= WOW_PROJECT_ID then -- Since the Twitch client seems to so frequently download the wrong version.
-	-- 	VariantWarning()
-	-- 	return
-	-- end
-
 	if RUF.FirstRun then
 		local function FirstRunReload()
 			ReloadUI()
 		end
 		RUF:PopUp('RUFFirstRun', L["RUF [|c5500DBBDRaeli's Unit Frames|r] needs to reload your UI to properly finish installing on first use. Please do this now."], L["Accept"], nil, FirstRunReload)
 		StaticPopup_Show('RUFFirstRun')
-	end
-
-	-- Set RUF stored nickname to one from NickTag so we can have the options menu display correctly (displaying blank if a nickname is not set)
-	RUF:NickTagSetCache(RUF.db.char.NickCache) -- We have to store per char because NickTag looks for character saved variables.
-	local nickName = RUF:GetNickname(UnitName('player'), false, true) or UnitName('player')
-	if RUF.db.char.Nickname ~= '' then
-		if nickName ~= UnitName('player') then
-			RUF.db.char.Nickname = nickName
-		else
-			RUF.db.char.Nickname = ""
-		end
 	end
 
 	-- Register Combat Fader

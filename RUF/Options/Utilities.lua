@@ -22,28 +22,6 @@ local anchorSwaps = {
 local IsInGroup = RUF.IsInGroup
 local GetNumSubgroupMembers = RUF.GetNumSubgroupMembers
 
-function RUF:NickValidator(string)
-	if (string.len(string) > 14) then
-		return 'Length'
-	end
-	if string.find(string,'%p') then
-		return 'Letters'
-	end
-	if string.find(string,'%d') then
-		return 'Letters'
-	end
-	if string.find(string,'%s%s+') then
-		return 'Spaces'
-	end
-	local numSpaces = select(2,string.gsub(string,'%s',''))
-	if numSpaces then
-		if numSpaces > 2 then
-			return 'Spaces'
-		end
-	end
-		return true
-end
-
 function RUF:UpdateFramePosition(unitFrame,singleFrame,groupFrame,header,i,anchorFrom,anchorFrame,anchorTo,offsetX,offsetY)
 	if not singleFrame then singleFrame = 'none' end
 	if not groupFrame then groupFrame = 'none' end
@@ -65,9 +43,6 @@ function RUF:UpdateFramePosition(unitFrame,singleFrame,groupFrame,header,i,ancho
 	offsetX = offsetX or profileReference.x
 	offsetY = offsetY or profileReference.y
 	if not _G[anchorFrame] then
-		--print(unitFrame.frame)
-		--print(unitFrame:GetName())
-		--print("Couldn't find the frame that %s was supposed to be anchored to. The Frame anchor reset to UI Parent. You may want to move it."):format(unitFrame:GetName())
 		anchorFrame = 'UIParent'
 	end
 	if not i or i == -1 or i == 1 then

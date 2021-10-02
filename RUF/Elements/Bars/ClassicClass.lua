@@ -54,7 +54,7 @@ function RUF.SetClassicClassBar(self, unit)
 
 	for i = 1, unitPowerMaxAmount do
 		local Bar = RUF.StatusBarPrototype(name .. i, Holder)
-		local Border = CreateFrame("Frame", name .. i .. ".Border", Bar, BackdropTemplateMixin and "BackdropTemplate")
+		local Border = CreateFrame("Frame", name .. i .. ".Border")
 		local Background = Bar.bg
 		local size = (RUF.db.profile.unit[unit].Frame.Size.Width + (unitPowerMaxAmount - 1)) / unitPowerMaxAmount
 		local counter = i

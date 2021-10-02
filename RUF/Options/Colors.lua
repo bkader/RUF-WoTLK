@@ -34,6 +34,7 @@ function RUF_Options.Colors()
 		[1] = _G['RAGE'] or RAGE,
 		[2] = _G['FOCUS'] or FOCUS,
 		[3] = _G['ENERGY'] or ENERGY,
+		[6] = _G['RUNIC_POWER'] or RUNIC_POWER,
 		[14] = _G['COMBO_POINTS'] or L["Combat Points"]
 	}
 	local classData = {
@@ -188,66 +189,18 @@ function RUF_Options.Colors()
 			}
 		end
 	end
-	for i=0,#Powers do
-		if Powers[i] then
-			Colors.args.powerColors.args[Powers[i]] = {
-				name = Powers[i],
+	for i = 0, 14 do
+		local power = Powers[i]
+		if power then
+			Colors.args.powerColors.args[power] = {
+				name = power,
 				type = 'color',
 				order = 0,
 				get = function(info)
 					return unpack(RUF.db.profile.Appearance.Colors.PowerColors[i])
 				end,
 				set = function(info, r,g,b)
-					RUF.db.profile.Appearance.Colors.PowerColors[i] = {r,g,b}
-					RUF:OptionsUpdateAllBars()
-				end,
-			}
-		end
-	end
-	if RUF.Client == 2 then
-		local i = 14
-		if Powers[i] then
-			Colors.args.powerColors.args[Powers[i]] = {
-				name = Powers[i],
-				type = 'color',
-				order = 0,
-				get = function(info)
-					return unpack(RUF.db.profile.Appearance.Colors.PowerColors[i])
-				end,
-				set = function(info, r,g,b)
-					RUF.db.profile.Appearance.Colors.PowerColors[i] = {r,g,b}
-					RUF:OptionsUpdateAllBars()
-				end,
-			}
-		end
-	end
-	for i=50,52 do
-		if Powers[i] then
-			Colors.args.powerColors.args[Powers[i]] = {
-				name = Powers[i],
-				type = 'color',
-				order = 10,
-				get = function(info)
-					return unpack(RUF.db.profile.Appearance.Colors.PowerColors[i])
-				end,
-				set = function(info, r,g,b)
-					RUF.db.profile.Appearance.Colors.PowerColors[i] = {r,g,b}
-					RUF:OptionsUpdateAllBars()
-				end,
-			}
-		end
-	end
-	for i=75,77 do
-		if Powers[i] then
-			Colors.args.powerColors.args[Powers[i]] = {
-				name = Powers[i],
-				type = 'color',
-				order = 20,
-				get = function(info)
-					return unpack(RUF.db.profile.Appearance.Colors.PowerColors[i])
-				end,
-				set = function(info, r,g,b)
-					RUF.db.profile.Appearance.Colors.PowerColors[i] = {r,g,b}
+					RUF.db.profile.Appearance.Colors.PowerColors[i] = {r, g, b}
 					RUF:OptionsUpdateAllBars()
 				end,
 			}

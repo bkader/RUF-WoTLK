@@ -526,34 +526,37 @@ function RUF.ToggleFrameLock(status)
 
 	if status == false then
 		for i = 1, #frames do
-			local anchorFrom1, anchorFrame1, anchorTo1, x1, y1, anchorFrom2, anchorFrame2, anchorTo2, x2, y2, x3, y3
+			local x1, y1, x2, y2, x3, y3
 			local frameName = _G['oUF_RUF_' .. frames[i]]
 			if frameName then
 				local profile = string.lower(frames[i])
 				frameName:SetMovable(true)
 				frameName:SetScript('OnMouseDown', function()
-				frameName:StartMoving()
-				anchorFrom1, anchorFrame1, anchorTo1, x1, y1 = frameName:GetPoint() end)
+					frameName:StartMoving()
+					x1, y1 = select(4, frameName:GetPoint())
+				end)
 
 				frameName:SetScript('OnMouseUp', function()
-				anchorFrom2, anchorFrame2, anchorTo2, x2, y2 = frameName:GetPoint()
-				frameName:StopMovingOrSizing()
-				x3 = x2-x1
-				y3 = y2-y1
-				RUF.db.profile.unit[profile].Frame.Position.x = RUF.db.profile.unit[profile].Frame.Position.x + x3
-				RUF.db.profile.unit[profile].Frame.Position.y = RUF.db.profile.unit[profile].Frame.Position.y + y3
-				frameName:ClearAllPoints()
-				frameName:SetPoint(
-					RUF.db.profile.unit[profile].Frame.Position.AnchorFrom,
-					RUF.db.profile.unit[profile].Frame.Position.AnchorFrame,
-					RUF.db.profile.unit[profile].Frame.Position.AnchorTo,
-					RUF.db.profile.unit[profile].Frame.Position.x,
-					RUF.db.profile.unit[profile].Frame.Position.y)
-				LibStub('AceConfigRegistry-3.0'):NotifyChange('RUF') end)
+					x2, y2 = select(4, frameName:GetPoint())
+					frameName:StopMovingOrSizing()
+					x3 = x2-x1
+					y3 = y2-y1
+					RUF.db.profile.unit[profile].Frame.Position.x = RUF.db.profile.unit[profile].Frame.Position.x + x3
+					RUF.db.profile.unit[profile].Frame.Position.y = RUF.db.profile.unit[profile].Frame.Position.y + y3
+					frameName:ClearAllPoints()
+					frameName:SetPoint(
+						RUF.db.profile.unit[profile].Frame.Position.AnchorFrom,
+						RUF.db.profile.unit[profile].Frame.Position.AnchorFrame,
+						RUF.db.profile.unit[profile].Frame.Position.AnchorTo,
+						RUF.db.profile.unit[profile].Frame.Position.x,
+						RUF.db.profile.unit[profile].Frame.Position.y
+					)
+					LibStub('AceConfigRegistry-3.0'):NotifyChange('RUF')
+				end)
 			end
 		end
 		for i = 1, #groupFrames do
-			local anchorFrom1, anchorFrame1, anchorTo1, x1, y1, anchorFrom2, anchorFrame2, anchorTo2, x2, y2, x3, y3
+			local x1, y1, x2, y2, x3, y3
 			local frameName = _G['oUF_RUF_' .. groupFrames[i] .. '1']
 			if frameName then
 				if groupFrames[i]:match('Target') then
@@ -562,28 +565,31 @@ function RUF.ToggleFrameLock(status)
 				local profile = string.lower(groupFrames[i])
 				frameName:SetMovable(true)
 				frameName:SetScript('OnMouseDown', function()
-				frameName:StartMoving()
-				anchorFrom1, anchorFrame1, anchorTo1, x1, y1 = frameName:GetPoint() end)
+					frameName:StartMoving()
+					x1, y1 = select(4, frameName:GetPoint())
+				end)
 
 				frameName:SetScript('OnMouseUp', function()
-				anchorFrom2, anchorFrame2, anchorTo2, x2, y2 = frameName:GetPoint()
-				frameName:StopMovingOrSizing()
-				x3 = x2-x1
-				y3 = y2-y1
-				RUF.db.profile.unit[profile].Frame.Position.x = RUF.db.profile.unit[profile].Frame.Position.x + x3
-				RUF.db.profile.unit[profile].Frame.Position.y = RUF.db.profile.unit[profile].Frame.Position.y + y3
-				frameName:ClearAllPoints()
-				frameName:SetPoint(
-					RUF.db.profile.unit[profile].Frame.Position.AnchorFrom,
-					RUF.db.profile.unit[profile].Frame.Position.AnchorFrame,
-					RUF.db.profile.unit[profile].Frame.Position.AnchorTo,
-					RUF.db.profile.unit[profile].Frame.Position.x,
-					RUF.db.profile.unit[profile].Frame.Position.y)
-				LibStub('AceConfigRegistry-3.0'):NotifyChange('RUF') end)
+					x2, y2 = select(4, frameName:GetPoint())
+					frameName:StopMovingOrSizing()
+					x3 = x2-x1
+					y3 = y2-y1
+					RUF.db.profile.unit[profile].Frame.Position.x = RUF.db.profile.unit[profile].Frame.Position.x + x3
+					RUF.db.profile.unit[profile].Frame.Position.y = RUF.db.profile.unit[profile].Frame.Position.y + y3
+					frameName:ClearAllPoints()
+					frameName:SetPoint(
+						RUF.db.profile.unit[profile].Frame.Position.AnchorFrom,
+						RUF.db.profile.unit[profile].Frame.Position.AnchorFrame,
+						RUF.db.profile.unit[profile].Frame.Position.AnchorTo,
+						RUF.db.profile.unit[profile].Frame.Position.x,
+						RUF.db.profile.unit[profile].Frame.Position.y
+					)
+					LibStub('AceConfigRegistry-3.0'):NotifyChange('RUF')
+				end)
 			end
 		end
 		for i = 1, #headers do
-			local anchorFrom1, anchorFrame1, anchorTo1, x1, y1, anchorFrom2, anchorFrame2, anchorTo2, x2, y2, x3, y3
+			local x1, y1, x2, y2, x3, y3
 			local frameName = _G['oUF_RUF_' .. headers[i]]
 			if frameName then
 				local MoveBG = frameName.MoveBG
@@ -593,26 +599,29 @@ function RUF.ToggleFrameLock(status)
 				MoveBG:SetMovable(true)
 
 				MoveBG:SetScript('OnMouseDown', function(MoveBG)
-				frameName:StartMoving()
-				MoveBG:StartMoving()
-				anchorFrom1, anchorFrame1, anchorTo1, x1, y1 = frameName:GetPoint() end)
+					frameName:StartMoving()
+					MoveBG:StartMoving()
+					x1, y1 = select(4, frameName:GetPoint())
+				end)
 
 				MoveBG:SetScript('OnMouseUp', function(MoveBG)
-				anchorFrom2, anchorFrame2, anchorTo2, x2, y2 = frameName:GetPoint()
-				frameName:StopMovingOrSizing()
-				MoveBG:StopMovingOrSizing()
-				x3 = x2-x1
-				y3 = y2-y1
-				RUF.db.profile.unit[profile].Frame.Position.x = RUF.db.profile.unit[profile].Frame.Position.x + x3
-				RUF.db.profile.unit[profile].Frame.Position.y = RUF.db.profile.unit[profile].Frame.Position.y + y3
-				frameName:ClearAllPoints()
-				frameName:SetPoint(
-					RUF.db.profile.unit[profile].Frame.Position.AnchorFrom,
-					RUF.db.profile.unit[profile].Frame.Position.AnchorFrame,
-					RUF.db.profile.unit[profile].Frame.Position.AnchorTo,
-					RUF.db.profile.unit[profile].Frame.Position.x,
-					RUF.db.profile.unit[profile].Frame.Position.y)
-				LibStub('AceConfigRegistry-3.0'):NotifyChange('RUF') end)
+					anchorFrom2, anchorFrame2, anchorTo2, x2, y2 = frameName:GetPoint()
+					frameName:StopMovingOrSizing()
+					MoveBG:StopMovingOrSizing()
+					x3 = x2-x1
+					y3 = y2-y1
+					RUF.db.profile.unit[profile].Frame.Position.x = RUF.db.profile.unit[profile].Frame.Position.x + x3
+					RUF.db.profile.unit[profile].Frame.Position.y = RUF.db.profile.unit[profile].Frame.Position.y + y3
+					frameName:ClearAllPoints()
+					frameName:SetPoint(
+						RUF.db.profile.unit[profile].Frame.Position.AnchorFrom,
+						RUF.db.profile.unit[profile].Frame.Position.AnchorFrame,
+						RUF.db.profile.unit[profile].Frame.Position.AnchorTo,
+						RUF.db.profile.unit[profile].Frame.Position.x,
+						RUF.db.profile.unit[profile].Frame.Position.y
+					)
+					LibStub('AceConfigRegistry-3.0'):NotifyChange('RUF')
+				end)
 			end
 		end
 	else -- lock

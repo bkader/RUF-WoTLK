@@ -1,75 +1,65 @@
 assert(RUF, "RUF not found!")
 local RUF = RUF
-local LSM = LibStub('LibSharedMedia-3.0')
+local LSM = LibStub("LibSharedMedia-3.0")
 local _, ns = ...
 local oUF = ns.oUF
-local _, PlayerClass
+local PlayerClass
 
 local IsInGroup, IsInRaid = RUF.IsInGroup, RUF.IsInRaid
 local GetSpecialization = RUF.GetSpecialization
 
-local DebuffDispel = {-- DISPELLING ALLIES, 10 = Classic since there are no specs in classic.
-	['DEATHKNIGHT'] = {
-		[1] = {'None'},
-		[2] = {'None'},
-		[3] = {'None'},
-		[10] = {'None'},
+local DebuffDispel = {
+	DEATHKNIGHT = {
+		[1] = {"None"},
+		[2] = {"None"},
+		[3] = {"None"}
 	},
-	['DRUID'] = {
-		[1] = {'Curse', 'Poison'},
-		[2] = {'Curse', 'Poison'},
-		[3] = {'Curse', 'Poison'},
-		[4] = {'Curse', 'Magic', 'Poison'},
-		[10] = {'Curse', 'Poison'}
+	DRUID = {
+		[1] = {"Curse", "Poison"},
+		[2] = {"Curse", "Poison"},
+		[3] = {"Curse", "Poison"},
+		[4] = {"Curse", "Magic", "Poison"}
 	},
-	['HUNTER'] = {
-		[1] = {'None'},
-		[2] = {'None'},
-		[3] = {'None'},
-		[10] = {'None'},
+	HUNTER = {
+		[1] = {"None"},
+		[2] = {"None"},
+		[3] = {"None"}
 	},
-	['MAGE'] = {
-		[1] = {'Curse'},
-		[2] = {'Curse'},
-		[3] = {'Curse'},
-		[10] = {'Curse'},
+	MAGE = {
+		[1] = {"Curse"},
+		[2] = {"Curse"},
+		[3] = {"Curse"}
 	},
-	['PALADIN'] = {
-		[1] = {'Disease', 'Magic', 'Poison'},
-		[2] = {'Disease', 'Poison'},
-		[3] = {'Disease', 'Poison'},
-		[10] = {'Disease', 'Magic', 'Poison'},
+	PALADIN = {
+		[1] = {"Disease", "Magic", "Poison"},
+		[2] = {"Disease", "Poison"},
+		[3] = {"Disease", "Poison"}
 	},
-	['PRIEST'] = {
-		[1] = {'Disease', 'Magic'},
-		[2] = {'Disease', 'Magic'},
-		[3] = {'Disease'},
-		[10] = {'Disease', 'Magic'},
+	PRIEST = {
+		[1] = {"Disease", "Magic"},
+		[2] = {"Disease", "Magic"},
+		[3] = {"Disease"}
 	},
-	['ROGUE'] = {
-		[1] = {'None'},
-		[2] = {'None'},
-		[3] = {'None'},
-		[10] = {'None'},
+	ROGUE = {
+		[1] = {"None"},
+		[2] = {"None"},
+		[3] = {"None"}
 	},
-	['SHAMAN'] = {
-		[1] = {'Curse'},
-		[2] = {'Curse'},
-		[3] = {'Curse', 'Magic'},
-		[10] = {'Disease', 'Poison'},
+	SHAMAN = {
+		[1] = {"Curse"},
+		[2] = {"Curse"},
+		[3] = {"Curse", "Magic"}
 	},
-	['WARLOCK'] = {
-		[1] = {'Magic'},
-		[2] = {'Magic'},
-		[3] = {'Magic'},
-		[10] = {'Magic'},
+	WARLOCK = {
+		[1] = {"Magic"},
+		[2] = {"Magic"},
+		[3] = {"Magic"}
 	},
-	['WARRIOR'] = {
-		[1] = {'None'},
-		[2] = {'None'},
-		[3] = {'None'},
-		[10] = {'None'},
-	},
+	WARRIOR = {
+		[1] = {"None"},
+		[2] = {"None"},
+		[3] = {"None"}
+	}
 }
 
 local function CustomDebuffFilter(element, unit, button, ...)
@@ -80,19 +70,18 @@ local function CustomDebuffFilter(element, unit, button, ...)
 	end
 
 	-- If unit is party1, boss2, arena3 etc. we the group's profile.
-	local profileUnit = string.gsub(frame.frame, '%d+', '')
+	local profileUnit = frame.frame:gsub("%d+", "")
 
-	local name, icon, count, debuffType, duration, expirationTime, source, isStealable,
-	nameplateShowPersonal, spellId, canApplyAura, isBossDebuff, nameplateShowAll, timeMod, value1, value2, value3 = ...
+	local name, icon, count, debuffType, duration, expirationTime, source, isStealable, nameplateShowPersonal, spellId, canApplyAura, isBossDebuff, nameplateShowAll, timeMod, value1, value2, value3 = ...
 
 	local BuffTypes
-	if UnitIsFriend('player', unit) then
+	if UnitIsFriend("player", unit) then
 		BuffTypes = DebuffDispel[PlayerClass][RUF.Specialization]
 	else
-		BuffTypes = 'None' -- Can't dispel a debuff from an enemy.
+		BuffTypes = "None" -- Can't dispel a debuff from an enemy.
 	end
 	local removable = false
-	if BuffTypes == 'None' then
+	if BuffTypes == "None" then
 		removable = false
 	else
 		for k, v in pairs(BuffTypes) do
@@ -102,51 +91,57 @@ local function CustomDebuffFilter(element, unit, button, ...)
 		end
 	end
 
-	if not source or source == nil then source = unit end
+	if not source or source == nil then
+		source = unit
+	end
 	local affiliation
-	if source == 'player' then affiliation = 'player'
-	elseif UnitName(source) == UnitName(unit) then affiliation = 'unit'
-	elseif IsInGroup() and UnitPlayerOrPetInParty(source) then affiliation = 'group'
-	elseif IsInRaid() and UnitInRaid(source) then affiliation = 'group'
-	--elseif isBossDebuff then affiliation = 'boss'
-	else affiliation = 'other'
+	if source == "player" then
+		affiliation = "player"
+	elseif UnitName(source) == UnitName(unit) then
+		affiliation = "unit"
+	elseif IsInGroup() and UnitPlayerOrPetInParty(source) then
+		affiliation = "group"
+	elseif IsInRaid() and UnitInRaid(source) then
+		affiliation = "group"
+	else
+		affiliation = "other"
 	end
 
+	-- Unlimited
 	if duration == 0 and RUF.db.profile.unit[profileUnit].Debuffs.Icons.Filter.Time.Unlimited == false then
-		-- Unlimited
 		button.shoudShow = false
 		return false
-	elseif duration ~= 0 and duration < RUF.db.profile.unit[profileUnit].Debuffs.Icons.Filter.Time.Min and RUF.db.profile.unit[profileUnit].Debuffs.Icons.Filter.Time.Min > 0 then
-		-- Shorter than Minimum duration.
+	-- Shorter than Minimum duration.
+	elseif (tonumber(duration) or 0) ~= 0 and duration < RUF.db.profile.unit[profileUnit].Debuffs.Icons.Filter.Time.Min and RUF.db.profile.unit[profileUnit].Debuffs.Icons.Filter.Time.Min > 0 then
 		button.shoudShow = false
 		return false
+	-- Longer than Max duration.
 	elseif duration > RUF.db.profile.unit[profileUnit].Debuffs.Icons.Filter.Time.Max and RUF.db.profile.unit[profileUnit].Debuffs.Icons.Filter.Time.Max > 0 then
-		-- Longer than Max duration.
 		button.shoudShow = false
 		return false
 	end
 
 	if (RUF.db.profile.unit[profileUnit].Debuffs.Icons.Filter.Dispellable == true and removable == true) or RUF.db.profile.unit[profileUnit].Debuffs.Icons.Filter.Dispellable == false then
 		if RUF.db.profile.unit[profileUnit].Debuffs.Icons.Filter.Caster.Player == true then
-			if affiliation == 'player' then
+			if affiliation == "player" then
 				button.shoudShow = true
 				return true
 			end
 		end
 		if RUF.db.profile.unit[profileUnit].Debuffs.Icons.Filter.Caster.Unit == true then
-			if affiliation == 'unit' then
+			if affiliation == "unit" then
 				button.shoudShow = true
 				return true
 			end
 		end
 		if RUF.db.profile.unit[profileUnit].Debuffs.Icons.Filter.Caster.Group == true then
-			if affiliation == 'group' then
+			if affiliation == "group" then
 				button.shoudShow = true
 				return true
 			end
 		end
 		if RUF.db.profile.unit[profileUnit].Debuffs.Icons.Filter.Caster.Other == true then
-			if affiliation == 'other' then
+			if affiliation == "other" then
 				button.shoudShow = true
 				return true
 			end
@@ -164,13 +159,13 @@ local function PostUpdateDebuffIcon(self, unit, button, index, position, duratio
 	if button.shoudShow and button.shoudShow == false then return end
 
 	local BuffTypes
-	if UnitIsFriend('player', unit) then
+	if UnitIsFriend("player", unit) then
 		BuffTypes = DebuffDispel[PlayerClass][RUF.Specialization]
 	else
-		BuffTypes = 'None' -- Can't dispel a debuff from an enemy.
+		BuffTypes = "None" -- Can't dispel a debuff from an enemy.
 	end
 	local removable = false
-	if BuffTypes == 'None' then
+	if BuffTypes == "None" then
 		removable = false
 	else
 		for k, v in pairs(BuffTypes) do
@@ -193,18 +188,24 @@ local function PostUpdateDebuffIcon(self, unit, button, index, position, duratio
 		local left, right, top, bottom = RUF:IconTextureTrim(true, profileReference.Width, profileReference.Height)
 		icon:SetTexCoord(left, right, top, bottom)
 		local border = self[position].border
-		border:SetBackdrop({edgeFile = LSM:Fetch('border', RUF.db.profile.Appearance.Aura.Border.Style.edgeFile), edgeSize = RUF.db.profile.Appearance.Aura.Border.Style.edgeSize})
+		border:SetBackdrop({
+			edgeFile = LSM:Fetch("border", RUF.db.profile.Appearance.Aura.Border.Style.edgeFile),
+			edgeSize = RUF.db.profile.Appearance.Aura.Border.Style.edgeSize
+		})
 		border:SetBackdropBorderColor(r, g, b, a)
 		local borderOffset = RUF.db.profile.Appearance.Aura.Border.Offset
 		if borderOffset == 0 then
-			border:SetPoint('TOPLEFT', button, 'TOPLEFT', 0, 0)
-			border:SetPoint('BOTTOMRIGHT', button, 'BOTTOMRIGHT', 0, 0)
+			border:SetPoint("TOPLEFT", button, "TOPLEFT", 0, 0)
+			border:SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", 0, 0)
 		else
-			border:SetPoint('TOPLEFT', button, 'TOPLEFT', -borderOffset, borderOffset)
-			border:SetPoint('BOTTOMRIGHT', button, 'BOTTOMRIGHT', borderOffset, -borderOffset)
+			border:SetPoint("TOPLEFT", button, "TOPLEFT", -borderOffset, borderOffset)
+			border:SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", borderOffset, -borderOffset)
 		end
 		local pixel = self[position].pixel
-		pixel:SetBackdrop({edgeFile = LSM:Fetch('border', RUF.db.profile.Appearance.Aura.Pixel.Style.edgeFile), edgeSize = RUF.db.profile.Appearance.Aura.Pixel.Style.edgeSize})
+		pixel:SetBackdrop({
+			edgeFile = LSM:Fetch("border", RUF.db.profile.Appearance.Aura.Pixel.Style.edgeFile),
+			edgeSize = RUF.db.profile.Appearance.Aura.Pixel.Style.edgeSize
+		})
 		local pixelr, pixelg, pixelb, pixela = unpack(RUF.db.profile.Appearance.Colors.Aura.Pixel)
 		pixel:SetBackdropBorderColor(pixelr, pixelg, pixelb, pixela)
 		if RUF.db.profile.Appearance.Aura.Pixel.Enabled == true then
@@ -214,11 +215,11 @@ local function PostUpdateDebuffIcon(self, unit, button, index, position, duratio
 		end
 		local PixelOffset = RUF.db.profile.Appearance.Aura.Pixel.Offset
 		if PixelOffset == 0 then
-			pixel:SetPoint('TOPLEFT', button, 'TOPLEFT', 0, 0)
-			pixel:SetPoint('BOTTOMRIGHT', button, 'BOTTOMRIGHT', 0, 0)
+			pixel:SetPoint("TOPLEFT", button, "TOPLEFT", 0, 0)
+			pixel:SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", 0, 0)
 		else
-			pixel:SetPoint('TOPLEFT', button, 'TOPLEFT', -PixelOffset, PixelOffset)
-			pixel:SetPoint('BOTTOMRIGHT', button, 'BOTTOMRIGHT', PixelOffset, -PixelOffset)
+			pixel:SetPoint("TOPLEFT", button, "TOPLEFT", -PixelOffset, PixelOffset)
+			pixel:SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", PixelOffset, -PixelOffset)
 		end
 		local spiral = RUF.db.profile.Appearance.Aura.spiral
 		if spiral.enabled ~= true then
@@ -229,7 +230,7 @@ local function PostUpdateDebuffIcon(self, unit, button, index, position, duratio
 		else
 			local cd
 			if not self[position].cd then
-				cd = CreateFrame('Cooldown', '$parentCooldown', button, 'CooldownFrameTemplate')
+				cd = CreateFrame("Cooldown", "$parentCooldown", button, "CooldownFrameTemplate")
 				cd:SetAllPoints(button.border)
 				button.cd = cd
 			end
@@ -237,29 +238,32 @@ local function PostUpdateDebuffIcon(self, unit, button, index, position, duratio
 			cd:SetReverse(spiral.reverse)
 		end
 	end
-
 end
 
 function RUF.SetDebuffs(self, unit)
-	PlayerClass = select(2, UnitClass('player'))
+	PlayerClass = PlayerClass or select(2, UnitClass("player"))
 	RUF.Specialization = GetSpecialization()
-	local Debuffs = CreateFrame('Frame', nil, self)
+	local Debuffs = CreateFrame("Frame", nil, self)
 	Debuffs:SetPoint(
 		RUF.db.profile.unit[unit].Debuffs.Icons.Position.AnchorFrom,
 		self,
 		RUF.db.profile.unit[unit].Debuffs.Icons.Position.AnchorTo,
 		RUF.db.profile.unit[unit].Debuffs.Icons.Position.x,
-		RUF.db.profile.unit[unit].Debuffs.Icons.Position.y)
+		RUF.db.profile.unit[unit].Debuffs.Icons.Position.y
+	)
 
-	Debuffs:SetSize((RUF.db.profile.unit[unit].Debuffs.Icons.Width*RUF.db.profile.unit[unit].Debuffs.Icons.Columns), (RUF.db.profile.unit[unit].Debuffs.Icons.Height*RUF.db.profile.unit[unit].Debuffs.Icons.Rows) + 2)
+	Debuffs:SetSize(
+		(RUF.db.profile.unit[unit].Debuffs.Icons.Width * RUF.db.profile.unit[unit].Debuffs.Icons.Columns),
+		(RUF.db.profile.unit[unit].Debuffs.Icons.Height * RUF.db.profile.unit[unit].Debuffs.Icons.Rows) + 2
+	)
 	Debuffs.size = RUF.db.profile.unit[unit].Debuffs.Icons.Width
 	Debuffs.width = RUF.db.profile.unit[unit].Debuffs.Icons.Width
 	Debuffs.height = RUF.db.profile.unit[unit].Debuffs.Icons.Height
-	Debuffs['growth-x'] = RUF.db.profile.unit[unit].Debuffs.Icons.Growth.x
-	Debuffs['growth-y'] = RUF.db.profile.unit[unit].Debuffs.Icons.Growth.y
+	Debuffs["growth-x"] = RUF.db.profile.unit[unit].Debuffs.Icons.Growth.x
+	Debuffs["growth-y"] = RUF.db.profile.unit[unit].Debuffs.Icons.Growth.y
 	Debuffs.initialAnchor = RUF.db.profile.unit[unit].Debuffs.Icons.Position.AnchorFrom -- Where icons spawn from in the buff frame
-	Debuffs['spacing-x'] = RUF.db.profile.unit[unit].Debuffs.Icons.Spacing.x
-	Debuffs['spacing-y'] = RUF.db.profile.unit[unit].Debuffs.Icons.Spacing.y
+	Debuffs["spacing-x"] = RUF.db.profile.unit[unit].Debuffs.Icons.Spacing.x
+	Debuffs["spacing-y"] = RUF.db.profile.unit[unit].Debuffs.Icons.Spacing.y
 	if RUF.db.profile.unit[unit].Debuffs.Icons.ClickThrough == true then
 		Debuffs.disableMouse = true
 	else
