@@ -89,13 +89,12 @@ local function SetupFrames(self, unit)
 	RUF.SetPowerBar(self, unit)
 	self.Power.Override = RUF.PowerUpdate
 
-	-- Prevents trying to load these elements for Classic since they don't exist in Classic.
 	RUF.SetAbsorbBar(self, unit)
 	self.Absorb.Override = RUF.AbsorbUpdate
 
 	if unit == 'player' then
 		self:SetAttribute('toggleForVehicle', profileReference.toggleForVehicle or false) -- TODO Implement option for this
-		RUF.SetClassBar(self, unit) -- Normal Class Power bar
+		RUF.SetClassBar(self, unit)
 		RUF.SetRunes(self, unit)
 	end
 	if unit == 'pet' then

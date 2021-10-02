@@ -669,8 +669,8 @@ function RUF:OptionsUpdateFrame(singleFrame,groupFrame,header)
 
 		if unitFrame:GetWidth() ~= profileReference.Frame.Size.Width then
 			unitFrame:SetWidth(profileReference.Frame.Size.Width)
-			if unitFrame.ClassicClassPower then -- and RUF.Client == 2 then
-				unitFrame.ClassicClassPower.UpdateOptions(unitFrame.ClassicClassPower)
+			if unitFrame.ClassPower then
+				unitFrame.ClassPower.UpdateOptions(unitFrame.ClassPower)
 			end
 		end
 		unitFrame:SetHeight(profileReference.Frame.Size.Height)
@@ -864,20 +864,11 @@ function RUF:OptionsUpdateBars(singleFrame,groupFrame,header,bar)
 		unitFrame = _G['oUF_RUF_' .. currentUnit]
 		if not unitFrame then return end
 
-		local originalBar = bar
-		if bar == 'Class' then
-			bar = 'ClassicClassPower'
-		end
 		if not unitFrame[bar] then return end
 		unitFrame[bar].UpdateOptions(unitFrame[bar])
 		unitFrame[bar]:ForceUpdate()
 		if bar then
 			unitFrame[bar].UpdateOptions(unitFrame[bar])
-			if PlayerClass == 'DRUID' then
-				if unitFrame['FakeClassPower'] then
-					unitFrame['FakeClassPower'].UpdateOptions(unitFrame['FakeClassPower'])
-				end
-			end
 		end
 		if bar == 'Power' or bar == 'Absorb' then
 				if profileReference.Enabled == 0 then
@@ -893,21 +884,14 @@ function RUF:OptionsUpdateBars(singleFrame,groupFrame,header,bar)
 					unitFrame:EnableElement(bar)
 					unitFrame[bar]:ForceUpdate()
 				end
-		elseif originalBar == 'Class' then
+		elseif bar == 'Class' then
 			if profileReference.Enabled == true then
 				unitFrame:EnableElement(bar)
 				if unitFrame[bar] then
 					unitFrame[bar]:ForceUpdate()
 				end
-				if PlayerClass == 'DRUID'then
-					unitFrame:EnableElement('FakeClassPower')
-					unitFrame['FakeClassPower']:ForceUpdate()
-				end
 			else
 				unitFrame:DisableElement(bar)
-				if PlayerClass == 'DRUID'then
-					unitFrame:DisableElement('FakeClassPower')
-				end
 			end
 		end
 	end

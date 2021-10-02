@@ -41,7 +41,7 @@ Supported class powers:
     end
 
     -- Register with oUF
-    self.ClassicClassPower = ClassPower
+    self.ClassPower = ClassPower
 --]]
 
 local _, ns = ...
@@ -50,8 +50,8 @@ local oUF = ns.oUF
 local _, PlayerClass = UnitClass('player')
 
 -- sourced from FrameXML/Constants.lua
-local SPELL_POWER_ENERGY = Enum and Enum.PowerType.Energy or 3
-local SPELL_POWER_COMBO_POINTS = Enum and Enum.PowerType.ComboPoints or 14
+local SPELL_POWER_ENERGY = 3
+local SPELL_POWER_COMBO_POINTS = 14
 
 -- Holds the class specific stuff.
 local ClassPowerID, ClassPowerType
@@ -78,7 +78,7 @@ local function Update(self, event, unit, powerType)
 		return
 	end
 
-	local element = self.ClassicClassPower
+	local element = self.ClassPower
 
 	--[[ Callback: ClassPower:PreUpdate(event)
 	Called before the element has been updated.
@@ -89,15 +89,11 @@ local function Update(self, event, unit, powerType)
 		element:PreUpdate()
 	end
 
-	local cur, max, mod, oldMax
+	local cur, max, oldMax
 	if(event ~= 'ClassPowerDisable') then
 		local powerID = ClassPowerID
 		cur = UnitPower(unit, powerID, true)
 		max = UnitPowerMax(unit, powerID)
-		mod = UnitPowerDisplayMod(powerID)
-
-		-- mod should never be 0, but according to Blizz code it can actually happen
-		cur = mod == 0 and 0 or cur / mod
 
 		local numActive = cur + 0.9
 		for i = 1, max do
@@ -145,22 +141,23 @@ local function Path(self, ...)
 	* unit  - the unit accompanying the event (string)
 	* ...   - the arguments accompanying the event
 	--]]
-	return (self.ClassicClassPower.Override or Update) (self, ...)
+	return (self.ClassPower.Override or Update) (self, ...)
 end
 
+local scheduled = false
 local function Visibility(self, event, unit)
-	local element = self.ClassicClassPower
+	local element = self.ClassPower
 	local shouldEnable
 
 	if(ClassPowerID) then
-		-- use 'player' instead of unit because 'SPELLS_CHANGED' is a unitless event
-		if(not RequirePower or RequirePower == UnitPowerType('player')) then
-			if(not RequireSpell or IsPlayerSpell(RequireSpell)) then
-				self:UnregisterEvent('SPELLS_CHANGED', Visibility)
+		if not RequirePower or RequirePower == UnitPowerType("player") then
+			if not RequireSpell or UnitBuff("player", GetSpellInfo(RequireSpell)) ~= nil then
 				shouldEnable = true
 				unit = 'player'
-			else
-				self:RegisterEvent('SPELLS_CHANGED', Visibility, true)
+			end
+			if not shouldEnable and not scheduled then
+				scheduled = true
+				RUF.After(1, function() Visibility(self, event, unit) end)
 			end
 		end
 	end
@@ -195,7 +192,7 @@ local function VisibilityPath(self, ...)
 	* event - the event triggering the update (string)
 	* unit  - the unit accompanying the event (string)
 	--]]
-	return (self.ClassicClassPower.OverrideVisibility or Visibility) (self, ...)
+	return (self.ClassPower.OverrideVisibility or Visibility) (self, ...)
 end
 
 local function ForceUpdate(element)
@@ -205,23 +202,25 @@ end
 do
 	function ClassPowerEnable(self)
 		self:RegisterEvent('UNIT_POWER_FREQUENT', Path)
-		self:RegisterEvent('UNIT_MAXPOWER', Path)
+		self:RegisterEvent('UNIT_COMBO_POINTS', Path)
+		self:RegisterEvent('PLAYER_TARGET_CHANGED', Path)
 
-		self.ClassicClassPower.isEnabled = true
+		self.ClassPower.isEnabled = true
 
 		Path(self, 'ClassPowerEnable', 'player', ClassPowerType)
 	end
 
 	function ClassPowerDisable(self)
 		self:UnregisterEvent('UNIT_POWER_FREQUENT', Path)
-		self:UnregisterEvent('UNIT_MAXPOWER', Path)
+		self:UnregisterEvent('UNIT_COMBO_POINTS', Path)
+		self:UnregisterEvent('PLAYER_TARGET_CHANGED', Path)
 
-		local element = self.ClassicClassPower
+		local element = self.ClassPower
 		for i = 1, #element do
 			element[i]:Hide()
 		end
 
-		self.ClassicClassPower.isEnabled = false
+		self.ClassPower.isEnabled = false
 		Path(self, 'ClassPowerDisable', 'player', ClassPowerType)
 	end
 
@@ -237,7 +236,7 @@ do
 end
 
 local function Enable(self, unit)
-	local element = self.ClassicClassPower
+	local element = self.ClassPower
 	if(element and UnitIsUnit(unit, 'player')) then
 		element.__owner = self
 		element.__max = #element
@@ -266,7 +265,7 @@ local function Enable(self, unit)
 end
 
 local function Disable(self)
-	if(self.ClassicClassPower) then
+	if(self.ClassPower) then
 		ClassPowerDisable(self)
 
 		self:UnregisterEvent('UNIT_DISPLAYPOWER', VisibilityPath)
@@ -274,4 +273,4 @@ local function Disable(self)
 	end
 end
 
-oUF:AddElement('ClassicClassPower', VisibilityPath, Enable, Disable)
+oUF:AddElement('ClassPower', VisibilityPath, Enable, Disable)

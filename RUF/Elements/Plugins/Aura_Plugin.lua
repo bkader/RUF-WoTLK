@@ -72,8 +72,6 @@ local oUF = ns.oUF
 local VISIBLE = 1
 local HIDDEN = 0
 
-local LibClassicDurations = LibStub("LibClassicDurations", true)
-
 local function UpdateTooltip(self)
 	GameTooltip:SetUnitAura(self:GetParent().__owner.unit, self:GetID(), self.filter)
 end
@@ -146,11 +144,7 @@ local function updateIcon(element, unit, index, offset, filter, isDebuff, visibl
 	if not name then return end
 
 	if not duration or duration == 0 then
-		if spellID and LibClassicDurations then
-			local newDuration, newExpiration = LibClassicDurations:GetAuraDurationByUnit(unit, spellID, caster)
-			duration = newDuration or duration
-			expiration = newExpiration or expiration
-		end
+		-- FIXME
 	end
 
 	local position = visible + offset + 1

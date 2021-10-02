@@ -5,28 +5,24 @@ local _, ns = ...
 local oUF = ns.oUF
 
 local uClass = select(2, UnitClass("player"))
-local GetSpecialization = RUF.GetSpecialization
-
-local function UnitPowerDisplayMod(powerID) return 1 end
 
 local classPowerData = {
 	DRUID = {
 		classPowerID = 4,
 		classPowerType = 'COMBO_POINTS',
+		unitPowerMaxAmount = 5,
 	},
 	ROGUE = {
 		classPowerID = 4,
 		classPowerType = 'COMBO_POINTS',
-		unitPowerMaxAmount = 6,
+		unitPowerMaxAmount = 5,
 	}
 }
 
 function RUF.SetClassBar(self, unit)
 	if not classPowerData[uClass] then return end
 	local classPowerBar = {}
-	local classPowerBorder = {}
-	local classPowerBackground = {}
-	local unitPowerMaxAmount = classPowerData[uClass].unitPowerMaxAmount or UnitPowerMax(unit, classPowerData[uClass].classPowerID)
+	local unitPowerMaxAmount = classPowerData[uClass].unitPowerMaxAmount or 5
 
 	local name = self:GetName() .. '.ClassPower'
 	self.ClassPower = {}
@@ -99,8 +95,6 @@ function RUF.SetClassBar(self, unit)
 		Background:Show()
 
 		classPowerBar[i] = Bar
-		classPowerBorder[i] = Border
-		classPowerBackground[i] = Background
 		self.ClassPower[i] = Bar
 		self.ClassPower[i].Border = Border
 		self.ClassPower[i].Background = Background
@@ -141,7 +135,7 @@ function RUF.ClassUpdateColor(element, powerType)
 end
 
 function RUF.ClassUpdate(self, event, unit, powerType)
-
+	unit = unit or event == "PLAYER_TARGET_CHANGED" and "player" or nil
 	-- Override function of oUF's ClassPower Update function.
 	if not unit then return end
 	if not self.frame then return end
@@ -153,20 +147,12 @@ function RUF.ClassUpdate(self, event, unit, powerType)
 		return
 	end
 
-	local cur, max, oldMax, mod
+	local max, cur, oldMax = 5
 	if event ~= 'ClassPowerDisable' then
-		local powerID = unit == 'vehicle' and SPELL_POWER_COMBO_POINTS or classPowerData[uClass].classPowerID
-		cur = UnitPower(unit, powerID, true)
-		max = UnitPowerMax(unit, powerID)
-		mod = UnitPowerDisplayMod(powerID)
-		cur = mod == 0 and 0 or cur / mod
-
-		if(classPowerData[uClass].classPowerType == 'SOUL_SHARDS' and GetSpecialization() ~= SPEC_WARLOCK_DESTRUCTION) then
-			cur = cur - cur % 1
-		end
+		cur = GetComboPoints(unit, unit .. "target")
 
 		local size = (RUF.db.profile.unit[self.frame].Frame.Size.Width + (max-1)) / max
-		if event == 'UNIT_MAXPOWER' or event == 'PLAYER_TALENT_UPDATE' or event == 'ClassPowerEnable' or event == 'ForceUpdate' then
+		if event == "UNIT_COMBO_POINTS" or event == 'PLAYER_TALENT_UPDATE' or event == 'ClassPowerEnable' or event == 'ForceUpdate' then
 			for i = 1, #element do
 				if i > max then
 					if element[i]:IsVisible() then
@@ -179,6 +165,7 @@ function RUF.ClassUpdate(self, event, unit, powerType)
 				else
 					if not element[i]:IsVisible() then
 						element[i]:Show()
+						element[i]:SetValue(1)
 						for j = 1, #element do
 							element[j]:SetWidth(size)
 						end
@@ -217,7 +204,7 @@ end
 function RUF.ClassUpdateOptions(self)
 	if not classPowerData[uClass] then return end
 	local unit = self.__owner.frame
-	local unitPowerMaxAmount = classPowerData[uClass].unitPowerMaxAmount or UnitPowerMax(unit, classPowerData[uClass].classPowerID)
+	local unitPowerMaxAmount = classPowerData[uClass].unitPowerMaxAmount or 5
 	local texture = LSM:Fetch('statusbar', RUF.db.profile.Appearance.Bars.Class.Texture)
 	local r, g, b = unpack(RUF.db.profile.Appearance.Colors.PowerColors[classPowerData[uClass].classPowerID])
 	local bgMult = RUF.db.profile.Appearance.Bars.Class.Background.Multiplier
