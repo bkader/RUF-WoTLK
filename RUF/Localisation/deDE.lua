@@ -90,8 +90,6 @@ L["Bottom-right"] = "Unten-Rechts"
 L["Brightness Multiplier"] = "Helligkeitsvervielfacher"
 L["Buff Icons"] = true
 L["Buffs"] = true
---[[Translation missing --]]
-L["Camera Distance"] = "Camera Distance"
 L["Cannot configure while in combat."] = "Kann im Kampf nicht konfiguriert werden."
 --[[Translation missing --]]
 L["Cast Bar"] = "Cast Bar"
@@ -334,7 +332,6 @@ L["Maximum Duration"] = "Maximale Dauer"
 L["Minimum Duration"] = "Mindestdauer"
 L["Misc Colors"] = "Misc Farben"
 --[[Translation missing --]]
-L["Model Appearance"] = "Model Appearance"
 L["Monochrome"] = "Einfarbig"
 L["Monochrome Outline"] = "Einfarbig Outline"
 L["Monochrome Thick Outline"] = "Einfarbig Thick Outline"
@@ -388,8 +385,6 @@ L["Poison"] = "Gift"
 --[[Translation missing --]]
 L["Portrait"] = "Portrait"
 --[[Translation missing --]]
-L["Portrait Zoom"] = "Portrait Zoom"
---[[Translation missing --]]
 L["Portraits are not clickable or interactable in free floating mode."] = "Portraits are not clickable or interactable in free floating mode."
 --[[Translation missing --]]
 L["Position"] = "Position"
@@ -425,8 +420,6 @@ L["Reverse Spiral"] = "Reverse Spiral"
 L["Right"] = "Rechts"
 --[[Translation missing --]]
 L["Role"] = "Group Role"
---[[Translation missing --]]
-L["Rotation"] = "Rotation"
 L["Rows"] = "Reihen"
 --[[Translation missing --]]
 L["RUF [|c5500DBBDRaeli's Unit Frames|r] needs to reload your UI to properly finish installing on first use. Please do this now."] = "RUF [|c5500DBBDRaeli's Unit Frames|r] needs to reload your UI to properly finish installing on first use. Please do this now."

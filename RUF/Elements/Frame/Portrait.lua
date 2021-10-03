@@ -17,96 +17,6 @@ local anchorSwaps = {
 	["TOPRIGHT"] = "BOTTOMLEFT"
 }
 
-function RUF.PortraitHealthUpdate(self)
-	local frame = self.__owner
-	local profileReference = RUF.db.profile.unit[frame.frame].Frame.Portrait
-	if profileReference.Enabled ~= true then
-		frame:DisableElement("Portrait")
-		frame.Portrait:Hide()
-		return
-	end
-	if profileReference.Cutaway and (not frame.Health.Smooth or RUF.db.global.TestMode == true) then
-		local element = frame.Portrait
-		local cur, max = UnitHealth(frame.unit), UnitHealthMax(frame.unit)
-		if RUF.db.global.TestMode == true then
-			cur = frame.Health:GetValue()
-		end
-		local frameWidth = frame:GetWidth()
-		local width = frameWidth * (cur / max)
-		if frame.Health.FillStyle == "REVERSE" then
-			-- element:SetViewInsets((-frameWidth)+width, 0, 0, 0) -- Right -- FIXME
-		elseif frame.Health.FillStyle == "CENTER" then
-			-- element:SetViewInsets(((-frameWidth)+width)/2, ((-frameWidth)+width)/2, 0, 0) -- FIXME
-		else
-			-- element:SetViewInsets(0, (-frameWidth)+width, 0, 0) -- Left -- FIXME
-		end
-	end
-end
-
-local function Update(self, event, unit)
-	if (not unit or not UnitIsUnit(self.unit, unit)) then
-		return
-	end
-
-	local element = self.Portrait
-
-	if (element.PreUpdate) then
-		element:PreUpdate(unit)
-	end
-
-	local guid = UnitGUID(unit)
-	local isAvailable = UnitIsConnected(unit) and UnitIsVisible(unit)
-	if (event ~= "OnUpdate" or element.guid ~= guid or element.state ~= isAvailable) then
-		if (element:IsObjectType("PlayerModel")) then
-			if (not isAvailable) then
-				element:SetModelScale(4.25)
-				element:SetPosition(0, 0, -0.4)
-				element:SetModel([[Interface\Buttons\TalktoMeQuestionMark.mdx]])
-			else
-				element:SetUnit(unit)
-				element:SetCamera(0)
-			end
-		else
-			SetPortraitTexture(element, unit)
-		end
-		-- FIXME
-		-- if(element:IsObjectType('PlayerModel')) then
-		-- 	if(not isAvailable) then
-		-- 		element:SetCamDistanceScale(0.25)
-		-- 		element:SetPortraitZoom(0)
-		-- 		element:SetPosition(0, 0, 0.25)
-		-- 		element:ClearModel()
-		-- 		element:SetModel([[Interface\Buttons\talktomequestionmark.mdx]])
-		-- 	else
-		-- 		local profileReference = RUF.db.profile.unit[self.frame].Frame.Portrait
-		-- 		local desaturate = 0
-		-- 		if profileReference.Model.Desaturate == true then
-		-- 			desaturate = 1
-		-- 		end
-		-- 		element:SetPortraitZoom(profileReference.Model.PortraitZoom)
-		-- 		element:SetCamDistanceScale(profileReference.Model.CameraDistance)
-		-- 		element:SetPosition(profileReference.Model.z/10, profileReference.Model.x/10, -profileReference.Model.y/10)
-		-- 		element:ClearModel()
-		-- 		element:SetUnit(unit)
-		-- 		element:SetPaused(profileReference.Model.Animation.Paused)
-		-- 		element:SetViewInsets(0, 0, 0, 0)
-		-- 		element:MakeCurrentCameraCustom()
-		-- 		element:SetCameraFacing(math.rad(-profileReference.Model.Rotation))
-		-- 		-- SetDesaturation(element, desaturate)
-		-- 	end
-		-- else
-		-- 	SetPortraitTexture(element, unit)
-		-- end
-
-		element.guid = guid
-		element.state = isAvailable
-	end
-
-	if (element.PostUpdate) then
-		return element:PostUpdate(unit)
-	end
-end
-
 function RUF.SetFramePortrait(self, unit)
 	local profileReference = RUF.db.profile.unit[unit].Frame.Portrait
 	if not profileReference then
@@ -116,36 +26,20 @@ function RUF.SetFramePortrait(self, unit)
 	local Portrait = CreateFrame("PlayerModel", nil, self)
 	local Border = CreateFrame("Frame", nil, Portrait)
 	local Background = Portrait:CreateTexture(nil, "BACKGROUND")
-	local r, g, b
 
-	-- Set Lighting
-	-- Portrait:SetLight(true, false, -10, 0, 3, 0.35, 1, 1, 1, 0.75, 1, 1, 1)
-	-- local dirX, dirY, dirZ, ambStr, ambR, ambG, ambB, dirStr, dirR, dirG, dirB
-	-- dirX = -10
-	-- dirY = 0
-	-- dirZ = 3
-	-- ambStr = 0.35
-	-- ambR = 1
-	-- ambG = 1
-	-- ambB = 1
-	-- dirStr = 0.75
-	-- dirR = 1
-	-- dirG = 1
-	-- dirB = 1
-
-	-- Portrait:SetLight(true, false, dirX, dirY, dirZ, ambStr, ambR, ambG, ambB, dirStr, dirR, dirG, dirB)
-	Portrait:SetFrameLevel(11)
+	Portrait:SetFrameLevel(self.Health:GetFrameLevel() + 1)
 
 	-- Border
 	local offset = profileReference.Border.Offset
 	Border:SetPoint("TOPLEFT", Portrait, "TOPLEFT", -(offset + offsetFix), offset + offsetFix)
 	Border:SetPoint("BOTTOMRIGHT", Portrait, "BOTTOMRIGHT", offset + offsetFix, -(offset + offsetFix))
-	Border:SetFrameLevel(12)
+	Border:SetFrameLevel(Portrait:GetFrameLevel() + 1)
 	Border:SetBackdrop({
 		edgeFile = LSM:Fetch("border", profileReference.Border.Style.edgeFile),
 		edgeSize = profileReference.Border.Style.edgeSize
 	})
-	r, g, b = unpack(profileReference.Border.Color)
+
+	local r, g, b = unpack(profileReference.Border.Color)
 	Border:SetBackdropBorderColor(r, g, b, profileReference.Border.Alpha)
 
 	-- Background
@@ -162,8 +56,8 @@ function RUF.SetFramePortrait(self, unit)
 		if profileReference.Cutaway == true then
 			Portrait:ClearAllPoints()
 			local ofs = -0.15
-			Portrait:SetPoint("TOPLEFT", self.Health.fg, "TOPLEFT", -ofs, ofs)
-			Portrait:SetPoint("BOTTOMRIGHT", self.Health.fg, "BOTTOMRIGHT", ofs, -ofs)
+			Portrait:SetPoint("TOPLEFT", self.Health.bg, "TOPLEFT", -ofs, ofs)
+			Portrait:SetPoint("BOTTOMRIGHT", self.Health.bg, "BOTTOMRIGHT", ofs, -ofs)
 			Portrait.Cutaway = true
 		else
 			Portrait:ClearAllPoints()
@@ -172,6 +66,7 @@ function RUF.SetFramePortrait(self, unit)
 	elseif profileReference.Style == 2 then
 		Portrait:SetAlpha(1)
 		Portrait:SetSize(profileReference.Width, profileReference.Height)
+		Portrait:ClearAllPoints()
 		Portrait:SetPoint(profileReference.Position.AnchorFrom, self, profileReference.Position.AnchorTo, profileReference.Position.x - offsetFix, profileReference.Position.y - offsetFix)
 	end
 
@@ -179,10 +74,8 @@ function RUF.SetFramePortrait(self, unit)
 	self.Portrait = Portrait
 	self.Portrait.Border = Border
 	self.Portrait.Background = Background
-	self.Portrait.Override = Update
 	self.Portrait.UpdateOptions = RUF.PortraitUpdateOptions
 	self.Portrait.Enabled = true
-	self.Health.PreUpdate = RUF.PortraitHealthUpdate
 
 	if profileReference.Enabled ~= true then
 		self:DisableElement("Portrait")
@@ -211,9 +104,7 @@ function RUF.PortraitUpdateOptions(self)
 				local offset = -0.15
 				Portrait:SetPoint("TOPLEFT", self.__owner.Health.fg, "TOPLEFT", -offset, offset)
 				Portrait:SetPoint("BOTTOMRIGHT", self.__owner.Health.fg, "BOTTOMRIGHT", offset, -offset)
-				RUF.PortraitHealthUpdate(Portrait)
 			else
-				-- Portrait:SetViewInsets(0, 0, 0, 0) -- FIXME
 				Portrait:ClearAllPoints()
 				Portrait:SetAllPoints(self.__owner)
 			end
@@ -222,7 +113,6 @@ function RUF.PortraitUpdateOptions(self)
 			Border:Show()
 			Portrait:SetAlpha(1)
 			Portrait:ClearAllPoints()
-			-- Portrait:SetViewInsets(0, 0, 0, 0) -- FIXME
 
 			-- Border
 			local offset = profileReference.Border.Offset
@@ -246,7 +136,13 @@ function RUF.PortraitUpdateOptions(self)
 			Portrait.Cutaway = false
 			if profileReference.Style == 2 then
 				Portrait:SetSize(profileReference.Width, profileReference.Height)
-				Portrait:SetPoint(profileReference.Position.AnchorFrom, self.__owner, profileReference.Position.AnchorTo, profileReference.Position.x - offsetFix, profileReference.Position.y - offsetFix)
+				Portrait:SetPoint(
+					profileReference.Position.AnchorFrom,
+					self.__owner,
+					profileReference.Position.AnchorTo,
+					profileReference.Position.x - offsetFix,
+					profileReference.Position.y - offsetFix
+				)
 			elseif profileReference.Style == 3 then
 				Portrait:SetSize(profileReference.Width, self.__owner:GetHeight())
 				local anchor = profileReference.Position.AttachedStyleAnchor or "LEFT"

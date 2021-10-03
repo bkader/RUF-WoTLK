@@ -1,6 +1,6 @@
 local parent, ns = ...
 local global = GetAddOnMetadata(parent, 'X-oUF')
-local _VERSION = '@project-version@'
+local _VERSION = '9aa9242'
 if(_VERSION:find('project%-version')) then
 	_VERSION = 'devel'
 end
@@ -53,13 +53,7 @@ local function updateActiveUnit(self, event, unit)
 		modUnit = 'vehicle'
 	end
 
-	if(not UnitExists(modUnit)) then
-		if(modUnit ~= realUnit) then
-			modUnit = realUnit
-		else
-			return
-		end
-	end
+	if(not UnitExists(modUnit)) then return end
 
 	-- Change the active unit and run a full update.
 	if(Private.UpdateUnits(self, modUnit, realUnit)) then

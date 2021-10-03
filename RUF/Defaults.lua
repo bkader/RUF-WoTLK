@@ -652,18 +652,6 @@ local cfg = {
 						["Width"] = 100,
 						["Height"] = 60,
 						["Alpha"] = 0.75,
-						["Model"] = {
-							["Desaturate"] = false,
-							["Rotation"] = 40,
-							["CameraDistance"] = 2.5,
-							["PortraitZoom"] = 1.08,
-							["x"] = 0.35,
-							["y"] = -0.35,
-							["z"] = -0.25,
-							["Animation"] = {
-								["Paused"] = false,
-							},
-						},
 						["Position"] = {
 							["AnchorFrom"] = 'TOPRIGHT',
 							["AnchorTo"] = 'TOPLEFT',
@@ -1134,18 +1122,6 @@ local cfg = {
 						["Width"] = 100,
 						["Height"] = 60,
 						["Alpha"] = 0.75,
-						["Model"] = {
-							["Desaturate"] = false,
-							["Rotation"] = 315,
-							["CameraDistance"] = 2.5,
-							["PortraitZoom"] = 1.08,
-							["x"] = -0.35,
-							["y"] = -0.35,
-							["z"] = -0.25,
-							["Animation"] = {
-								["Paused"] = false,
-							},
-						},
 						["Position"] = {
 							["AnchorFrom"] = 'TOPLEFT',
 							["AnchorTo"] = 'TOPRIGHT',
@@ -1588,18 +1564,6 @@ local cfg = {
 						["Width"] = 100,
 						["Height"] = 60,
 						["Alpha"] = 0.75,
-						["Model"] = {
-							["Desaturate"] = false,
-							["Rotation"] = 315,
-							["CameraDistance"] = 2.5,
-							["PortraitZoom"] = 1.08,
-							["x"] = -0.35,
-							["y"] = -0.35,
-							["z"] = -0.25,
-							["Animation"] = {
-								["Paused"] = true,
-							},
-						},
 						["Position"] = {
 							["AnchorFrom"] = 'TOPLEFT',
 							["AnchorTo"] = 'TOPRIGHT',
@@ -2066,18 +2030,6 @@ local cfg = {
 						["Width"] = 60,
 						["Height"] = 30,
 						["Alpha"] = 0.75,
-						["Model"] = {
-							["Desaturate"] = false,
-							["Rotation"] = 40,
-							["CameraDistance"] = 2.5,
-							["PortraitZoom"] = 1.08,
-							["x"] = 0.35,
-							["y"] = -0.35,
-							["z"] = -0.25,
-							["Animation"] = {
-								["Paused"] = true,
-							},
-						},
 						["Position"] = {
 							["AnchorFrom"] = 'TOPRIGHT',
 							["AnchorTo"] = 'TOPLEFT',
@@ -2504,18 +2456,6 @@ local cfg = {
 						["Width"] = 60,
 						["Height"] = 30,
 						["Alpha"] = 0.75,
-						["Model"] = {
-							["Desaturate"] = false,
-							["Rotation"] = 315,
-							["CameraDistance"] = 2.5,
-							["PortraitZoom"] = 1.08,
-							["x"] = -0.35,
-							["y"] = -0.35,
-							["z"] = -0.25,
-							["Animation"] = {
-								["Paused"] = true,
-							},
-						},
 						["Position"] = {
 							["AnchorFrom"] = 'TOPLEFT',
 							["AnchorTo"] = 'TOPRIGHT',
@@ -2942,18 +2882,6 @@ local cfg = {
 						["Width"] = 60,
 						["Height"] = 30,
 						["Alpha"] = 0.75,
-						["Model"] = {
-							["Desaturate"] = false,
-							["Rotation"] = 0,
-							["CameraDistance"] = 2.5,
-							["PortraitZoom"] = 1.08,
-							["x"] = -0.35,
-							["y"] = -0.35,
-							["z"] = -0.25,
-							["Animation"] = {
-								["Paused"] = true,
-							},
-						},
 						["Position"] = {
 							["AnchorFrom"] = 'TOPLEFT',
 							["AnchorTo"] = 'TOPRIGHT',
@@ -3380,18 +3308,6 @@ local cfg = {
 						["Width"] = 60,
 						["Height"] = 30,
 						["Alpha"] = 0.75,
-						["Model"] = {
-							["Desaturate"] = false,
-							["Rotation"] = 315,
-							["CameraDistance"] = 2.5,
-							["PortraitZoom"] = 1.08,
-							["x"] = -0.35,
-							["y"] = -0.35,
-							["z"] = -0.25,
-							["Animation"] = {
-								["Paused"] = true,
-							},
-						},
 						["Position"] = {
 							["AnchorFrom"] = 'TOPLEFT',
 							["AnchorTo"] = 'TOPRIGHT',
@@ -3818,18 +3734,6 @@ local cfg = {
 						["Width"] = 60,
 						["Height"] = 30,
 						["Alpha"] = 0.75,
-						["Model"] = {
-							["Desaturate"] = false,
-							["Rotation"] = 0,
-							["CameraDistance"] = 2.5,
-							["PortraitZoom"] = 1.08,
-							["x"] = -0.35,
-							["y"] = -0.35,
-							["z"] = -0.25,
-							["Animation"] = {
-								["Paused"] = true,
-							},
-						},
 						["Position"] = {
 							["AnchorFrom"] = 'TOPLEFT',
 							["AnchorTo"] = 'TOPRIGHT',
@@ -4256,18 +4160,6 @@ local cfg = {
 						["Width"] = 60,
 						["Height"] = 60,
 						["Alpha"] = 0.75,
-						["Model"] = {
-							["Desaturate"] = false,
-							["Rotation"] = 40,
-							["CameraDistance"] = 2.5,
-							["PortraitZoom"] = 1.08,
-							["x"] = 00.35,
-							["y"] = -0.35,
-							["z"] = -0.25,
-							["Animation"] = {
-								["Paused"] = true,
-							},
-						},
 						["Position"] = {
 							["AnchorFrom"] = 'TOPLEFT',
 							["AnchorTo"] = 'TOPRIGHT',
@@ -4742,18 +4634,6 @@ local cfg = {
 						["Width"] = 60,
 						["Height"] = 30,
 						["Alpha"] = 0.75,
-						["Model"] = {
-							["Desaturate"] = false,
-							["Rotation"] = 0,
-							["CameraDistance"] = 2.5,
-							["PortraitZoom"] = 1.08,
-							["x"] = -0.35,
-							["y"] = -0.35,
-							["z"] = -0.25,
-							["Animation"] = {
-								["Paused"] = true,
-							},
-						},
 						["Position"] = {
 							["AnchorFrom"] = 'TOPLEFT',
 							["AnchorTo"] = 'TOPRIGHT',
@@ -5186,18 +5066,6 @@ local cfg = {
 						["Width"] = 60,
 						["Height"] = 30,
 						["Alpha"] = 0.75,
-						["Model"] = {
-							["Desaturate"] = false,
-							["Rotation"] = 0,
-							["CameraDistance"] = 2.5,
-							["PortraitZoom"] = 1.08,
-							["x"] = -0.35,
-							["y"] = -0.35,
-							["z"] = -0.25,
-							["Animation"] = {
-								["Paused"] = true,
-							},
-						},
 						["Position"] = {
 							["AnchorFrom"] = 'TOPLEFT',
 							["AnchorTo"] = 'TOPRIGHT',
@@ -5628,18 +5496,6 @@ local cfg = {
 						["Width"] = 60,
 						["Height"] = 60,
 						["Alpha"] = 0.75,
-						["Model"] = {
-							["Desaturate"] = false,
-							["Rotation"] = 0,
-							["CameraDistance"] = 2.5,
-							["PortraitZoom"] = 1.08,
-							["x"] = -0.35,
-							["y"] = -0.35,
-							["z"] = -0.25,
-							["Animation"] = {
-								["Paused"] = true,
-							},
-						},
 						["Position"] = {
 							["AnchorFrom"] = 'TOPRIGHT',
 							["AnchorTo"] = 'TOPLEFT',
@@ -6097,18 +5953,6 @@ local cfg = {
 						["Width"] = 60,
 						["Height"] = 30,
 						["Alpha"] = 0.75,
-						["Model"] = {
-							["Desaturate"] = false,
-							["Rotation"] = 0,
-							["CameraDistance"] = 2.5,
-							["PortraitZoom"] = 1.08,
-							["x"] = -0.35,
-							["y"] = -0.35,
-							["z"] = -0.25,
-							["Animation"] = {
-								["Paused"] = true,
-							},
-						},
 						["Position"] = {
 							["AnchorFrom"] = 'TOPLEFT',
 							["AnchorTo"] = 'TOPRIGHT',
@@ -6539,18 +6383,6 @@ local cfg = {
 						["Width"] = 60,
 						["Height"] = 60,
 						["Alpha"] = 0.75,
-						["Model"] = {
-							["Desaturate"] = false,
-							["Rotation"] = 0,
-							["CameraDistance"] = 2.5,
-							["PortraitZoom"] = 1.08,
-							["x"] = -0.35,
-							["y"] = -0.35,
-							["z"] = -0.25,
-							["Animation"] = {
-								["Paused"] = true,
-							},
-						},
 						["Position"] = {
 							["AnchorFrom"] = 'TOPRIGHT',
 							["AnchorTo"] = 'TOPLEFT',
@@ -7008,18 +6840,6 @@ local cfg = {
 						["Width"] = 60,
 						["Height"] = 30,
 						["Alpha"] = 0.75,
-						["Model"] = {
-							["Desaturate"] = false,
-							["Rotation"] = 0,
-							["CameraDistance"] = 2.5,
-							["PortraitZoom"] = 1.08,
-							["x"] = -0.35,
-							["y"] = -0.35,
-							["z"] = -0.25,
-							["Animation"] = {
-								["Paused"] = true,
-							},
-						},
 						["Position"] = {
 							["AnchorFrom"] = 'TOPLEFT',
 							["AnchorTo"] = 'TOPRIGHT',
@@ -11249,18 +11069,6 @@ local Alidie = {
 					["Width"] = 60,
 					["Height"] = 30,
 					["Alpha"] = 0.75,
-					["Model"] = {
-						["Desaturate"] = false,
-						["Rotation"] = 0,
-						["CameraDistance"] = 2.5,
-						["PortraitZoom"] = 1.08,
-						["x"] = -0.35,
-						["y"] = -0.35,
-						["z"] = -0.25,
-						["Animation"] = {
-							["Paused"] = true,
-						},
-					},
 					["Position"] = {
 						["AnchorFrom"] = 'TOPLEFT',
 						["AnchorTo"] = 'TOPRIGHT',
@@ -11688,18 +11496,6 @@ local Alidie = {
 					["Width"] = 60,
 					["Height"] = 30,
 					["Alpha"] = 0.75,
-					["Model"] = {
-						["Desaturate"] = false,
-						["Rotation"] = 0,
-						["CameraDistance"] = 2.5,
-						["PortraitZoom"] = 1.08,
-						["x"] = -0.35,
-						["y"] = -0.35,
-						["z"] = -0.25,
-						["Animation"] = {
-							["Paused"] = true,
-						},
-					},
 					["Position"] = {
 						["AnchorFrom"] = 'TOPLEFT',
 						["AnchorTo"] = 'TOPRIGHT',
@@ -12535,18 +12331,6 @@ local Alidie = {
 					["Width"] = 60,
 					["Height"] = 30,
 					["Alpha"] = 0.75,
-					["Model"] = {
-						["Desaturate"] = false,
-						["Rotation"] = 0,
-						["CameraDistance"] = 2.5,
-						["PortraitZoom"] = 1.08,
-						["x"] = -0.35,
-						["y"] = -0.35,
-						["z"] = -0.25,
-						["Animation"] = {
-							["Paused"] = true,
-						},
-					},
 					["Position"] = {
 						["AnchorFrom"] = 'TOPLEFT',
 						["AnchorTo"] = 'TOPRIGHT',
@@ -13277,18 +13061,6 @@ local Alidie = {
 					["Width"] = 60,
 					["Height"] = 30,
 					["Alpha"] = 0.75,
-					["Model"] = {
-						["Desaturate"] = false,
-						["Rotation"] = 0,
-						["CameraDistance"] = 2.5,
-						["PortraitZoom"] = 1.08,
-						["x"] = -0.35,
-						["y"] = -0.35,
-						["z"] = -0.25,
-						["Animation"] = {
-							["Paused"] = true,
-						},
-					},
 					["Position"] = {
 						["AnchorFrom"] = 'TOPLEFT',
 						["AnchorTo"] = 'TOPRIGHT',
@@ -17520,18 +17292,6 @@ local Raeli = {
 					["Width"] = 60,
 					["Height"] = 30,
 					["Alpha"] = 0.75,
-					["Model"] = {
-						["Desaturate"] = false,
-						["Rotation"] = 0,
-						["CameraDistance"] = 2.5,
-						["PortraitZoom"] = 1.08,
-						["x"] = -0.35,
-						["y"] = -0.35,
-						["z"] = -0.25,
-						["Animation"] = {
-							["Paused"] = true,
-						},
-					},
 					["Position"] = {
 						["AnchorFrom"] = 'TOPLEFT',
 						["AnchorTo"] = 'TOPRIGHT',
@@ -17959,18 +17719,6 @@ local Raeli = {
 					["Width"] = 60,
 					["Height"] = 30,
 					["Alpha"] = 0.75,
-					["Model"] = {
-						["Desaturate"] = false,
-						["Rotation"] = 0,
-						["CameraDistance"] = 2.5,
-						["PortraitZoom"] = 1.08,
-						["x"] = -0.35,
-						["y"] = -0.35,
-						["z"] = -0.25,
-						["Animation"] = {
-							["Paused"] = true,
-						},
-					},
 					["Position"] = {
 						["AnchorFrom"] = 'TOPLEFT',
 						["AnchorTo"] = 'TOPRIGHT',
@@ -18793,18 +18541,6 @@ local Raeli = {
 					["Width"] = 60,
 					["Height"] = 30,
 					["Alpha"] = 0.75,
-					["Model"] = {
-						["Desaturate"] = false,
-						["Rotation"] = 0,
-						["CameraDistance"] = 2.5,
-						["PortraitZoom"] = 1.08,
-						["x"] = -0.35,
-						["y"] = -0.35,
-						["z"] = -0.25,
-						["Animation"] = {
-							["Paused"] = true,
-						},
-					},
 					["Position"] = {
 						["AnchorFrom"] = 'TOPLEFT',
 						["AnchorTo"] = 'TOPRIGHT',
@@ -19627,18 +19363,6 @@ local Raeli = {
 					["Width"] = 60,
 					["Height"] = 30,
 					["Alpha"] = 0.75,
-					["Model"] = {
-						["Desaturate"] = false,
-						["Rotation"] = 0,
-						["CameraDistance"] = 2.5,
-						["PortraitZoom"] = 1.08,
-						["x"] = -0.35,
-						["y"] = -0.35,
-						["z"] = -0.25,
-						["Animation"] = {
-							["Paused"] = true,
-						},
-					},
 					["Position"] = {
 						["AnchorFrom"] = 'TOPLEFT',
 						["AnchorTo"] = 'TOPRIGHT',
