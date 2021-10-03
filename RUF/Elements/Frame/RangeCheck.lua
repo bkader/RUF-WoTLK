@@ -34,7 +34,7 @@ function RUF.RangeCheckUpdate(self, isInRange, event)
 	local insideAlpha = currentAlpha * element.insideAlpha
 	local outsideAlpha = currentAlpha * element.outsideAlpha
 
-	if(element.PreUpdate) then
+	if (element.PreUpdate) then
 		element:PreUpdate()
 	end
 
@@ -48,13 +48,13 @@ function RUF.RangeCheckUpdate(self, isInRange, event)
 			self.Alpha.range = outsideAlpha
 			self.Alpha.inRange = false
 		end
-		if(element.PostUpdate) then
+		if (element.PostUpdate) then
 			return element:PostUpdate(self, unit)
 		end
 	else
 		--self:SetAlpha(1)
 		self.Alpha.range = 1
 		self.Alpha.inRange = true
-		self:DisableElement('RangeCheck')
+		self:DisableElement("RangeCheck")
 	end
 end

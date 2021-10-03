@@ -157,9 +157,7 @@ local function RunesEnable(self)
 	self:RegisterEvent('UNIT_ENTERED_VEHICLE', VisibilityPath)
 	self:UnregisterEvent('UNIT_EXITED_VEHICLE', VisibilityPath)
 
-	if self.Runes.Show then
-		self.Runes:Show()
-	end
+	self.Runes:Show()
 
 	if self.Runes.PostUpdateVisibility then
 		self.Runes:PostUpdateVisibility(true, not self.Runes.isEnabled)

@@ -1,52 +1,57 @@
 assert(RUF, "RUF not found!")
 local RUF = RUF
-local LSM = LibStub('LibSharedMedia-3.0')
+local LSM = LibStub("LibSharedMedia-3.0")
 local _, ns = ...
 local oUF = ns.oUF
 
 function RUF.SetPowerBar(self, unit) -- Mana, Rage etc.
-	local Texture = LSM:Fetch('statusbar', RUF.db.profile.Appearance.Bars.Power.Texture)
+	local Texture = LSM:Fetch("statusbar", RUF.db.profile.Appearance.Bars.Power.Texture)
 	local Bar = RUF.StatusBarPrototype(nil, self)
-	local Border = CreateFrame('Frame', nil, Bar, BackdropTemplateMixin and 'BackdropTemplate')
+	local Border = CreateFrame("Frame", nil, Bar, BackdropTemplateMixin and "BackdropTemplate")
 	local Background = Bar.bg
 
-	if RUF.db.profile.unit[unit].Frame.Bars.Power.Position.Anchor == 'TOP' then
-		Bar:SetPoint('TOP', 0, 0)
-		Bar:SetPoint('LEFT', 0, 0)
-		Bar:SetPoint('RIGHT', 0, 0)
+	if RUF.db.profile.unit[unit].Frame.Bars.Power.Position.Anchor == "TOP" then
+		Bar:SetPoint("TOP", 0, 0)
+		Bar:SetPoint("LEFT", 0, 0)
+		Bar:SetPoint("RIGHT", 0, 0)
 		Bar:SetHeight(RUF.db.profile.unit[unit].Frame.Bars.Power.Height)
-		Bar.anchorTo = 'TOP'
+		Bar.anchorTo = "TOP"
 	else
 		Bar:ClearAllPoints()
-		Bar:SetPoint('BOTTOM', 0, 0)
-		Bar:SetPoint('LEFT', 0, 0)
-		Bar:SetPoint('RIGHT', 0, 0)
+		Bar:SetPoint("BOTTOM", 0, 0)
+		Bar:SetPoint("LEFT", 0, 0)
+		Bar:SetPoint("RIGHT", 0, 0)
 		Bar:SetHeight(RUF.db.profile.unit[unit].Frame.Bars.Power.Height)
-		Bar.anchorTo = 'BOTTOM'
+		Bar.anchorTo = "BOTTOM"
 	end
 
 	Bar.Smooth = RUF.db.profile.unit[unit].Frame.Bars.Power.Animate
 	Bar.frequentUpdates = true
 	Bar.hideAtZero = RUF.db.profile.unit[unit].Frame.Bars.Power.Enabled == 1
 	Bar.barHeight = RUF.db.profile.unit[unit].Frame.Bars.Power.Height
+	Bar.texture = Texture
 	Bar:SetStatusBarTexture(Texture)
 	Bar:SetFrameLevel(15)
 
 	-- Border
 	local offset = RUF.db.profile.Appearance.Bars.Power.Border.Offset or 0
-	Border:SetPoint('TOPLEFT',Bar,'TOPLEFT',-offset,offset)
-	Border:SetPoint('BOTTOMRIGHT',Bar,'BOTTOMRIGHT',offset,-offset)
+	Border:SetPoint("TOPLEFT", Bar, "TOPLEFT", -offset, offset)
+	Border:SetPoint("BOTTOMRIGHT", Bar, "BOTTOMRIGHT", offset, -offset)
 	Border:SetFrameLevel(17)
-	Border:SetBackdrop({edgeFile = LSM:Fetch('border', RUF.db.profile.Appearance.Bars.Power.Border.Style.edgeFile), edgeSize = RUF.db.profile.Appearance.Bars.Power.Border.Style.edgeSize})
+	Border:SetBackdrop({
+		edgeFile = LSM:Fetch("border", RUF.db.profile.Appearance.Bars.Power.Border.Style.edgeFile),
+		edgeSize = RUF.db.profile.Appearance.Bars.Power.Border.Style.edgeSize
+	})
 	local borderr, borderg, borderb = unpack(RUF.db.profile.Appearance.Bars.Power.Border.Color)
 	Border:SetBackdropBorderColor(borderr, borderg, borderb, RUF.db.profile.Appearance.Bars.Power.Border.Alpha)
 
 	-- Background
 	local r, g, b = unpack(RUF.db.profile.Appearance.Bars.Power.Background.CustomColor)
 	local Multiplier = RUF.db.profile.Appearance.Bars.Power.Background.Multiplier
-	Background:SetTexture(LSM:Fetch('background', 'Solid'))
-	Background:SetVertexColor(r*Multiplier, g*Multiplier, b*Multiplier, RUF.db.profile.Appearance.Bars.Power.Background.Alpha)
+	Background:SetTexture(LSM:Fetch("background", "Solid"))
+	Background:SetVertexColor(r * Multiplier, g * Multiplier, b * Multiplier, RUF.db.profile.Appearance.Bars.Power.Background.Alpha)
 	Background:SetAllPoints(Bar)
+	Background:Show()
 	Background.colorSmooth = false
 
 	-- Register with oUF
@@ -57,10 +62,12 @@ function RUF.SetPowerBar(self, unit) -- Mana, Rage etc.
 end
 
 function RUF.PowerUpdate(self, event, unit)
-	if(self.unit ~= unit) then return end
+	if (self.unit ~= unit) then
+		return
+	end
 	local element = self.Power
 	if RUF.db.profile.unit[self.frame].Frame.Bars.Power.Enabled == 0 then
-		self:DisableElement('Power')
+		self:DisableElement("Power")
 		return
 	end
 
@@ -74,7 +81,7 @@ function RUF.PowerUpdate(self, event, unit)
 
 	-- Update Statusbar colour
 	cur, max = UnitPower(unit), UnitPowerMax(unit)
-	r, g, b = RUF:GetBarColor(element, unit, 'Power')
+	r, g, b = RUF:GetBarColor(element, unit, "Power")
 	element:SetStatusBarColor(r, g, b)
 	a = RUF.db.profile.Appearance.Bars.Power.Background.Alpha
 	bgMult = RUF.db.profile.Appearance.Bars.Power.Background.Multiplier
@@ -83,7 +90,7 @@ function RUF.PowerUpdate(self, event, unit)
 	if RUF.db.profile.Appearance.Bars.Power.Background.UseBarColor == false then
 		r, g, b = unpack(RUF.db.profile.Appearance.Bars.Power.Background.CustomColor)
 	end
-	element.Background:SetVertexColor(r*bgMult, g*bgMult, b*bgMult, a)
+	element.Background:SetVertexColor(r * bgMult, g * bgMult, b * bgMult, a)
 
 	if RUF.db.global.TestMode == true then
 		cur = math.random(25, 75)
@@ -92,7 +99,7 @@ function RUF.PowerUpdate(self, event, unit)
 
 	-- Set Statusbar Value
 	element:SetMinMaxValues(0, max)
-	if(disconnected) then
+	if (disconnected) then
 		element:SetValue(max)
 	else
 		element:SetValue(cur)
@@ -118,7 +125,7 @@ function RUF.PowerUpdateOptions(self)
 	local Bar = self
 	local Border = self.Border
 
-	local Texture = LSM:Fetch('statusbar', RUF.db.profile.Appearance.Bars.Power.Texture)
+	local Texture = LSM:Fetch("statusbar", RUF.db.profile.Appearance.Bars.Power.Texture)
 	Bar.Smooth = RUF.db.profile.unit[unit].Frame.Bars.Power.Animate
 	Bar.frequentUpdates = true
 	Bar.hideAtZero = RUF.db.profile.unit[unit].Frame.Bars.Power.Enabled == 1
@@ -130,10 +137,13 @@ function RUF.PowerUpdateOptions(self)
 
 	-- Border
 	local offset = RUF.db.profile.Appearance.Bars.Power.Border.Offset or 0
-	Border:SetPoint('TOPLEFT',Bar,'TOPLEFT',-offset,offset)
-	Border:SetPoint('BOTTOMRIGHT',Bar,'BOTTOMRIGHT',offset,-offset)
+	Border:SetPoint("TOPLEFT", Bar, "TOPLEFT", -offset, offset)
+	Border:SetPoint("BOTTOMRIGHT", Bar, "BOTTOMRIGHT", offset, -offset)
 	Border:SetFrameLevel(17)
-	Border:SetBackdrop({edgeFile = LSM:Fetch('border', RUF.db.profile.Appearance.Bars.Power.Border.Style.edgeFile), edgeSize = RUF.db.profile.Appearance.Bars.Power.Border.Style.edgeSize})
+	Border:SetBackdrop({
+		edgeFile = LSM:Fetch("border", RUF.db.profile.Appearance.Bars.Power.Border.Style.edgeFile),
+		edgeSize = RUF.db.profile.Appearance.Bars.Power.Border.Style.edgeSize
+	})
 	local borderr, borderg, borderb = unpack(RUF.db.profile.Appearance.Bars.Power.Border.Color)
 	Border:SetBackdropBorderColor(borderr, borderg, borderb, RUF.db.profile.Appearance.Bars.Power.Border.Alpha)
 
@@ -147,6 +157,6 @@ function RUF.PowerUpdateOptions(self)
 	if RUF.db.profile.unit[unit].Frame.Bars.Power.Enabled == 0 then
 		self:Hide()
 	else
-		self.__owner:EnableElement('Power')
+		self.__owner:EnableElement("Power")
 	end
 end

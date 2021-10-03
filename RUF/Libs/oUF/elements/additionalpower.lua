@@ -174,6 +174,7 @@ local function ElementEnable(self)
 	if element.PostUpdateVisibility then
 		element:PostUpdateVisibility(true, not element.isEnabled)
 	end
+
 	element.isEnabled = true
 
 	Path(self, 'ElementEnable', 'player', ADDITIONAL_POWER_BAR_NAME)
@@ -189,6 +190,7 @@ local function ElementDisable(self)
 	if element.PostUpdateVisibility then
 		element:PostUpdateVisibility(false, element.isEnabled)
 	end
+
 	element.isEnabled = nil
 
 	Path(self, 'ElementDisable', 'player', ADDITIONAL_POWER_BAR_NAME)

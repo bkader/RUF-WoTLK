@@ -1,25 +1,27 @@
 assert(RUF, "RUF not found!")
 local RUF = RUF
-local LSM = LibStub('LibSharedMedia-3.0')
+local LSM = LibStub("LibSharedMedia-3.0")
 local _, ns = ...
 local oUF = ns.oUF
 
 local function DrawRainbow(element)
-	local a,b,c,x,y,z = RUF:GetRainbow()
-	element:GetStatusBarTexture():SetGradient('HORIZONTAL', a, b, c, x, y, z)
+	local a, b, c, x, y, z = RUF:GetRainbow()
+	element:GetStatusBarTexture():SetGradient("HORIZONTAL", a, b, c, x, y, z)
 end
 
 function RUF.HealthUpdateColor(element, unit, cur, max)
-	if not element then return end
-	if not element.__owner then return end
-	local r, g, b = RUF:GetBarColor(element, unit, 'Health', 'Health', cur)
+	if not element then
+		return
+	end
+	if not element.__owner then
+		return
+	end
+	local r, g, b = RUF:GetBarColor(element, unit, "Health", "Health", cur)
 
 	-- Create Ticker per element because that's probably better than looping through all oUF objects to check if it should be enabled for those.
 	if RUF.db.profile.unit[element.__owner.frame].Frame.Bars.Health.rainbow.enabled then
 		if not element.rainbowTimer then
-			element.rainbowTimer = RUF.NewTicker(0.001, function()
-				DrawRainbow(element)
-			end)
+			element.rainbowTimer = RUF.NewTicker(0.001, function() DrawRainbow(element) end)
 		end
 		if not RUF.rainbowTicker then -- If no elements are using the Rainbow Mode, there's no point in having the rgb values for rainbow mode to continually update.
 			RUF.rainbowTicker = RUF.NewTicker(0.001, RUF.UpdateRainbow)
@@ -29,7 +31,7 @@ function RUF.HealthUpdateColor(element, unit, cur, max)
 			element.rainbowTimer:Cancel()
 			element.rainbowTimer = nil
 		end
-		element:SetStatusBarColor(r,g,b)
+		element:SetStatusBarColor(r, g, b)
 	end
 
 	-- Update background
@@ -38,15 +40,16 @@ function RUF.HealthUpdateColor(element, unit, cur, max)
 	if RUF.db.profile.Appearance.Bars.Health.Background.UseBarColor == false then
 		r, g, b = unpack(RUF.db.profile.Appearance.Bars.Health.Background.CustomColor)
 	end
-	element.__owner.Background.Base.Texture:SetVertexColor(r*bgMult, g*bgMult, b*bgMult, a)
-
+	element.__owner.Background.Base.Texture:SetVertexColor(r * bgMult, g * bgMult, b * bgMult, a)
 end
 
 function RUF.HealthUpdate(self, event, unit)
-	if(not unit or self.unit ~= unit) then return end
+	if (not unit or self.unit ~= unit) then
+		return
+	end
 	local element = self.Health
 
-	if(element.PreUpdate) then
+	if (element.PreUpdate) then
 		element:PreUpdate(unit)
 	end
 
@@ -58,26 +61,26 @@ function RUF.HealthUpdate(self, event, unit)
 	element.disconnected = disconnected
 	element.tapped = tapped
 
-	if(disconnected) then
+	if (disconnected) then
 		element:SetValue(max)
 	else
 		element:SetValue(cur)
 	end
 
 	if RUF.db.global.TestMode == true then
-		cur = math.random(max /4, max - (max/4))
+		cur = math.random(max / 4, max - (max / 4))
 		element:SetValue(cur)
 	end
 
 	element:UpdateColor(unit, cur, max)
 
-	if(element.PostUpdate) then
+	if (element.PostUpdate) then
 		return element:PostUpdate(unit, cur, max)
 	end
 end
 
 function RUF.SetHealthBar(self, unit)
-	local texture = LSM:Fetch('statusbar', RUF.db.profile.Appearance.Bars.Health.Texture)
+	local texture = LSM:Fetch("statusbar", RUF.db.profile.Appearance.Bars.Health.Texture)
 	local Bar = RUF.StatusBarPrototype(nil, self)
 
 	-- Bar
@@ -90,7 +93,8 @@ function RUF.SetHealthBar(self, unit)
 	Bar.colorHealth = true -- BaseColor, always enabled, so if none of the other colors match, it falls back to this.
 	Bar.Smooth = RUF.db.profile.unit[unit].Frame.Bars.Health.Animate
 	Bar.colorRainbow = RUF.db.profile.unit[self.frame].Frame.Bars.Health.rainbow.enabled
-	Bar.frequentUpdates = true--RUF.Client == 2 -- UNIT_HEALTH_FREQUENT removed from 9.0, use it for Classic though.
+	Bar.frequentUpdates = true
+	Bar.texture = texture
 	Bar:SetStatusBarTexture(texture)
 	Bar:SetAllPoints(self)
 	Bar:SetFrameLevel(11)
@@ -102,7 +106,7 @@ end
 
 function RUF.HealthUpdateOptions(self)
 	local unit = self.__owner.frame
-	local texture = LSM:Fetch('statusbar', RUF.db.profile.Appearance.Bars.Health.Texture)
+	local texture = LSM:Fetch("statusbar", RUF.db.profile.Appearance.Bars.Health.Texture)
 	local Bar = self
 
 	Bar.colorClass = RUF.db.profile.Appearance.Bars.Health.Color.Class
@@ -114,7 +118,7 @@ function RUF.HealthUpdateOptions(self)
 	Bar.colorHealth = true -- BaseColor, always enabled, so if none of the other colors match, it falls back to this.
 	Bar.Smooth = RUF.db.profile.unit[unit].Frame.Bars.Health.Animate
 	Bar.colorRainbow = RUF.db.profile.unit[unit].Frame.Bars.Health.rainbow.enabled
-	Bar.frequentUpdates = true--RUF.Client == 2 -- UNIT_HEALTH_FREQUENT removed from 9.0, use it for Classic though.
+	Bar.frequentUpdates = true
 	Bar:SetStatusBarTexture(texture)
 	Bar:SetAllPoints(self.__owner)
 	Bar:SetFrameLevel(10)

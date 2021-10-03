@@ -34,20 +34,20 @@ function RUF_Options.Colors()
 		[1] = _G['RAGE'] or RAGE,
 		[2] = _G['FOCUS'] or FOCUS,
 		[3] = _G['ENERGY'] or ENERGY,
-		[6] = _G['RUNIC_POWER'] or RUNIC_POWER,
-		[14] = _G['COMBO_POINTS'] or L["Combat Points"]
+		[4] = _G['COMBO_POINTS'] or L["Combat Points"],
+		[6] = _G['RUNIC_POWER'] or RUNIC_POWER
 	}
 	local classData = {
-		[0] = GetClassInfo("DEATHKNIGHT"), -- Death Knight
-		[2] = GetClassInfo("DRUID"), -- Druid
-		[3] = GetClassInfo("HUNTER"), -- Hunter
-		[4] = GetClassInfo("MAGE"), -- Mage
-		[6] = GetClassInfo("PALADIN"), -- Paladin
-		[7] = GetClassInfo("PRIEST"), -- Priest
-		[8] = GetClassInfo("ROGUE"), -- Rogue
-		[9] = GetClassInfo("SHAMAN"), -- Shaman
-		[10] = GetClassInfo("WARLOCK"), -- Warlock
-		[11] = GetClassInfo("WARRIOR"), -- Warrior
+		[1] = {GetClassInfo(1)}, -- Warrior
+		[2] = {GetClassInfo(2)}, -- Paladin
+		[3] = {GetClassInfo(3)}, -- Hunter
+		[4] = {GetClassInfo(4)}, -- Rogue
+		[5] = {GetClassInfo(5)}, -- Priest
+		[6] = {GetClassInfo(6)}, -- Death Knight
+		[7] = {GetClassInfo(7)}, -- Shaman
+		[8] = {GetClassInfo(8)}, -- Mage
+		[9] = {GetClassInfo(9)}, -- Warlock
+		[11] = {GetClassInfo(11)}, -- Druid
 	}
 	local Colors = {
 		name = L["Colors"],
@@ -168,28 +168,23 @@ function RUF_Options.Colors()
 			},
 		},
 	}
-	for i=0,11 do
+	for i=1,11 do
 		if classData[i] then
-			Colors.args.classColors.args[classData[i]['classFile']] = {
-				name = classData[i]['className'],
+			Colors.args.classColors.args[classData[i][2]] = {
+				name = classData[i][1],
 				type = 'color',
 				order = 1,
-				hidden = function()
-					if(CUSTOM_CLASS_COLORS) and RUF.db.profile.Appearance.Colors.UseClassColors then
-						return true
-					end
-				end, -- !ClassColors takes precedent.
 				get = function(info)
-					return unpack(RUF.db.profile.Appearance.Colors.ClassColors[classData[i]['classFile']])
+					return unpack(RUF.db.profile.Appearance.Colors.ClassColors[classData[i][2]])
 				end,
 				set = function(info, r,g,b)
-					RUF.db.profile.Appearance.Colors.ClassColors[classData[i]['classFile']] = {r,g,b}
+					RUF.db.profile.Appearance.Colors.ClassColors[classData[i][2]] = {r,g,b}
 					RUF:OptionsUpdateAllBars()
 				end,
 			}
 		end
 	end
-	for i = 0, 14 do
+	for i = 0, 6 do
 		local power = Powers[i]
 		if power then
 			Colors.args.powerColors.args[power] = {

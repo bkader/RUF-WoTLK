@@ -586,11 +586,6 @@ local function Enable(self, unit)
 			element:SetStatusBarTexture([[Interface\TargetingFrame\UI-StatusBar]])
 		end
 
-		local spark = element.Spark
-		if(spark and spark:IsObjectType('Texture') and not spark:GetTexture()) then
-			spark:SetTexture([[Interface\CastingBar\UI-CastingBar-Spark]])
-		end
-
 		local shield = element.Shield
 		if(shield and shield:IsObjectType('Texture') and not shield:GetTexture()) then
 			shield:SetTexture([[Interface\CastingBar\UI-CastingBar-Small-Shield]])

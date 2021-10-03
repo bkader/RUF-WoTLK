@@ -81,6 +81,7 @@ local GetSpellInfo = GetSpellInfo
 local UnitAura = UnitAura
 local UnitIsUnit = UnitIsUnit
 local floor, min = math.floor, math.min
+-- GLOBALS: GameTooltip
 
 local function UpdateTooltip(self)
 	GameTooltip:SetUnitAura(self:GetParent().__owner.unit, self:GetID(), self.filter)
@@ -166,6 +167,7 @@ local function updateIcon(element, unit, index, offset, filter, isDebuff, visibl
 			count, debuffType, duration, expiration, caster, isStealable, shouldConsolidate = 5, 'Magic', 0, 60, 'player', nil, nil
 		end
 	end
+	-- end Block
 
 	if(name) then
 		local position = visible + offset + 1

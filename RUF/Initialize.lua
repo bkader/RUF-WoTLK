@@ -47,8 +47,6 @@ RUF.frameList.groupFrames = groupFrames
 RUF.frameList.headers = headers
 
 function RUF:OnInitialize()
-	RUF.Variant = variant or 1
-
 	self.db = LibStub('AceDB-3.0'):New('RUFDB', RUF.Layout.cfg, true) -- Setup Saved Variables
 
 	local LibDualSpec = LibStub('LibDualSpec-1.0', true)
@@ -91,20 +89,30 @@ function RUF:OnInitialize()
 	--project-revision
 	RUF.db.global.Version = string.match(GetAddOnMetadata('RUF','Version'),'%d+')
 
-	if not self.db.profiles then
+	if not RUF.db.profiles then
 		RUF.FirstRun = true
-		self.db.profiles = {}
+		RUF.db.profiles = {}
 		for i = 1,#includedLayouts do
-			self.db.profiles[includedLayouts[i]] = RUF.Layout[includedLayouts[i]]
+			RUF.db.profiles[includedLayouts[i]] = RUF.Layout[includedLayouts[i]]
 		end
 	else
 		for i = 1,#includedLayouts do
-			if not self.db.profiles[includedLayouts[i]] then
-				self.db.profiles[includedLayouts[i]] = RUF.Layout[includedLayouts[i]]
+			if not RUF.db.profiles[includedLayouts[i]] then
+				RUF.db.profiles[includedLayouts[i]] = RUF.Layout[includedLayouts[i]]
 			end
 		end
 	end
 
+	RUF.playerClass = RUF.playerClass or select(2, UnitClass("player"))
+
+	-- remove buggy SetFocus
+	for k, v in pairs(UnitPopupMenus) do
+		for x, y in pairs(v) do
+			if y == "SET_FOCUS" or y == "CLEAR_FOCUS" or y == "LOCK_FOCUS_FRAME" or y == "UNLOCK_FOCUS_FRAME" or (RUF.playerClass == "HUNTER" and y == "PET_DISMISS") then
+				table.remove(UnitPopupMenus[k], x)
+			end
+		end
+	end
 end
 
 function RUF:ChatCommand(input)

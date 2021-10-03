@@ -1,7 +1,7 @@
 assert(RUF, "RUF not found!")
 local RUF = RUF
 local SA = LibStub("SpecializedAbsorbs-1.0", true)
-local LSM = LibStub('LibSharedMedia-3.0')
+local LSM = LibStub("LibSharedMedia-3.0")
 local _, ns = ...
 local oUF = ns.oUF
 
@@ -10,9 +10,9 @@ local UnitGetTotalAbsorbs = function(unit)
 end
 
 function RUF.SetAbsorbBar(self, unit)
-	local Texture = LSM:Fetch('statusbar', RUF.db.profile.Appearance.Bars.Absorb.Texture)
+	local Texture = LSM:Fetch("statusbar", RUF.db.profile.Appearance.Bars.Absorb.Texture)
 	local Bar = RUF.StatusBarPrototype(nil, self)
-	local Border = CreateFrame('Frame', nil, Bar)
+	local Border = CreateFrame("Frame", nil, Bar)
 	local Background = Bar.bg
 
 	-- Bar
@@ -45,15 +45,15 @@ function RUF.SetAbsorbBar(self, unit)
 end
 
 function RUF.AbsorbUpdate(self, event, unit)
-	if(self.unit ~= unit) then return end
-	if (RUF.db.profile.Appearance.Bars.Absorb.Type == 0) or (RUF.db.profile.unit[self.frame].Frame.Bars.Absorb.Enabled == 0) then
-		self:DisableElement('Absorb')
+	if self.unit ~= unit then return end
+	if RUF.db.profile.Appearance.Bars.Absorb.Type == 0 or RUF.db.profile.unit[self.frame].Frame.Bars.Absorb.Enabled == 0 then
+		self:DisableElement("Absorb")
 		return
 	end
 
 	local element = self.Absorb
 
-	if(element.PreUpdate) then
+	if element.PreUpdate then
 		element:PreUpdate(unit)
 	end
 
@@ -67,13 +67,13 @@ function RUF.AbsorbUpdate(self, event, unit)
 
 	element:SetMinMaxValues(0, maxHealth)
 	element:SetValue(absorb)
-	local r, g, b = RUF:GetBarColor(element, unit, 'Absorb')
+	local r, g, b = RUF:GetBarColor(element, unit, "Absorb")
 	local a = RUF.db.profile.Appearance.Bars.Absorb.Color.Alpha
 	local barMult = RUF.db.profile.Appearance.Bars.Absorb.Color.Multiplier
 	if RUF.db.profile.Appearance.Bars.Absorb.Type == 1 then
 		element:SetAlpha(a)
 	end
-	element:SetStatusBarColor(r*barMult, g*barMult, b*barMult)
+	element:SetStatusBarColor(r * barMult, g * barMult, b * barMult)
 
 	if element.hideAtZero == true then
 		if absorb < 1 then
@@ -87,7 +87,7 @@ function RUF.AbsorbUpdate(self, event, unit)
 		end
 	end
 
-	if(element.PostUpdate) then
+	if element.PostUpdate then
 		return element:PostUpdate(unit, absorb)
 	end
 end
@@ -96,7 +96,7 @@ function RUF.AbsorbUpdateOptions(self)
 	local unit = self.__owner.frame
 	local Bar = self
 
-	local Texture = LSM:Fetch('statusbar', RUF.db.profile.Appearance.Bars.Absorb.Texture)
+	local Texture = LSM:Fetch("statusbar", RUF.db.profile.Appearance.Bars.Absorb.Texture)
 	Bar.colorClass = RUF.db.profile.Appearance.Bars.Absorb.Color.Class
 	Bar.colorDisconnected = RUF.db.profile.Appearance.Bars.Absorb.Color.Disconnected
 	Bar.colorSmooth = RUF.db.profile.Appearance.Bars.Absorb.Color.Percentage
@@ -117,9 +117,9 @@ function RUF.AbsorbUpdateOptions(self)
 	end
 
 	self:ForceUpdate()
-	if (RUF.db.profile.Appearance.Bars.Absorb.Type == 0) or (RUF.db.profile.unit[unit].Frame.Bars.Absorb.Enabled == 0) then
+	if RUF.db.profile.Appearance.Bars.Absorb.Type == 0 or RUF.db.profile.unit[unit].Frame.Bars.Absorb.Enabled == 0 then
 		self:Hide()
 	else
-		self.__owner:EnableElement('Absorb')
+		self.__owner:EnableElement("Absorb")
 	end
 end

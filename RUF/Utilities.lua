@@ -602,7 +602,7 @@ function RUF.ToggleFrameLock(status)
 				end)
 
 				MoveBG:SetScript('OnMouseUp', function(MoveBG)
-					anchorFrom2, anchorFrame2, anchorTo2, x2, y2 = frameName:GetPoint()
+					x2, y2 = select(4, frameName:GetPoint())
 					frameName:StopMovingOrSizing()
 					MoveBG:StopMovingOrSizing()
 					x3 = x2-x1

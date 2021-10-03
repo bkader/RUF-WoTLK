@@ -1,23 +1,28 @@
 assert(RUF, "RUF not found!")
 local RUF = RUF
-local L = LibStub('AceLocale-3.0'):GetLocale('RUF')
-local LSM = LibStub('LibSharedMedia-3.0')
+local L = LibStub("AceLocale-3.0"):GetLocale("RUF")
+local LSM = LibStub("LibSharedMedia-3.0")
 local _, ns = ...
 local oUF = ns.oUF
 local UnitCastingInfo = UnitCastingInfo
 local UnitChannelInfo = UnitChannelInfo
 
 local function onUpdate(self, elapsed)
-	if self.Enabled ~= true then self:Hide() return end
+	if self.Enabled ~= true then
+		self:Hide()
+		return
+	end
 	elapsed = elapsed or 0
 	self.updateThrottle = self.updateThrottle or 0
 	self.updateThrottle = self.updateThrottle + elapsed
 	local fps = GetFramerate()
-	local limit = 1/(fps*0.9)
+	local limit = 1 / (fps * 0.9)
 	if fps < 60 then
 		limit = 0
 	end
-	if self.updateThrottle < limit then return end
+	if self.updateThrottle < limit then
+		return
+	end
 	local add = self.updateThrottle
 	self.updateThrottle = 0
 
@@ -35,132 +40,111 @@ local function onUpdate(self, elapsed)
 			if unitProfile.Time.Enabled then
 				local textStyle = unitProfile.Time.Style or 1
 				if textStyle == 1 then
-					self.Time:SetFormattedText('%.1f', duration)
+					self.Time:SetFormattedText("%.1f", duration)
 				elseif textStyle == 2 then
 					local remaining = 30 - duration
-					self.Time:SetFormattedText('%.1f', remaining)
+					self.Time:SetFormattedText("%.1f", remaining)
 				elseif textStyle == 3 then
-					self.Time:SetFormattedText('%.1f/%.1f', duration, 30)
+					self.Time:SetFormattedText("%.1f/%.1f", duration, 30)
 				end
 			else
-				self.Time:SetText('')
+				self.Time:SetText("")
 			end
 			if unitProfile.Text.Enabled then
-				self.Text:SetText(L['Cast Bar'] .. ' - ' .. L[self.__owner.frame])
+				self.Text:SetText(L["Cast Bar"] .. " - " .. L[self.__owner.frame])
 			else
-				self.Text:SetText('')
+				self.Text:SetText("")
 			end
 		else
 			self.testDuration = 0
 		end
-
-	elseif(self.casting) then
+	elseif self.casting then
 		local duration = self.duration + add
-		if(duration >= self.max) then
+		if duration >= self.max then
 			self.casting = nil
 			self:Hide()
 
-			if(self.PostCastStop) then self:PostCastStop(self.__owner.unit) end
+			if self.PostCastStop then
+				self:PostCastStop(self.__owner.unit)
+			end
 			return
 		end
 
-		if(self.Time) then
+		if self.Time then
 			if unitProfile.Time.Enabled then
 				local textStyle = unitProfile.Time.Style or 1
 				if textStyle == 1 then
 					if self.delay ~= 0 then
-						self.Time:SetFormattedText('%.1f|cffff0000-%.1f|r', duration, self.delay)
+						self.Time:SetFormattedText("%.1f|cffff0000-%.1f|r", duration, self.delay)
 					else
-						self.Time:SetFormattedText('%.1f', duration)
+						self.Time:SetFormattedText("%.1f", duration)
 					end
 				elseif textStyle == 2 then
 					local remaining = self.max - duration
 					if self.delay ~= 0 then
-						self.Time:SetFormattedText('%.1f|cffff0000+%.1f|r', remaining, self.delay)
+						self.Time:SetFormattedText("%.1f|cffff0000+%.1f|r", remaining, self.delay)
 					else
-						self.Time:SetFormattedText('%.1f', remaining)
+						self.Time:SetFormattedText("%.1f", remaining)
 					end
 				elseif textStyle == 3 then
 					if self.delay ~= 0 then
-						self.Time:SetFormattedText('%.1f|cffff0000-%.1f|r/%.1f', duration, self.delay, self.max)
+						self.Time:SetFormattedText("%.1f|cffff0000-%.1f|r/%.1f", duration, self.delay, self.max)
 					else
-						self.Time:SetFormattedText('%.1f/%.1f', duration, self.max)
+						self.Time:SetFormattedText("%.1f/%.1f", duration, self.max)
 					end
 				end
 			else
-				self.Time:SetText('')
+				self.Time:SetText("")
 			end
 		end
 
 		self.duration = duration
 		self:SetValue(duration)
-
-		if(self.Spark) then
-			local horiz = self.horizontal
-			local size = self[horiz and 'GetWidth' or 'GetHeight'](self)
-
-			local offset = (duration/self.max)*size
-			if(self:GetReverseFill()) then
-				offset = size - offset
-			end
-
-			self.Spark:SetPoint('CENTER', self, horiz and 'LEFT' or 'BOTTOM', horiz and offset or 0, horiz and 0 or offset)
-		end
-
-	elseif(self.channeling) then
+	elseif self.channeling then
 		local duration = self.duration - add
 
-		if(duration <= 0) then
+		if duration <= 0 then
 			self.channeling = nil
 			self:Hide()
 
-			if(self.PostChannelStop) then self:PostChannelStop(self.__owner.unit) end
+			if self.PostChannelStop then
+				self:PostChannelStop(self.__owner.unit)
+			end
 			return
 		end
 
-		if(self.Time) then
+		if self.Time then
 			if unitProfile.Time.Enabled then
 				local textStyle = unitProfile.Time.Style or 1
 				if textStyle == 1 then
 					local remaining = self.max - duration
 					if self.delay ~= 0 then
-						self.Time:SetFormattedText('%.1f|cffff0000-%.1f|r', remaining, self.delay)
+						self.Time:SetFormattedText("%.1f|cffff0000-%.1f|r", remaining, self.delay)
 					else
-						self.Time:SetFormattedText('%.1f', remaining)
+						self.Time:SetFormattedText("%.1f", remaining)
 					end
 				elseif textStyle == 2 then
 					if self.delay ~= 0 then
-						self.Time:SetFormattedText('%.1f|cffff0000+%.1f|r', duration, self.delay)
+						self.Time:SetFormattedText("%.1f|cffff0000+%.1f|r", duration, self.delay)
 					else
-						self.Time:SetFormattedText('%.1f', duration)
+						self.Time:SetFormattedText("%.1f", duration)
 					end
 				elseif textStyle == 3 then
 					local remaining = self.max - duration
 					if self.delay ~= 0 then
-						self.Time:SetFormattedText('%.1f|cffff0000-%.1f|r/%.1f', remaining, self.delay, self.max)
+						self.Time:SetFormattedText("%.1f|cffff0000-%.1f|r/%.1f", remaining, self.delay, self.max)
 					else
-						self.Time:SetFormattedText('%.1f/%.1f', remaining, self.max)
+						self.Time:SetFormattedText("%.1f/%.1f", remaining, self.max)
 					end
 				end
 			else
-				self.Time:SetText('')
+				self.Time:SetText("")
 			end
 		end
 
 		self.duration = duration
 		self:SetValue(duration)
-		if(self.Spark) then
-			local horiz = self.horizontal
-			local size = self[horiz and 'GetWidth' or 'GetHeight'](self)
-
-			local offset = (duration/self.max)*size
-			if(self:GetReverseFill()) then
-				offset = size - offset
-			end
-
-			self.Spark:SetPoint('CENTER', self, horiz and 'LEFT' or 'BOTTOM', horiz and offset or 0, horiz and 0 or offset)
-		end
-	elseif(self.holdTime > 0) then
+	elseif self.holdTime > 0 then
 		self.holdTime = self.holdTime - add
 	else
 		self.casting = nil
@@ -174,9 +158,9 @@ end
 function RUF.SetCastBar(self, unit)
 	local profileReference = RUF.db.profile.Appearance.Bars.Cast
 	local unitProfile = RUF.db.profile.unit[unit].Frame.Bars.Cast
-	local texture = LSM:Fetch('statusbar', profileReference.Texture)
+	local texture = LSM:Fetch("statusbar", profileReference.Texture)
 	local Bar = RUF.StatusBarPrototype(nil, self)
-	local Border = CreateFrame('Frame', nil, Bar)
+	local Border = CreateFrame("Frame", nil, Bar)
 	local Background = Bar.bg
 
 	-- Bar
@@ -193,81 +177,63 @@ function RUF.SetCastBar(self, unit)
 	Bar:SetWidth(unitProfile.Width)
 	Bar:SetHeight(unitProfile.Height)
 	Bar:SetClampedToScreen(true)
-	local anchorFrame
-	if unitProfile.Position.AnchorFrame == true then
-		anchorFrame = self
-	else
-		anchorFrame = 'UIParent'
-	end
-	Bar:SetPoint(
-		unitProfile.Position.AnchorFrom,
-		anchorFrame,
-		unitProfile.Position.AnchorTo,
-		unitProfile.Position.x,
-		unitProfile.Position.y
-	)
+	local anchorFrame = (unitProfile.Position.AnchorFrame == true) and self or "UIParent"
+	Bar:SetPoint(unitProfile.Position.AnchorFrom, anchorFrame, unitProfile.Position.AnchorTo, unitProfile.Position.x, unitProfile.Position.y)
 
 	-- Border
 	local offset = RUF.db.profile.Appearance.Bars.Cast.Border.Offset or 0
-	Border:SetPoint('TOPLEFT',Bar,'TOPLEFT',-offset,offset)
-	Border:SetPoint('BOTTOMRIGHT',Bar,'BOTTOMRIGHT',offset,-offset)
+	Border:SetPoint("TOPLEFT", Bar, "TOPLEFT", -offset, offset)
+	Border:SetPoint("BOTTOMRIGHT", Bar, "BOTTOMRIGHT", offset, -offset)
 	Border:SetFrameLevel(201)
-	Border:SetBackdrop({edgeFile = LSM:Fetch('border', profileReference.Border.Style.edgeFile), edgeSize = profileReference.Border.Style.edgeSize})
+	Border:SetBackdrop({
+		edgeFile = LSM:Fetch("border", profileReference.Border.Style.edgeFile),
+		edgeSize = profileReference.Border.Style.edgeSize
+	})
 	local borderr, borderg, borderb = unpack(profileReference.Border.Color)
 	Border:SetBackdropBorderColor(borderr, borderg, borderb, profileReference.Border.Alpha)
 
 	-- Background
 	local r, g, b = unpack(profileReference.Background.CustomColor)
 	local Multiplier = profileReference.Background.Multiplier
-	Background:SetTexture(LSM:Fetch('background', 'Solid'))
-	Background:SetVertexColor(r*Multiplier, g*Multiplier, b*Multiplier, profileReference.Background.Alpha)
+	Background:SetTexture(LSM:Fetch("background", "Solid"))
+	Background:SetVertexColor(r * Multiplier, g * Multiplier, b * Multiplier, profileReference.Background.Alpha)
 	Background:SetAllPoints(Bar)
 	Background.colorSmooth = false
 	Background:Show()
 
 	-- Text
-	local Time = Bar:CreateFontString(nil, 'OVERLAY', 'Raeli')
-	local Text = Bar:CreateFontString(nil, 'OVERLAY', 'Raeli')
+	local Time = Bar:CreateFontString(nil, "OVERLAY", "Raeli")
+	local Text = Bar:CreateFontString(nil, "OVERLAY", "Raeli")
 
-	if unitProfile.Fill == 'REVERSE' then
-		Time:SetPoint('LEFT', Bar, 4, 0)
-		Text:SetPoint('RIGHT', Bar, -4, 0)
+	if unitProfile.Fill == "REVERSE" then
+		Time:SetPoint("LEFT", Bar, 4, 0)
+		Text:SetPoint("RIGHT", Bar, -4, 0)
 	else
-		Time:SetPoint('RIGHT', Bar, -4, 0)
-		Text:SetPoint('LEFT', Bar, 4, 0)
+		Time:SetPoint("RIGHT", Bar, -4, 0)
+		Text:SetPoint("LEFT", Bar, 4, 0)
 	end
 
 	-- Time
-	local font = LSM:Fetch('font', unitProfile.Time.Font or 'RUF')
+	local font = LSM:Fetch("font", unitProfile.Time.Font or "RUF")
 	local size = unitProfile.Time.Size or 18
-	local outline = unitProfile.Time.Outline or 'OUTLINE'
+	local outline = unitProfile.Time.Outline or "OUTLINE"
 	local shadow = unitProfile.Time.Shadow or 1
 	Time:SetShadowColor(0, 0, 0, shadow)
 	Time:SetShadowOffset(1, -1)
 	Time:SetFont(font, size, outline)
 
 	-- Cast Text
-	font = LSM:Fetch('font', unitProfile.Text.Font or 'RUF')
+	font = LSM:Fetch("font", unitProfile.Text.Font or "RUF")
 	size = unitProfile.Text.Size or 18
-	outline = unitProfile.Text.Outline or 'OUTLINE'
+	outline = unitProfile.Text.Outline or "OUTLINE"
 	shadow = unitProfile.Text.Shadow or 1
 	Text:SetShadowColor(0, 0, 0, shadow)
 	Text:SetShadowOffset(1, -1)
 	Text:SetFont(font, size, outline)
 
-	-- Spark
-	-- local Spark = Bar:CreateTexture(nil, 'OVERLAY')
-	-- Spark:SetSize(10, unitProfile.Height*1.5)
-	-- Spark:SetBlendMode('ADD')
-
-	-- Icon
-	-- local Icon = Bar:CreateTexture(nil, 'OVERLAY')
-	-- Icon:SetSize(20, 20)
-	-- Icon:SetPoint('TOPLEFT', Bar, 'TOPLEFT')
-
 	-- Safe Zone
-	if unit == 'player' then
-		local SafeZone = Bar:CreateTexture(nil, 'OVERLAY')
+	if unit == "player" then
+		local SafeZone = Bar:CreateTexture(nil, "OVERLAY")
 		local sr, sg, sb = unpack(RUF.db.profile.Appearance.Bars.Cast.SafeZone.Color)
 		local sa = RUF.db.profile.Appearance.Bars.Cast.SafeZone.Alpha
 		SafeZone:SetVertexColor(sr, sg, sb, sa)
@@ -275,12 +241,11 @@ function RUF.SetCastBar(self, unit)
 	end
 
 	-- Register with oUF
+	Bar.texture = texture
 	Bar.Background = Background
 	Bar.Border = Border
 	Bar.Time = Time
 	Bar.Text = Text
-	-- Bar.Spark = Spark
-	-- Bar.Icon = Icon
 	self.Cast = Bar
 
 	self.Cast.OnUpdate = onUpdate
@@ -291,12 +256,15 @@ function RUF.SetCastBar(self, unit)
 	self.Cast.UpdateOptions = RUF.CastUpdateOptions
 	self.Cast.Enabled = RUF.db.profile.unit[unit].Frame.Bars.Cast.Enabled
 
-	r, g, b = RUF:GetBarColor(self.Cast, unit, 'Cast')
+	r, g, b = RUF:GetBarColor(self.Cast, unit, "Cast")
 	Bar:SetStatusBarColor(r, g, b)
 end
 
 function RUF.CastInterrupted(element, unit, name)
-	if element.Enabled ~= true then element:Hide() return end
+	if element.Enabled ~= true then
+		element:Hide()
+		return
+	end
 	local profileUnit = unit
 	if element.__owner.realUnit then
 		profileUnit = element.__owner.realUnit
@@ -310,7 +278,7 @@ function RUF.CastInterrupted(element, unit, name)
 	if notInterruptible and profileReference.ColorInterrupt.Enabled then
 		r, g, b = unpack(profileReference.ColorInterrupt.Color)
 	else
-		r, g, b = RUF:GetBarColor(element, profileUnit, 'Cast')
+		r, g, b = RUF:GetBarColor(element, profileUnit, "Cast")
 	end
 	element:SetStatusBarColor(r, g, b)
 	if element.SafeZone then
@@ -327,18 +295,21 @@ function RUF.CastInterrupted(element, unit, name)
 	end
 	bgMult = profileReference.Background.Multiplier
 	a = profileReference.Background.Alpha
-	element.Background:SetVertexColor(r*bgMult, g*bgMult, b*bgMult, a)
+	element.Background:SetVertexColor(r * bgMult, g * bgMult, b * bgMult, a)
 	if element.Text then
 		if unitProfile.Text.Enabled == true then
 			element.Text:SetText(name)
 		else
-			element.Text:SetText('')
+			element.Text:SetText("")
 		end
 	end
 end
 
 function RUF.CastUpdate(element, unit, name)
-	if element.Enabled ~= true then element:Hide() return end
+	if element.Enabled ~= true then
+		element:Hide()
+		return
+	end
 	local profileUnit = unit
 	if element.__owner.realUnit then
 		profileUnit = element.__owner.realUnit
@@ -352,7 +323,7 @@ function RUF.CastUpdate(element, unit, name)
 	if notInterruptible and profileReference.ColorInterrupt.Enabled then
 		r, g, b = unpack(profileReference.ColorInterrupt.Color)
 	else
-		r, g, b = RUF:GetBarColor(element, profileUnit, 'Cast')
+		r, g, b = RUF:GetBarColor(element, profileUnit, "Cast")
 	end
 	element:SetStatusBarColor(r, g, b)
 	if element.SafeZone then
@@ -369,18 +340,21 @@ function RUF.CastUpdate(element, unit, name)
 	end
 	bgMult = profileReference.Background.Multiplier
 	a = profileReference.Background.Alpha
-	element.Background:SetVertexColor(r*bgMult, g*bgMult, b*bgMult, a)
+	element.Background:SetVertexColor(r * bgMult, g * bgMult, b * bgMult, a)
 	if element.Text then
 		if unitProfile.Text.Enabled == true then
 			element.Text:SetText(name)
 		else
-			element.Text:SetText('')
+			element.Text:SetText("")
 		end
 	end
 end
 
 function RUF.ChannelUpdate(element, unit, name)
-	if element.Enabled ~= true then element:Hide() return end
+	if element.Enabled ~= true then
+		element:Hide()
+		return
+	end
 	local profileUnit = unit
 	if element.__owner.realUnit then
 		profileUnit = element.__owner.realUnit
@@ -394,7 +368,7 @@ function RUF.ChannelUpdate(element, unit, name)
 	if notInterruptible and profileReference.ColorInterrupt.Enabled then
 		r, g, b = unpack(profileReference.ColorInterrupt.Color)
 	else
-		r, g, b = RUF:GetBarColor(element, profileUnit, 'Cast')
+		r, g, b = RUF:GetBarColor(element, profileUnit, "Cast")
 	end
 	element:SetStatusBarColor(r, g, b)
 	if element.SafeZone then
@@ -411,12 +385,12 @@ function RUF.ChannelUpdate(element, unit, name)
 	end
 	bgMult = profileReference.Background.Multiplier
 	a = profileReference.Background.Alpha
-	element.Background:SetVertexColor(r*bgMult, g*bgMult, b*bgMult, a)
+	element.Background:SetVertexColor(r * bgMult, g * bgMult, b * bgMult, a)
 	if element.Text then
 		if unitProfile.Text.Enabled == true then
 			element.Text:SetText(name)
 		else
-			element.Text:SetText('')
+			element.Text:SetText("")
 		end
 	end
 end
@@ -432,14 +406,17 @@ function RUF.CastUpdateOptions(self)
 
 	-- Border
 	local offset = RUF.db.profile.Appearance.Bars.Cast.Border.Offset or 0
-	Border:SetPoint('TOPLEFT',Bar,'TOPLEFT',-offset,offset)
-	Border:SetPoint('BOTTOMRIGHT',Bar,'BOTTOMRIGHT',offset,-offset)
+	Border:SetPoint("TOPLEFT", Bar, "TOPLEFT", -offset, offset)
+	Border:SetPoint("BOTTOMRIGHT", Bar, "BOTTOMRIGHT", offset, -offset)
 	Border:SetFrameLevel(17)
-	Border:SetBackdrop({edgeFile = LSM:Fetch('border', profileReference.Border.Style.edgeFile), edgeSize = profileReference.Border.Style.edgeSize})
+	Border:SetBackdrop({
+		edgeFile = LSM:Fetch("border", profileReference.Border.Style.edgeFile),
+		edgeSize = profileReference.Border.Style.edgeSize
+	})
 	local borderr, borderg, borderb = unpack(profileReference.Border.Color)
 	Border:SetBackdropBorderColor(borderr, borderg, borderb, profileReference.Border.Alpha)
 
-	local texture = LSM:Fetch('statusbar', RUF.db.profile.Appearance.Bars.Cast.Texture)
+	local texture = LSM:Fetch("statusbar", RUF.db.profile.Appearance.Bars.Cast.Texture)
 	Bar:SetStatusBarTexture(texture)
 	Bar:SetFrameLevel(15)
 	Bar:SetFillStyle(unitProfile.Fill)
@@ -447,30 +424,29 @@ function RUF.CastUpdateOptions(self)
 	Bar:OnUpdate()
 
 	-- Text Position
-	if unitProfile.Fill == 'REVERSE' then
-		Time:SetPoint('LEFT', Bar, 4, 0)
-		Text:SetPoint('RIGHT', Bar, -4, 0)
+	if unitProfile.Fill == "REVERSE" then
+		Time:SetPoint("LEFT", Bar, 4, 0)
+		Text:SetPoint("RIGHT", Bar, -4, 0)
 	else
-		Time:SetPoint('RIGHT', Bar, -4, 0)
-		Text:SetPoint('LEFT', Bar, 4, 0)
+		Time:SetPoint("RIGHT", Bar, -4, 0)
+		Text:SetPoint("LEFT", Bar, 4, 0)
 	end
 
 	-- Time
-	local font = LSM:Fetch('font', unitProfile.Time.Font or 'RUF')
+	local font = LSM:Fetch("font", unitProfile.Time.Font or "RUF")
 	local size = unitProfile.Time.Size or 18
-	local outline = unitProfile.Time.Outline or 'OUTLINE'
+	local outline = unitProfile.Time.Outline or "OUTLINE"
 	local shadow = unitProfile.Time.Shadow or 1
 	Time:SetShadowColor(0, 0, 0, shadow)
 	Time:SetShadowOffset(1, -1)
 	Time:SetFont(font, size, outline)
 
 	-- Cast Text
-	font = LSM:Fetch('font', unitProfile.Text.Font or 'RUF')
+	font = LSM:Fetch("font", unitProfile.Text.Font or "RUF")
 	size = unitProfile.Text.Size or 18
-	outline = unitProfile.Text.Outline or 'OUTLINE'
+	outline = unitProfile.Text.Outline or "OUTLINE"
 	shadow = unitProfile.Text.Shadow or 1
 	Text:SetShadowColor(0, 0, 0, shadow)
 	Text:SetShadowOffset(1, -1)
 	Text:SetFont(font, size, outline)
-
 end

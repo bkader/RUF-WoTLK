@@ -104,7 +104,7 @@ local function Update(self, event, unit)
 		element:PreUpdate(unit)
 	end
 
-	local myIncomingHeal, allIncomingHeal, absorb, healAbsorb, health, maxHealth, otherIncomingHeal, hasOverHealAbsorb
+	local myIncomingHeal, allIncomingHeal, absorb, healAbsorb, health, maxHealth, otherIncomingHeal
 	local unitGUID = UnitGUID(unit)
 	local lookAhead = element.lookAhead or 5
 	myIncomingHeal = (HealComm:GetHealAmount(unitGUID, HealComm.ALL_HEALS, GetTime() + lookAhead, UnitGUID('player')) or 0) * (HealComm:GetHealModifier(unitGUID) or 1) or 0
@@ -114,7 +114,6 @@ local function Update(self, event, unit)
 	healAbsorb = 0
 	health, maxHealth = UnitHealth(unit), UnitHealthMax(unit)
 	allIncomingHeal = myIncomingHeal + otherIncomingHeal
-	hasOverHealAbsorb = false
 
 	local overflow = maxHealth * element.maxOverflow
 	if health + allIncomingHeal > overflow then
@@ -189,28 +188,8 @@ local function Update(self, event, unit)
 		element.healAbsorbBar:Show()
 	end
 
-	if(element.overHealAbsorb) then
-		if(hasOverHealAbsorb) then
-			element.overHealAbsorb:Show()
-		else
-			element.overHealAbsorb:Hide()
-		end
-	end
-
-	--[[ Callback: HealPrediction:PostUpdate(unit, myIncomingHeal, otherIncomingHeal, absorb, healAbsorb, hasOverHealAbsorb)
-	Called after the element has been updated.
-
-	* self				- the HealPrediction element
-	* unit				- the unit for which the update has been triggered (string)
-	* myIncomingHeal	- the amount of incoming healing done by the player (number)
-	* otherIncomingHeal - the amount of incoming healing done by others (number)
-	* absorb			- the amount of damage the unit can absorb without losing health (number)
-	* healAbsorb		- the amount of healing the unit can absorb without gaining health (number)
-	* hasOverAbsorb		- indicates if the amount of damage absorb is higher than the unit's missing health (boolean)
-	* hasOverHealAbsorb - indicates if the amount of heal absorb is higher than the unit's current health (boolean)
-	--]]
 	if(element.PostUpdate) then
-		return element:PostUpdate(unit, myIncomingHeal, otherIncomingHeal, absorb, healAbsorb, nil, hasOverHealAbsorb)
+		return element:PostUpdate(unit, myIncomingHeal, otherIncomingHeal, absorb, healAbsorb, nil, false)
 	end
 end
 
@@ -307,13 +286,6 @@ local function Enable(self)
 			end
 		end
 
-		if(element.overHealAbsorb) then
-			if(element.overHealAbsorb:IsObjectType('Texture') and not element.overHealAbsorb:GetTexture()) then
-				element.overHealAbsorb:SetTexture([[Interface\RaidFrame\Absorb-Overabsorb]])
-				element.overHealAbsorb:SetBlendMode('ADD')
-			end
-		end
-
 		return true
 	end
 end
@@ -339,10 +311,6 @@ local function Disable(self)
 
 		if(element.overAbsorb) then
 			element.overAbsorb:Hide()
-		end
-
-		if(element.overHealAbsorb) then
-			element.overHealAbsorb:Hide()
 		end
 
 		self:UnregisterEvent('UNIT_HEALTH_FREQUENT', Path)

@@ -47,11 +47,10 @@ function RUF.SetRunes(self, unit)
 		else
 			Bar:SetPoint("TOPLEFT", classPowerBar[i - 1], "TOPRIGHT", -1, 0)
 		end
-		-- Bar:SetPoint('TOPLEFT', self, 'TOPLEFT', ((i - 1)*size - ((i - 1 )*1)), 0)
 		Bar:SetFrameLevel(15)
 
 		-- Set Status Bar
-		--Bar:SetFillStyle(RUF.db.profile.unit[unit].Frame.Bars.Class.Fill)
+		Bar:SetFillStyle(RUF.db.profile.unit[unit].Frame.Bars.Class.Fill)
 		Bar:SetFrameLevel(16)
 		Bar:SetStatusBarTexture(texture)
 		local ir = (r * (((counter + colorAdd) * 6.6667) / 100))
@@ -64,24 +63,17 @@ function RUF.SetRunes(self, unit)
 		Border:SetPoint("TOPLEFT", Bar, "TOPLEFT", -offset, offset)
 		Border:SetPoint("BOTTOMRIGHT", Bar, "BOTTOMRIGHT", offset, -offset)
 		Border:SetFrameLevel(17)
-		Border:SetBackdrop(
-			{
-				edgeFile = LSM:Fetch("border", RUF.db.profile.Appearance.Bars.Class.Border.Style.edgeFile),
-				edgeSize = RUF.db.profile.Appearance.Bars.Class.Border.Style.edgeSize
-			}
-		)
+		Border:SetBackdrop({
+			edgeFile = LSM:Fetch("border", RUF.db.profile.Appearance.Bars.Class.Border.Style.edgeFile),
+			edgeSize = RUF.db.profile.Appearance.Bars.Class.Border.Style.edgeSize
+		})
 		local borderr, borderg, borderb = unpack(RUF.db.profile.Appearance.Bars.Class.Border.Color)
 		Border:SetBackdropBorderColor(borderr, borderg, borderb, RUF.db.profile.Appearance.Bars.Class.Border.Alpha)
 
 		-- Set Background
 		Background:SetAllPoints(Bar)
 		Background:SetTexture(LSM:Fetch("background", "Solid"))
-		Background:SetVertexColor(
-			r * bgMult,
-			g * bgMult,
-			b * bgMult,
-			RUF.db.profile.Appearance.Bars.Class.Background.Alpha
-		)
+		Background:SetVertexColor(r * bgMult, g * bgMult, b * bgMult, RUF.db.profile.Appearance.Bars.Class.Background.Alpha)
 
 		classPowerBar[i] = Bar
 		self.Runes[i] = Bar
@@ -180,17 +172,7 @@ function RUF.RunesUpdate(self, event)
 end
 
 function RUF.RunesUpdateColor(element, rune)
-	local r, g, b = unpack(RUF.db.profile.Appearance.Colors.PowerColors[classPowerData[uClass].classPowerID])
-	local spec = GetSpecialization() or 0
-	if spec == 1 then -- Blood
-		r, g, b = unpack(RUF.db.profile.Appearance.Colors.PowerColors[50])
-	elseif spec == 2 then -- Frost
-		r, g, b = unpack(RUF.db.profile.Appearance.Colors.PowerColors[51])
-	elseif spec == 3 then -- Unholy
-		r, g, b = unpack(RUF.db.profile.Appearance.Colors.PowerColors[52])
-	else -- no value returned yet?
-		r, g, b = unpack(RUF.db.profile.Appearance.Colors.PowerColors[classPowerData[uClass].classPowerID])
-	end
+	local r, g, b = unpack(RUF.db.profile.Appearance.Colors.PowerColors[5])
 	local bgMult = RUF.db.profile.Appearance.Bars.Class.Background.Multiplier
 	local colorAdd = RUF.db.profile.Appearance.Bars.Class.Color.SegmentMultiplier
 
@@ -249,7 +231,7 @@ function RUF.RunesUpdateOptions(self)
 		Bar:SetFrameLevel(15)
 
 		-- Set Status Bar
-		--Bar:SetFillStyle(RUF.db.profile.unit[unit].Frame.Bars.Class.Fill)
+		Bar:SetFillStyle(RUF.db.profile.unit[unit].Frame.Bars.Class.Fill)
 		Bar:SetFrameLevel(16)
 		Bar:SetStatusBarTexture(texture)
 		local ir = (r * (((counter + colorAdd) * 6.6667) / 100))
@@ -262,24 +244,17 @@ function RUF.RunesUpdateOptions(self)
 		Border:SetPoint("TOPLEFT", Bar, "TOPLEFT", -offset, offset)
 		Border:SetPoint("BOTTOMRIGHT", Bar, "BOTTOMRIGHT", offset, -offset)
 		Border:SetFrameLevel(17)
-		Border:SetBackdrop(
-			{
-				edgeFile = LSM:Fetch("border", RUF.db.profile.Appearance.Bars.Class.Border.Style.edgeFile),
-				edgeSize = RUF.db.profile.Appearance.Bars.Class.Border.Style.edgeSize
-			}
-		)
+		Border:SetBackdrop({
+			edgeFile = LSM:Fetch("border", RUF.db.profile.Appearance.Bars.Class.Border.Style.edgeFile),
+			edgeSize = RUF.db.profile.Appearance.Bars.Class.Border.Style.edgeSize
+		})
 		local borderr, borderg, borderb = unpack(RUF.db.profile.Appearance.Bars.Class.Border.Color)
 		Border:SetBackdropBorderColor(borderr, borderg, borderb, RUF.db.profile.Appearance.Bars.Class.Border.Alpha)
 
 		-- Set Background
 		Background:SetAllPoints(Bar)
 		Background:SetTexture(LSM:Fetch("background", "Solid"))
-		Background:SetVertexColor(
-			r * bgMult,
-			g * bgMult,
-			b * bgMult,
-			RUF.db.profile.Appearance.Bars.Class.Background.Alpha
-		)
+		Background:SetVertexColor(r * bgMult, g * bgMult, b * bgMult, RUF.db.profile.Appearance.Bars.Class.Background.Alpha)
 
 		self:UpdateColor(i)
 	end

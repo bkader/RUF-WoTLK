@@ -439,8 +439,12 @@ do
 			if unit == "player" then
 				return IsRaidLeader()
 			end
-
-			local rank = select(2, GetRaidRosterInfo(unit:match("%d+")))
+			local index = unit:match("%d+")
+			if not index then
+				unit = LibCompat.GetUnitIdFromGUID(UnitGUID(unit), "group")
+				index = unit and unit:match("%d+")
+			end
+			local rank = index and select(2, GetRaidRosterInfo(index))
 			return (rank and rank == 2)
 		end
 

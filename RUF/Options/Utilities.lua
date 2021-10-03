@@ -758,18 +758,18 @@ function RUF:OptionsUpdateFrame(singleFrame,groupFrame,header)
 				unitFrame:Disable()
 				if profileReference.Enabled == false then
 					headerFrame.visibility = 'hide'
-					headerFrame:SetAttribute('state-visibility',"hide")
+					RegisterStateDriver(headerFrame, 'visibility',"hide")
 					unitFrame:Hide()
 				else
 					headerFrame.visibility = 'show'
-					headerFrame:SetAttribute('state-visibility',"show")
+					RegisterStateDriver(headerFrame, 'visibility',"show")
 					unitFrame:Show()
 				end
 			else
 				if profileReference.Enabled == false then
 					unitFrame:Disable()
 					headerFrame.visibility = 'hide'
-					headerFrame:SetAttribute('state-visibility',"hide")
+					RegisterStateDriver(headerFrame, 'visibility',"hide")
 				else
 					unitFrame:Enable()
 					local showIn = '[group:party,nogroup:raid]show;hide'
@@ -780,7 +780,7 @@ function RUF:OptionsUpdateFrame(singleFrame,groupFrame,header)
 						showIn = '[@arena1,exists]show;[@arena2,exists]show;[@arena3,exists]show;' .. showIn
 					end
 					headerFrame.visibility = showIn
-					headerFrame:SetAttribute('state-visibility',headerFrame.visibility)
+					RegisterStateDriver(headerFrame, 'visibility',headerFrame.visibility)
 				end
 			end
 			unitFrame:ClearAllPoints()
@@ -928,7 +928,7 @@ function RUF:SpawnUnits()
 		local currentHeader = _G['oUF_RUF_' .. headers[i]]
 		currentHeader:SetAttribute('startingIndex', startingIndex + partyNum)
 		if currentHeader.Enabled then
-			currentHeader:SetAttribute('state-visibility','show')
+			RegisterStateDriver(currentHeader, 'visibility','show')
 		end
 	end
 
@@ -973,9 +973,9 @@ function RUF:RestoreUnits()
 		local currentHeader = _G['oUF_RUF_' .. headers[i]]
 		currentHeader:SetAttribute('startingIndex',1)
 		if currentHeader.Enabled then
-			currentHeader:SetAttribute('state-visibility',currentHeader.visibility)
+			RegisterStateDriver(currentHeader, 'visibility',currentHeader.visibility)
 		else
-			currentHeader:SetAttribute('state-visibility',"hide")
+			RegisterStateDriver(currentHeader, 'visibility',"hide")
 		end
 	end
 

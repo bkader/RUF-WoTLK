@@ -70,7 +70,7 @@ local function SetupFrames(self, unit)
 			RUF.PartyTargetMonitor:RegisterEvent('PARTY_MEMBERS_CHANGED')
 			RUF.PartyTargetMonitor:RegisterEvent('RAID_ROSTER_UPDATE')
 			RUF.PartyTargetMonitor:RegisterEvent('PLAYER_ENTERING_WORLD')
-			RUF.PartyTargetMonitor:SetScript('OnEvent',RUF.TogglePartyChildrenGroupStatus)
+			RUF.PartyTargetMonitor:SetScript('OnEvent', RUF.TogglePartyChildrenGroupStatus)
 		end
 	end
 
@@ -273,17 +273,14 @@ function RUF:OnEnable()
 				profile.Frame.Position.x,
 				profile.Frame.Position.y)
 
-			local partyNum = 0
-			if IsInGroup() then
-				partyNum = GetNumSubgroupMembers()
-			end
+			local partyNum = GetNumSubgroupMembers()
 			local currentHeader = _G['oUF_RUF_' .. headers[i]]
 			currentHeader.Enabled = profile.Enabled
 			currentHeader:SetAttribute('startingIndex', startingIndex + partyNum)
 			currentHeader:Show()
 			currentHeader:SetAttribute('startingIndex', 1)
 			currentHeader:SetClampedToScreen(true)
-			currentHeader:SetAttribute('state-visibility', currentHeader.visibility)
+			RegisterStateDriver(currentHeader, 'visibility', currentHeader.visibility)
 			if profile.Enabled == false then
 				for j = 1, 5 do
 					local disableFrame = _G['oUF_RUF_' .. headers[i] .. 'UnitButton' .. j]
@@ -353,7 +350,7 @@ function RUF:OnEnable()
 
 				if profile == 'partypet' or profile == 'partytarget' then
 					local unitType = string.gsub(profile, 'party', '')
-					if RUF.db.profile.unit.party.showPlayer then
+					if RUF.db.profile.unit.party.showPlayer and unitFrame then
 						if u == 1 then
 							unitFrame:SetAttribute('unit', unitType)
 							unitFrame.unit = unitType
@@ -379,7 +376,7 @@ function RUF:OnEnable()
 						prefix = ''
 						suffix = 'target'
 					end
-					if RUF.db.profile.unit.party.showPlayer then
+					if RUF.db.profile.unit.party.showPlayer and unitFrame then
 						if u == 1 then
 							unitFrame:SetAttribute('unit', unitType)
 							unitFrame.unit = unitType

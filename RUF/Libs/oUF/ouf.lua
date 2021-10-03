@@ -88,15 +88,6 @@ local function onAttributeChanged(self, name, value)
 		if(not self.onlyProcessChildren) then
 			updateActiveUnit(self, 'OnAttributeChanged')
 		end
---[[
-		if(self.unit and self.unit == value) then
-			return
-		else
-			if(self.hasChildren) then
-				iterateChildren(self:GetChildren())
-			end
-		end
-]]
 	end
 end
 
@@ -435,6 +426,7 @@ local function initObject(unit, style, styleFunc, header, ...)
 			object:PostCreate(object)
 		end
 
+		-- Make Clique kinda happy
 		_G.ClickCastFrames = ClickCastFrames or {}
 		ClickCastFrames[object] = true
 	end

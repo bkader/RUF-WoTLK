@@ -6,7 +6,7 @@ local oUF = ns.oUF
 
 local HealComm = LibStub("LibHealComm-4.0")
 
-function RUF.HealPredictionUpdateColor(element, unit, myIncomingHeal, otherIncomingHeal, absorb, healAbsorb, hasOverAbsorb, hasOverHealAbsorb)
+function RUF.HealPredictionUpdateColor(element, unit, myIncomingHeal, otherIncomingHeal, absorb)
 	local cur = UnitHealth(unit)
 	if element.myBar then
 		local r, g, b = RUF:GetBarColor(element, unit, "HealPrediction", "Player", cur)
@@ -22,20 +22,17 @@ function RUF.HealPredictionUpdateColor(element, unit, myIncomingHeal, otherIncom
 	local HealComm = LibStub("LibHealComm-4.0", true)
 	local unitGUID = UnitGUID(unit)
 	local lookAhead = element.lookAhead or 5
-	local healTime, healFrom, healAmount =
-		HealComm:GetNextHealAmount(unitGUID, HealComm.CASTED_HEALS, GetTime() + lookAhead)
-	if not healTime then
-		return
-	end
+	local healTime, healFrom, healAmount = HealComm:GetNextHealAmount(unitGUID, HealComm.CASTED_HEALS, GetTime() + lookAhead)
+	if not healTime then return end
 	local nextHealer
 	local anchorFrom, anchorTo, anchorTexture
-	if element.__owner.Health.FillStyle == "REVERSE" then -- Right
+	if element.__owner.Health.FillStyle == "REVERSE" then
 		anchorFrom = "RIGHT"
 		anchorTo = "LEFT"
 	elseif element.__owner.Health.FillStyle == "CENTER" then
 		anchorFrom = "CENTER"
 		anchorTo = "CENTER"
-	else -- Left
+	else
 		anchorFrom = "LEFT"
 		anchorTo = "RIGHT"
 	end
@@ -76,14 +73,13 @@ function RUF.SetHealPrediction(self, unit)
 	PlayerHeals = RUF.StatusBarPrototype(nil, Health)
 	OtherHeals = RUF.StatusBarPrototype(nil, Health)
 	local anchorFrom, anchorTo
-	if Health.FillStyle == "REVERSE" then -- Right
+	if Health.FillStyle == "REVERSE" then
 		anchorFrom = "RIGHT"
 		anchorTo = "LEFT"
 	elseif Health.FillStyle == "CENTER" then
-		-- TODO: Create a bar on either side of the health bar and split value in two to make it grow outwards.
 		anchorFrom = "CENTER"
 		anchorTo = "CENTER"
-	else -- Left
+	else
 		anchorFrom = "LEFT"
 		anchorTo = "RIGHT"
 	end
@@ -133,14 +129,13 @@ function RUF.HealPredictionUpdateOptions(self)
 	local OtherHeals = self.otherBar
 
 	local anchorFrom, anchorTo, anchorTexture
-	if self.__owner.Health.FillStyle == "REVERSE" then -- Right
+	if self.__owner.Health.FillStyle == "REVERSE" then
 		anchorFrom = "RIGHT"
 		anchorTo = "LEFT"
 	elseif self.__owner.Health.FillStyle == "CENTER" then
-		-- TODO: Create a bar on either side of the health bar and split value in two to make it grow outwards.
 		anchorFrom = "CENTER"
 		anchorTo = "CENTER"
-	else -- Left
+	else
 		anchorFrom = "LEFT"
 		anchorTo = "RIGHT"
 	end

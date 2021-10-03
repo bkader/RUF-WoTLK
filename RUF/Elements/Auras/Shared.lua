@@ -27,7 +27,6 @@ local function onLeave()
 end
 
 function RUF.CreateAuraIcon(element, index)
-	-- local button = CreateFrame('Button', element:GetDebugName() .. 'Button' .. index, element) -- FIXME
 	local elementName = element:GetName() or "RUFAuraIcon"
 	local button = CreateFrame("Button", elementName .. "Button" .. index, element)
 	button:RegisterForClicks("RightButtonUp")
