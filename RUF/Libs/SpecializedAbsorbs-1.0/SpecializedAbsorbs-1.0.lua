@@ -180,7 +180,13 @@ do
 	function SortEffects(a, b)
 		-- use timestamp in case of the same id
 		if a[1] == b[1] then
-			return (a[8] < b[8])
+			if a[8] == nil then
+				return true
+			elseif b[8] == nil then
+				return false
+			else
+				return (a[8] < b[8])
+			end
 		end
 
 		-- Twin Val'kyr
