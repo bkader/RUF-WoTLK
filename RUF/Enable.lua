@@ -208,16 +208,16 @@ function RUF:OnEnable()
 		end
 
 		-- Spawn Headers
-		for i = 1, #headers do
-			for j = 4, 1, -1 do
-				if _G['oUF_RUF_' .. headers[i] .. 'UnitButton' .. j] then
-					if _G['oUF_RUF_' .. headers[i] .. 'UnitButton' .. j]:GetObjectType() ~= 'Button' then
-						_G['oUF_RUF_' .. headers[i] .. 'UnitButton' .. j] = nil
+		for _, header in ipairs(headers) do
+			for i = 4, 1, -1 do
+				if _G['oUF_RUF_' .. header .. 'UnitButton' .. i] then
+					if _G['oUF_RUF_' .. header .. 'UnitButton' .. i]:GetObjectType() ~= 'Button' then
+						_G['oUF_RUF_' .. header .. 'UnitButton' .. i] = nil
 					end
 				end
 			end
-			local profile = RUF.db.profile.unit[string.lower(headers[i])]
-			local template = (headers[i] == 'PartyPet') and 'SecureGroupPetHeaderTemplate' or 'SecureGroupHeaderTemplate'
+			local profile = RUF.db.profile.unit[string.lower(header)]
+			local template = (header == 'PartyPet') and 'SecureGroupPetHeaderTemplate' or 'SecureGroupHeaderTemplate'
 			local anchorFrom
 			if profile.Frame.Position.growth == 'BOTTOM' then
 				anchorFrom = 'TOP'
@@ -245,7 +245,7 @@ function RUF:OnEnable()
 			local startingIndex = -3
 
 			self:SpawnHeader(
-				'oUF_RUF_' .. headers[i], template, showIn,
+				'oUF_RUF_' .. header, template, showIn,
 				'showSolo', false,
 				'showParty', true,
 				'showRaid', false,
@@ -264,7 +264,7 @@ function RUF:OnEnable()
 				profile.Frame.Position.y)
 
 			local partyNum = GetNumSubgroupMembers()
-			local currentHeader = _G['oUF_RUF_' .. headers[i]]
+			local currentHeader = _G['oUF_RUF_' .. header]
 			currentHeader.Enabled = profile.Enabled
 			currentHeader:SetAttribute('startingIndex', startingIndex + partyNum)
 			currentHeader:Show()
@@ -273,9 +273,9 @@ function RUF:OnEnable()
 			RegisterStateDriver(currentHeader, 'visibility', currentHeader.visibility)
 			if profile.Enabled == false then
 				for j = 1, 5 do
-					local disableFrame = _G['oUF_RUF_' .. headers[i] .. 'UnitButton' .. j]
+					local disableFrame = _G['oUF_RUF_' .. header .. 'UnitButton' .. j]
 					if disableFrame then
-						_G['oUF_RUF_' .. headers[i] .. 'UnitButton' .. j]:Disable()
+						_G['oUF_RUF_' .. header .. 'UnitButton' .. j]:Disable()
 					end
 				end
 			end
@@ -293,9 +293,9 @@ function RUF:OnEnable()
 		end
 
 		-- Spawn single frames for Boss, Arena, and Party Targets
-		for i = 1, #groupFrames do
-			local frameName = 'oUF_RUF_' .. groupFrames[i]
-			local profile = string.lower(groupFrames[i])
+		for _, fname in ipairs(groupFrames) do
+			local frameName = 'oUF_RUF_' .. fname
+			local profile = string.lower(fname)
 			local AnchorFrom
 			if RUF.db.profile.unit[profile].Frame.Position.growth == 'BOTTOM' then
 				AnchorFrom = 'TOP'
@@ -303,9 +303,9 @@ function RUF:OnEnable()
 				AnchorFrom = 'BOTTOM'
 			end
 			for u = 1, 5 do
-				local unitName = groupFrames[i] .. u
-				if groupFrames[i]:match('Target') then
-					unitName = groupFrames[i]:gsub('Target', '') .. u .. 'Target'
+				local unitName = fname .. u
+				if fname:match('Target') then
+					unitName = fname:gsub('Target', '') .. u .. 'Target'
 				end
 				local frame = self:Spawn(unitName)
 				local unitFrame = _G['oUF_RUF_' .. unitName]
@@ -323,8 +323,8 @@ function RUF:OnEnable()
 						RUF.db.profile.unit[profile].Frame.Position.y)
 				else
 					local previousUnit = _G[frameName .. u -1]
-					if groupFrames[i]:match('Target') then
-						previousUnit = _G['oUF_RUF_' .. groupFrames[i]:gsub('Target', '') .. u -1 .. 'Target']
+					if fname:match('Target') then
+						previousUnit = _G['oUF_RUF_' .. fname:gsub('Target', '') .. u -1 .. 'Target']
 					end
 					frame:SetPoint(
 						AnchorFrom,
