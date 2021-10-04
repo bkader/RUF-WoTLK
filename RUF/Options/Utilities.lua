@@ -1,11 +1,10 @@
 assert(RUF, "RUF not found!")
 local RUF = RUF
-local L = LibStub('AceLocale-3.0'):GetLocale('RUF')
-local RUF_Options = RUF:GetModule('Options')
-local LSM = LibStub('LibSharedMedia-3.0')
 local _,ns = ...
 local oUF = ns.oUF
-local _,PlayerClass = UnitClass('player')
+local RUF_Options = RUF:GetModule('Options')
+local L = LibStub('AceLocale-3.0'):GetLocale('RUF')
+
 local TestModeToggle,UnitsSpawned
 local anchorSwaps = {
 	["BOTTOM"] = "TOP",
@@ -75,7 +74,7 @@ function RUF:OptionsUpdateCastbars()
 			local Text = Bar.Text
 			local profileReference = RUF.db.profile.Appearance.Bars.Cast
 			local unitProfile = RUF.db.profile.unit[v.frame].Frame.Bars.Cast
-			local texture = LSM:Fetch("statusbar",profileReference.Texture)
+			local texture = RUF:MediaFetch("statusbar",profileReference.Texture)
 
 			Bar:SetStatusBarTexture(texture)
 			Bar:SetFillStyle(unitProfile.Fill)
@@ -96,7 +95,7 @@ function RUF:OptionsUpdateCastbars()
 				unitProfile.Position.y
 			)
 
-			Border:SetBackdrop({edgeFile = LSM:Fetch("border",profileReference.Border.Style.edgeFile),edgeSize = profileReference.Border.Style.edgeSize})
+			Border:SetBackdrop({edgeFile = RUF:MediaFetch("border",profileReference.Border.Style.edgeFile),edgeSize = profileReference.Border.Style.edgeSize})
 			local borderr,borderg,borderb = unpack(profileReference.Border.Color)
 			Border:SetBackdropBorderColor(borderr,borderg,borderb,profileReference.Border.Alpha)
 
@@ -106,7 +105,7 @@ function RUF:OptionsUpdateCastbars()
 				r,g,b = unpack(profileReference.Background.CustomColor)
 			end
 			local Multiplier = profileReference.Background.Multiplier
-			Background:SetTexture(LSM:Fetch("background","Solid"))
+			Background:SetTexture(RUF:MediaFetch("background","Solid"))
 			Background:SetVertexColor(r*Multiplier,g*Multiplier,b*Multiplier,profileReference.Background.Alpha)
 			Background:SetAllPoints(Bar)
 			Background.colorSmooth = false
@@ -140,7 +139,7 @@ function RUF:OptionsUpdateFrameBorders()
 		local offset = RUF.db.profile.Appearance.Border.Offset
 		Border:SetPoint('TOPLEFT',v,'TOPLEFT',-offset,offset)
 		Border:SetPoint('BOTTOMRIGHT',v,'BOTTOMRIGHT',offset,-offset)
-		Border:SetBackdrop({edgeFile = LSM:Fetch('border',RUF.db.profile.Appearance.Border.Style.edgeFile),edgeSize = RUF.db.profile.Appearance.Border.Style.edgeSize})
+		Border:SetBackdrop({edgeFile = RUF:MediaFetch('border',RUF.db.profile.Appearance.Border.Style.edgeFile),edgeSize = RUF.db.profile.Appearance.Border.Style.edgeSize})
 		local r,g,b = unpack(RUF.db.profile.Appearance.Border.Color)
 		Border:SetBackdropBorderColor(r,g,b,RUF.db.profile.Appearance.Border.Alpha)
 
@@ -155,7 +154,7 @@ function RUF:OptionsUpdateFrameBorders()
 				v:RegisterEvent('UNIT_TARGET',RUF.UpdateGlowBorder,true)
 				GlowBorder:SetPoint('TOPLEFT',v,'TOPLEFT',-glowProfile.Offset,glowProfile.Offset)
 				GlowBorder:SetPoint('BOTTOMRIGHT',v,'BOTTOMRIGHT',glowProfile.Offset,-glowProfile.Offset)
-				GlowBorder:SetBackdrop({edgeFile = LSM:Fetch('border',glowProfile.Style.edgeFile),edgeSize = glowProfile.Style.edgeSize})
+				GlowBorder:SetBackdrop({edgeFile = RUF:MediaFetch('border',glowProfile.Style.edgeFile),edgeSize = glowProfile.Style.edgeSize})
 				GlowBorder:SetBackdropBorderColor(0,0,0,glowProfile.Alpha)
 			end
 		end
@@ -506,7 +505,7 @@ function RUF:OptionsUpdateTexts(singleFrame,groupFrame,header,text)
 		local currentText = unitFrame.Text[text].String
 		if not currentText then return end -- When refresh profile,ensure we don't try to update indicators that don't exist.
 
-		currentText:SetFont(LSM:Fetch('font',profileReference.Font),profileReference.Size,profileReference.Outline)
+		currentText:SetFont(RUF:MediaFetch('font',profileReference.Font),profileReference.Size,profileReference.Outline)
 		currentText:SetShadowColor(0,0,0,profileReference.Shadow)
 		currentText:ClearAllPoints()
 		-- currentText:SetHeight(5) -- FIXME currentText:GetLineHeight())

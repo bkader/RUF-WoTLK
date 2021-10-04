@@ -139,8 +139,8 @@ local function IsUnitInRange(unit)
 	end
 
 	-- dead friend
-	if ResurrectSpells[RUF.playerClass] and UnitIsDeadOrGhost(unit) then
-		for _, spellid in ipairs(ResurrectSpells[RUF.playerClass]) do
+	if ResurrectSpells[RUF.uClass] and UnitIsDeadOrGhost(unit) then
+		for _, spellid in ipairs(ResurrectSpells[RUF.uClass]) do
 			if SpellRange.IsSpellInRange(spellid, unit) == 1 then
 				return true
 			end
@@ -149,10 +149,10 @@ local function IsUnitInRange(unit)
 
 	-- friendly unit
 	if
-		FriendSpells[RUF.playerClass] and (UnitCanAssist("player", unit) or UnitIsFriend("player", unit)) and
+		FriendSpells[RUF.uClass] and (UnitCanAssist("player", unit) or UnitIsFriend("player", unit)) and
 			UnitIsVisible(unit)
 	 then
-		for _, spellid in ipairs(FriendSpells[RUF.playerClass]) do
+		for _, spellid in ipairs(FriendSpells[RUF.uClass]) do
 			if SpellRange.IsSpellInRange(spellid, unit) == 1 then
 				return true
 			end
@@ -160,8 +160,8 @@ local function IsUnitInRange(unit)
 	end
 
 	-- enemy unit
-	if HarmSpells[RUF.playerClass] and UnitCanAttack("player", unit) and UnitIsVisible(unit) then
-		for _, spellid in ipairs(HarmSpells[RUF.playerClass]) do
+	if HarmSpells[RUF.uClass] and UnitCanAttack("player", unit) and UnitIsVisible(unit) then
+		for _, spellid in ipairs(HarmSpells[RUF.uClass]) do
 			if SpellRange.IsSpellInRange(spellid, unit) == 1 then
 				return true
 			end

@@ -1,6 +1,9 @@
 local parent, ns = ...
 local Private = ns.oUF.Private
+
+-- some values we may need
 Private.epsilon = 0.0001
+Private.defaultFont = {GameFontNormal:GetFont()}
 
 local assert, type, select = assert, type, select
 local format = string.format

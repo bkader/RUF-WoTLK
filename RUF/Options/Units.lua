@@ -1,11 +1,11 @@
 assert(RUF, "RUF not found!")
 local RUF = RUF
-local L = LibStub("AceLocale-3.0"):GetLocale("RUF")
-local RUF_Options = RUF:GetModule("Options")
-local LSM = LibStub("LibSharedMedia-3.0")
 local _, ns = ...
 local oUF = ns.oUF
-local uClass = select(2, UnitClass("player"))
+local RUF_Options = RUF:GetModule("Options")
+local L = LibStub("AceLocale-3.0"):GetLocale("RUF")
+
+local uClass = RUF.uClass
 
 local tagList = {}
 local localisedTags = {}
@@ -1080,7 +1080,7 @@ local function TextSettings(singleFrame, groupFrame, header)
 					name = L["Font"],
 					type = "select",
 					order = 10,
-					values = LSM:HashTable("font"),
+					values = RUF:MediaList("font"),
 					dialogControl = "LSM30_Font",
 					get = function(info)
 						return RUF.db.profile.unit[profileName].Frame.Text[textList[i]].Font
@@ -2585,7 +2585,7 @@ local function CastBarSettings(singleFrame, groupFrame, header)
 								name = L["Font"],
 								type = "select",
 								order = 10,
-								values = LSM:HashTable("font"),
+								values = RUF:MediaList("font"),
 								dialogControl = "LSM30_Font",
 								get = function(info)
 									return RUF.db.profile.unit[profileName].Frame.Bars.Cast.Time.Font
@@ -2689,7 +2689,7 @@ local function CastBarSettings(singleFrame, groupFrame, header)
 								name = L["Font"],
 								type = "select",
 								order = 10,
-								values = LSM:HashTable("font"),
+								values = RUF:MediaList("font"),
 								dialogControl = "LSM30_Font",
 								get = function(info)
 									return RUF.db.profile.unit[profileName].Frame.Bars.Cast.Text.Font
@@ -3096,7 +3096,7 @@ local function PortraitSettings(singleFrame, groupFrame, header)
 						name = L["Texture"],
 						type = "select",
 						order = 0.02,
-						values = LSM:HashTable("border"),
+						values = RUF:MediaList("border"),
 						dialogControl = "LSM30_Border",
 						get = function(info)
 							return RUF.db.profile.unit[profileName].Frame.Portrait.Border.Style.edgeFile

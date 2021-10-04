@@ -1,7 +1,8 @@
-local RUF = RUF or LibStub("AceAddon-3.0"):GetAddon("RUF")
-local LSM = LibStub("LibSharedMedia-3.0")
+assert(RUF, "RUF not found!")
+local RUF = RUF
 local _, ns = ...
 local oUF = ns.oUF
+
 RUF.Indicators = RUF.Indicators or {}
 
 RUF.IndicatorGlyphs = {

@@ -1,9 +1,7 @@
 assert(RUF, "RUF not found!")
 local RUF = RUF
 local L = LibStub("AceLocale-3.0"):GetLocale("RUF")
-local LSM = LibStub("LibSharedMedia-3.0")
-local _, ns = ...
-local oUF = ns.oUF
+
 local UnitCastingInfo = UnitCastingInfo
 local UnitChannelInfo = UnitChannelInfo
 
@@ -158,7 +156,7 @@ end
 function RUF.SetCastBar(self, unit)
 	local profileReference = RUF.db.profile.Appearance.Bars.Cast
 	local unitProfile = RUF.db.profile.unit[unit].Frame.Bars.Cast
-	local texture = LSM:Fetch("statusbar", profileReference.Texture)
+	local texture = RUF:MediaFetch("statusbar", profileReference.Texture)
 	local Bar = RUF.StatusBarPrototype(nil, self)
 	local Border = CreateFrame("Frame", nil, Bar)
 	local Background = Bar.bg
@@ -186,7 +184,7 @@ function RUF.SetCastBar(self, unit)
 	Border:SetPoint("BOTTOMRIGHT", Bar, "BOTTOMRIGHT", offset, -offset)
 	Border:SetFrameLevel(201)
 	Border:SetBackdrop({
-		edgeFile = LSM:Fetch("border", profileReference.Border.Style.edgeFile),
+		edgeFile = RUF:MediaFetch("border", profileReference.Border.Style.edgeFile),
 		edgeSize = profileReference.Border.Style.edgeSize
 	})
 	local borderr, borderg, borderb = unpack(profileReference.Border.Color)
@@ -195,7 +193,7 @@ function RUF.SetCastBar(self, unit)
 	-- Background
 	local r, g, b = unpack(profileReference.Background.CustomColor)
 	local Multiplier = profileReference.Background.Multiplier
-	Background:SetTexture(LSM:Fetch("background", "Solid"))
+	Background:SetTexture(RUF:MediaFetch("background", "Solid"))
 	Background:SetVertexColor(r * Multiplier, g * Multiplier, b * Multiplier, profileReference.Background.Alpha)
 	Background:SetAllPoints(Bar)
 	Background.colorSmooth = false
@@ -214,7 +212,7 @@ function RUF.SetCastBar(self, unit)
 	end
 
 	-- Time
-	local font = LSM:Fetch("font", unitProfile.Time.Font or "RUF")
+	local font = RUF:MediaFetch("font", unitProfile.Time.Font or "RUF")
 	local size = unitProfile.Time.Size or 18
 	local outline = unitProfile.Time.Outline or "OUTLINE"
 	local shadow = unitProfile.Time.Shadow or 1
@@ -223,7 +221,7 @@ function RUF.SetCastBar(self, unit)
 	Time:SetFont(font, size, outline)
 
 	-- Cast Text
-	font = LSM:Fetch("font", unitProfile.Text.Font or "RUF")
+	font = RUF:MediaFetch("font", unitProfile.Text.Font or "RUF")
 	size = unitProfile.Text.Size or 18
 	outline = unitProfile.Text.Outline or "OUTLINE"
 	shadow = unitProfile.Text.Shadow or 1
@@ -240,7 +238,7 @@ function RUF.SetCastBar(self, unit)
 		Bar.SafeZone = SafeZone
 	end
 
-	-- Register with oUF
+	-- Register
 	Bar.texture = texture
 	Bar.Background = Background
 	Bar.Border = Border
@@ -410,13 +408,13 @@ function RUF.CastUpdateOptions(self)
 	Border:SetPoint("BOTTOMRIGHT", Bar, "BOTTOMRIGHT", offset, -offset)
 	Border:SetFrameLevel(17)
 	Border:SetBackdrop({
-		edgeFile = LSM:Fetch("border", profileReference.Border.Style.edgeFile),
+		edgeFile = RUF:MediaFetch("border", profileReference.Border.Style.edgeFile),
 		edgeSize = profileReference.Border.Style.edgeSize
 	})
 	local borderr, borderg, borderb = unpack(profileReference.Border.Color)
 	Border:SetBackdropBorderColor(borderr, borderg, borderb, profileReference.Border.Alpha)
 
-	local texture = LSM:Fetch("statusbar", RUF.db.profile.Appearance.Bars.Cast.Texture)
+	local texture = RUF:MediaFetch("statusbar", RUF.db.profile.Appearance.Bars.Cast.Texture)
 	Bar:SetStatusBarTexture(texture)
 	Bar:SetFrameLevel(15)
 	Bar:SetFillStyle(unitProfile.Fill)
@@ -433,7 +431,7 @@ function RUF.CastUpdateOptions(self)
 	end
 
 	-- Time
-	local font = LSM:Fetch("font", unitProfile.Time.Font or "RUF")
+	local font = RUF:MediaFetch("font", unitProfile.Time.Font or "RUF")
 	local size = unitProfile.Time.Size or 18
 	local outline = unitProfile.Time.Outline or "OUTLINE"
 	local shadow = unitProfile.Time.Shadow or 1
@@ -442,7 +440,7 @@ function RUF.CastUpdateOptions(self)
 	Time:SetFont(font, size, outline)
 
 	-- Cast Text
-	font = LSM:Fetch("font", unitProfile.Text.Font or "RUF")
+	font = RUF:MediaFetch("font", unitProfile.Text.Font or "RUF")
 	size = unitProfile.Text.Size or 18
 	outline = unitProfile.Text.Outline or "OUTLINE"
 	shadow = unitProfile.Text.Shadow or 1

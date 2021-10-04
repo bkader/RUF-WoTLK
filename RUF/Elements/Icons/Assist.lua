@@ -1,8 +1,8 @@
 assert(RUF, "RUF not found!")
 local RUF = RUF
-local LSM = LibStub('LibSharedMedia-3.0')
 local _, ns = ...
 local oUF = ns.oUF
+
 local elementName = 'Assist'
 local elementString = RUF.IndicatorGlyphs['Assist']
 

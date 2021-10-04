@@ -1,16 +1,13 @@
 assert(RUF, "RUF not found!")
 local RUF = RUF
 local SA = LibStub("SpecializedAbsorbs-1.0", true)
-local LSM = LibStub("LibSharedMedia-3.0")
-local _, ns = ...
-local oUF = ns.oUF
 
 local UnitGetTotalAbsorbs = function(unit)
 	return (SA and unit) and SA.UnitTotal(UnitGUID(unit)) or 0
 end
 
 function RUF.SetAbsorbBar(self, unit)
-	local Texture = LSM:Fetch("statusbar", RUF.db.profile.Appearance.Bars.Absorb.Texture)
+	local Texture = RUF:MediaFetch("statusbar", RUF.db.profile.Appearance.Bars.Absorb.Texture)
 	local Bar = RUF.StatusBarPrototype(nil, self)
 	local Border = CreateFrame("Frame", nil, Bar)
 	local Background = Bar.bg
@@ -36,7 +33,7 @@ function RUF.SetAbsorbBar(self, unit)
 		Background:Hide()
 	end
 
-	-- Register with oUF
+	-- Register
 	self.Absorb = Bar
 	self.Absorb.Border = Border
 	self.Absorb.Background = Background
@@ -96,7 +93,7 @@ function RUF.AbsorbUpdateOptions(self)
 	local unit = self.__owner.frame
 	local Bar = self
 
-	local Texture = LSM:Fetch("statusbar", RUF.db.profile.Appearance.Bars.Absorb.Texture)
+	local Texture = RUF:MediaFetch("statusbar", RUF.db.profile.Appearance.Bars.Absorb.Texture)
 	Bar.colorClass = RUF.db.profile.Appearance.Bars.Absorb.Color.Class
 	Bar.colorDisconnected = RUF.db.profile.Appearance.Bars.Absorb.Color.Disconnected
 	Bar.colorSmooth = RUF.db.profile.Appearance.Bars.Absorb.Color.Percentage

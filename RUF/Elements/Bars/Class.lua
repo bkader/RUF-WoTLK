@@ -1,19 +1,15 @@
 assert(RUF, "RUF not found!")
 local RUF = RUF
-local LSM = LibStub("LibSharedMedia-3.0")
-local _, ns = ...
-local oUF = ns.oUF
-
-local uClass = select(2, UnitClass("player"))
+local uClass = RUF.uClass
 
 local classPowerData = {
 	DRUID = {
-		classPowerID = 4,
+		classPowerID = 14,
 		classPowerType = "COMBO_POINTS",
 		unitPowerMaxAmount = 5
 	},
 	ROGUE = {
-		classPowerID = 4,
+		classPowerID = 14,
 		classPowerType = "COMBO_POINTS",
 		unitPowerMaxAmount = 5
 	}
@@ -47,7 +43,7 @@ function RUF.SetClassBar(self, unit)
 		Holder.anchorTo = "BOTTOM"
 	end
 
-	local texture = LSM:Fetch("statusbar", RUF.db.profile.Appearance.Bars.Class.Texture)
+	local texture = RUF:MediaFetch("statusbar", RUF.db.profile.Appearance.Bars.Class.Texture)
 	local r, g, b = unpack(RUF.db.profile.Appearance.Colors.PowerColors[classPowerData[uClass].classPowerID])
 	local bgMult = RUF.db.profile.Appearance.Bars.Class.Background.Multiplier
 	local colorAdd = RUF.db.profile.Appearance.Bars.Class.Color.SegmentMultiplier
@@ -87,7 +83,7 @@ function RUF.SetClassBar(self, unit)
 		Border:SetPoint("BOTTOMRIGHT", Bar, "BOTTOMRIGHT", offset, -offset)
 		Border:SetFrameLevel(17)
 		Border:SetBackdrop({
-			edgeFile = LSM:Fetch("border", RUF.db.profile.Appearance.Bars.Class.Border.Style.edgeFile),
+			edgeFile = RUF:MediaFetch("border", RUF.db.profile.Appearance.Bars.Class.Border.Style.edgeFile),
 			edgeSize = RUF.db.profile.Appearance.Bars.Class.Border.Style.edgeSize
 		})
 		local borderr, borderg, borderb = unpack(RUF.db.profile.Appearance.Bars.Class.Border.Color)
@@ -95,7 +91,7 @@ function RUF.SetClassBar(self, unit)
 
 		-- Set Background
 		Background:SetAllPoints(Bar)
-		Background:SetTexture(LSM:Fetch("background", "Solid"))
+		Background:SetTexture(RUF:MediaFetch("background", "Solid"))
 		Background:SetVertexColor(r * bgMult, g * bgMult, b * bgMult, RUF.db.profile.Appearance.Bars.Class.Background.Alpha)
 		Background:Show()
 
@@ -142,8 +138,8 @@ end
 function RUF.ClassUpdate(self, event, unit, powerType)
 	unit = unit or event == "PLAYER_TARGET_CHANGED" and "player" or nil
 	-- Override function of oUF's ClassPower Update function.
-	if not unit or not self.frame then return end
-	if not UnitIsUnit(unit, "player") and (powerType == classPowerData[uClass].classPowerType or (unit == "vehicle" and powerType == "COMBO_POINTS")) then
+	if unit ~= "player" or not self.frame then return end
+	if (powerType == classPowerData[uClass].classPowerType or (unit == "vehicle" and powerType == "COMBO_POINTS")) then
 		return
 	end
 
@@ -155,7 +151,7 @@ function RUF.ClassUpdate(self, event, unit, powerType)
 
 	local max, cur, oldMax = 5
 	if event ~= "ClassPowerDisable" then
-		cur = GetComboPoints(unit, unit .. "target")
+		cur = GetComboPoints(UnitHasVehicleUI("player") and "vehicle" or "player", "target")
 
 		local size = (RUF.db.profile.unit[self.frame].Frame.Size.Width + (max - 1)) / max
 		if event == "UNIT_COMBO_POINTS" or event == "PLAYER_TALENT_UPDATE" or event == "ClassPowerEnable" or event == "ForceUpdate" then
@@ -211,7 +207,7 @@ function RUF.ClassUpdateOptions(self)
 	if not classPowerData[uClass] or not self.__owner then return end
 	local unit = self.__owner.frame
 	local unitPowerMaxAmount = classPowerData[uClass].unitPowerMaxAmount or 5
-	local texture = LSM:Fetch("statusbar", RUF.db.profile.Appearance.Bars.Class.Texture)
+	local texture = RUF:MediaFetch("statusbar", RUF.db.profile.Appearance.Bars.Class.Texture)
 	local r, g, b = unpack(RUF.db.profile.Appearance.Colors.PowerColors[classPowerData[uClass].classPowerID])
 	local bgMult = RUF.db.profile.Appearance.Bars.Class.Background.Multiplier
 	local colorAdd = RUF.db.profile.Appearance.Bars.Class.Color.SegmentMultiplier
@@ -250,7 +246,7 @@ function RUF.ClassUpdateOptions(self)
 		Border:SetPoint("BOTTOMRIGHT", Bar, "BOTTOMRIGHT", offset, -offset)
 		Border:SetFrameLevel(17)
 		Border:SetBackdrop({
-			edgeFile = LSM:Fetch("border", RUF.db.profile.Appearance.Bars.Class.Border.Style.edgeFile),
+			edgeFile = RUF:MediaFetch("border", RUF.db.profile.Appearance.Bars.Class.Border.Style.edgeFile),
 			edgeSize = RUF.db.profile.Appearance.Bars.Class.Border.Style.edgeSize
 		})
 		local borderr, borderg, borderb = unpack(RUF.db.profile.Appearance.Bars.Class.Border.Color)
@@ -258,7 +254,7 @@ function RUF.ClassUpdateOptions(self)
 
 		-- Set Background
 		Background:SetAllPoints(Bar)
-		Background:SetTexture(LSM:Fetch("background", "Solid"))
+		Background:SetTexture(RUF:MediaFetch("background", "Solid"))
 		Background:SetVertexColor(r * bgMult, g * bgMult, b * bgMult, RUF.db.profile.Appearance.Bars.Class.Background.Alpha)
 
 		if RUF.db.profile.unit[unit].Frame.Bars.Class.Enabled == true then

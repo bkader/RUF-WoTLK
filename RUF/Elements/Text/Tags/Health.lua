@@ -1,9 +1,9 @@
 assert(RUF, "RUF not found!")
 local RUF = RUF
-local LSM = LibStub('LibSharedMedia-3.0')
-local L = LibStub('AceLocale-3.0'):GetLocale('RUF')
 local _, ns = ...
 local oUF = ns.oUF
+local L = LibStub('AceLocale-3.0'):GetLocale('RUF')
+
 local tags = oUF.Tags.Methods or oUF.Tags
 local events = oUF.TagEvents or oUF.Tags.Events
 

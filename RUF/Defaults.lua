@@ -47,7 +47,7 @@ local cfg = {
 				Health = {
 					Texture = "RUF 5",
 					Color = {
-						BaseColor = {25/255, 25/255, 25/255},
+						BaseColor = {0.10, 0.10, 0.10},
 						--colorHealth -- Set in Core to true automatically
 						Class = false,
 						Disconnected = true,
@@ -56,9 +56,9 @@ local cfg = {
 						percentage50Class = false,
 						percentage0Class = true,
 						PercentageGradient = {
-							1,0,55/255, -- 0% HP: Magenta
-							35/255,35/255,35/255, -- 50% HP: Grey
-							35/255,35/255,35/255 -- 100% HP: Grey
+							1,0,0.22, -- 0% HP: Magenta
+							0.14,0.14,0.14, -- 50% HP: Grey
+							0.14,0.14,0.14 -- 100% HP: Grey
 						},
 						Reaction = false,
 						Tapped = true,
@@ -99,7 +99,7 @@ local cfg = {
 				Class = {
 					Texture = "RUF 1",
 					Color = {
-						BaseColor = {100/255, 100/255, 100/255},
+						BaseColor = {0.39, 0.39, 0.39},
 						Class = false,
 						PowerType = true, -- Use Resource's Color
 						Multiplier = 1,
@@ -123,7 +123,7 @@ local cfg = {
 				Power = {
 					Texture = "RUF 1",
 					Color = {
-						BaseColor = {50/255, 50/255, 50/255},
+						BaseColor = {0.20, 0.20, 0.20},
 						Class = false,
 						Disconnected = false,
 						Percentage = false,
@@ -135,8 +135,8 @@ local cfg = {
 						percentage0Power = false,
 						PercentageGradient = {
 							1,1,1,
-							25/255,25/255,25/255,
-							25/255,25/255,25/255
+							0.10,0.10,0.10,
+							0.10,0.10,0.10
 						},
 						Reaction = false,
 						Tapped = false,
@@ -162,10 +162,10 @@ local cfg = {
 					Texture = "RUF 1",
 					ColorInterrupt = {
 						Enabled = true,
-						Color = {200/255, 64/255, 64/255},
+						Color = {0.78, 0.25, 0.25},
 					},
 					Color = {
-						BaseColor = {1, 204/255, 0},
+						BaseColor = {1, 0.80, 0},
 						Class = false,
 						Reaction = false,
 						PowerType = false,
@@ -187,7 +187,7 @@ local cfg = {
 					},
 					SafeZone = {
 						Enabled = true,
-						Color = {0, 194/255, 1},
+						Color = {0, 0.76, 1},
 						Alpha = 1,
 					},
 				},
@@ -198,7 +198,7 @@ local cfg = {
 						Enabled = true,
 						Color = {
 							Alpha = 0.75,
-							BaseColor = {50/255, 169/255, 64/255},
+							BaseColor = {0.20, 0.66, 0.25},
 							--colorHealth -- Set in Core to true automatically
 							Class = false,
 							Percentage = false,
@@ -206,9 +206,9 @@ local cfg = {
 							percentage50Class = false,
 							percentage0Class = false,
 							PercentageGradient = {
-								1,0,55/255, -- 0% HP: Magenta
-								35/255,35/255,35/255, -- 50% HP: Grey
-								35/255,35/255,35/255 -- 100% HP: Grey
+								1,0,0.22, -- 0% HP: Magenta
+								0.14,0.14,0.14, -- 50% HP: Grey
+								0.14,0.14,0.14 -- 100% HP: Grey
 							},
 							Reaction = false,
 							Multiplier = 1,
@@ -219,7 +219,7 @@ local cfg = {
 						Enabled = true,
 						Color = {
 							Alpha = 0.75,
-							BaseColor = {218/255, 197/255, 92/255},
+							BaseColor = {0.85, 0.77, 0.36},
 							--colorHealth -- Set in Core to true automatically
 							Class = false,
 							Percentage = false,
@@ -227,9 +227,9 @@ local cfg = {
 							percentage50Class = false,
 							percentage0Class = false,
 							PercentageGradient = {
-								1,0,55/255, -- 0% HP: Magenta
-								35/255,35/255,35/255, -- 50% HP: Grey
-								35/255,35/255,35/255 -- 100% HP: Grey
+								1,0,0.22, -- 0% HP: Magenta
+								0.14,0.14,0.14, -- 50% HP: Grey
+								0.14,0.14,0.14 -- 100% HP: Grey
 							},
 							Reaction = false,
 							Multiplier = 1,
@@ -265,30 +265,30 @@ local cfg = {
 			Colors = {
 				UseClassColors = true, -- Use ClassColors Addon
 				ClassColors = { -- !ClassColors Addon Overrides these values.
-					DEATHKNIGHT = {196/255,31/255,59/255},
-					DRUID = {1,125/255,10/255},
-					HUNTER = {171/255,212/255,115/255},
-					MAGE = {64/255,199/255,235/255},
-					PALADIN = {245/255,140/255,186/255},
+					DEATHKNIGHT = {0.77,0.12,0.23},
+					DRUID = {1,0.49,0.04},
+					HUNTER = {0.67,0.83,0.45},
+					MAGE = {0.25,0.78,0.92},
+					PALADIN = {0.96,0.55,0.73},
 					PRIEST = {1,1,1},
-					ROGUE = {1,245/255,105/255},
-					SHAMAN = {0,112/255,222/255},
-					WARLOCK = {135/255,135/255,237/255},
-					WARRIOR = {199/255,156/255,110/255},
+					ROGUE = {1,0.96,0.41},
+					SHAMAN = {0,0.44,0.87},
+					WARLOCK = {0.53,0.53,0.93},
+					WARRIOR = {0.78,0.61,0.43},
 				},
 				MiscColors = {
-					Tapped = {100/255,100/255,100/255},
-					Disconnected = {150/255,150/255,150/255},
+					Tapped = {0.39,0.39,0.39},
+					Disconnected = {0.59,0.59,0.59},
 				},
 				Aura = {
 					DefaultBuff = {0,0,0,0},
-					DefaultDebuff = {180/255,0,20/255,1},
+					DefaultDebuff = {0.71,0,0.08,1},
 					Pixel = {0,0,0,1},
-					Magic = {0,158/255,1,1},
-					Disease = {1,156/255,0,1},
-					Curse = {84/255,43/255,189/255,1},
-					Poison = {145/255,190/255,15/255,1},
-					Enrage = {1,0,143/255,1},
+					Magic = {0,0.62,1,1},
+					Disease = {1,0.61,0,1},
+					Curse = {0.33,0.17,0.74,1},
+					Poison = {0.57,0.75,0.06,1},
+					Enrage = {1,0,0.56,1},
 				},
 				DifficultyColors = {
 					[0] = {1,0.1,0.1}, -- Impossible
@@ -298,31 +298,31 @@ local cfg = {
 					[4] = {0.5,0.5,0.5}, -- Trivial
 				},
 				PowerColors = {
-					[0] = {0,158/255,1}, -- Mana
-					[1] = {1,0,55/255}, -- Rage
-					[2] = {1,128/255,64/255}, -- Focus
+					[0] = {0,0.62,1}, -- Mana
+					[1] = {1,0,0.22}, -- Rage
+					[2] = {1,0.50,0.25}, -- Focus
 					[3] = {1,1,0}, -- Energy
-					[4] = {1,245/255,105/255}, -- Combo Points
-					[5] = {128/255,128/255,128/255}, -- Runes
-					[6] = {0,211/255,1}, -- Runic Power
-					[7] = {150/255,119/255,229/255}, -- Soul Shards
-					[8] = {77/255,133/255,230/255}, -- Astral Power
-					[9] = {242/255,230/255,153/255}, -- Holy Power
-					[10] = {0,158/255,1}, -- Alternate Power
-					[11] = {0,128/255,1}, -- Maelstrom
-					[12] = {0,247/255,202/255}, -- Chi
-					[13] = {102/255,0,204/255}, -- Insanity
-					[14] = {1,245/255,105/255}, -- Classic Combo Points
+					[4] = {1,0.96,0.41}, -- Combo Points
+					[5] = {0.50,0.50,0.50}, -- Runes
+					[6] = {0,0.83,1}, -- Runic Power
+					[7] = {0.59,0.47,0.90}, -- Soul Shards
+					[8] = {0.30,0.52,0.90}, -- Astral Power
+					[9] = {0.95,0.90,0.60}, -- Holy Power
+					[10] = {0,0.62,1}, -- Alternate Power
+					[11] = {0,0.50,1}, -- Maelstrom
+					[12] = {0,0.97,0.79}, -- Chi
+					[13] = {0.40,0,0.80}, -- Insanity
+					[14] = {1,0.96,0.41}, -- Classic Combo Points
 				},
 				ReactionColors = {
-					[1] = {230/255,77/255,56/255}, -- Hated
-					[2] = {230/255,77/255,56/255}, -- Hostile Also Enemy Players and NPCs
-					[3] = {191/255,69/255,0}, -- Unfriendly
-					[4] = {230/255,179/255,0}, -- Neutral
-					[5] = {0,153/255,26/255}, -- Friendly Also Allied Players
-					[6] = {0,153/255,26/255}, -- Honored
-					[7] = {0,153/255,26/255}, -- Revered
-					[8] = {0,153/255,26/255}, -- Exalted
+					[1] = {0.90,0.30,0.22}, -- Hated
+					[2] = {0.90,0.30,0.22}, -- Hostile Also Enemy Players and NPCs
+					[3] = {0.75,0.27,0}, -- Unfriendly
+					[4] = {0.90,0.70,0}, -- Neutral
+					[5] = {0,0.60,0.10}, -- Friendly Also Allied Players
+					[6] = {0,0.60,0.10}, -- Honored
+					[7] = {0,0.60,0.10}, -- Revered
+					[8] = {0,0.60,0.10}, -- Exalted
 				},
 			},
 			Text = {

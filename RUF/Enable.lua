@@ -1,10 +1,8 @@
 assert(RUF, "RUF not found!")
 local RUF = RUF
-local L = LibStub('AceLocale-3.0'):GetLocale('RUF')
-local LSM = LibStub('LibSharedMedia-3.0')
 local _, ns = ...
 local oUF = ns.oUF
-local PlayerClass = select(2, UnitClass('player'))
+local L = LibStub('AceLocale-3.0'):GetLocale('RUF')
 
 local IsInGroup, GetNumSubgroupMembers = RUF.IsInGroup, RUF.GetNumSubgroupMembers
 
@@ -284,7 +282,7 @@ function RUF:OnEnable()
 			local Mover = CreateFrame('Frame', currentHeader:GetName() .. 'Mover', currentHeader)
 			Mover:SetAllPoints(currentHeader)
 			local Background = Mover:CreateTexture('$parentBG', 'BACKGROUND')
-			Background:SetTexture(LSM:Fetch('background', 'Solid'))
+			Background:SetTexture(RUF:MediaFetch('background', 'Solid'))
 			Background:SetAllPoints(Mover)
 			Background:SetVertexColor(0, 0, 0, 0)
 			Mover:SetFrameStrata('HIGH')
@@ -383,7 +381,7 @@ function RUF:OnEnable()
 
 	RUF.PixelScale()
 
-	if PlayerClass == 'DEATHKNIGHT' then
+	if RUF.uClass == 'DEATHKNIGHT' then
 		-- Cannot disable elements before the unit is actually spawned?
 		-- TODO Check other elements and make sure we do this properly for them too.
 		if RUF.db.profile.unit['player'].Frame.Bars.Class.Enabled == false then

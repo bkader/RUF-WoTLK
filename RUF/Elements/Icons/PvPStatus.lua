@@ -1,8 +1,8 @@
 assert(RUF, "RUF not found!")
 local RUF = RUF
-local LSM = LibStub('LibSharedMedia-3.0')
 local _, ns = ...
 local oUF = ns.oUF
+
 local elementName = 'PvPCombat'
 local elementStringAlliance = RUF.IndicatorGlyphs['PvP-Alliance']
 local elementStringHorde = RUF.IndicatorGlyphs['PvP-Horde']

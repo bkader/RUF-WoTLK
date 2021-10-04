@@ -1,11 +1,10 @@
 assert(RUF, "RUF not found!")
 local RUF = RUF
-local L = LibStub('AceLocale-3.0'):GetLocale('RUF')
-local RUF_Options = RUF:GetModule('Options')
-local LSM = LibStub('LibSharedMedia-3.0')
 local _, ns = ...
 local oUF = ns.oUF
-local uClass = select(2, UnitClass("player"))
+local L = LibStub('AceLocale-3.0'):GetLocale('RUF')
+local RUF_Options = RUF:GetModule('Options')
+local uClass = RUF.uClass
 
 function RUF_Options.Bars()
 	local LocalisedBar = {
@@ -78,7 +77,7 @@ function RUF_Options.Bars()
 							name = L["Texture"],
 							type = 'select',
 							order = 0.01,
-							values = LSM:HashTable('statusbar'),
+							values = RUF:MediaList('statusbar'),
 							dialogControl = 'LSM30_Statusbar',
 							get = function(info)
 								return RUF.db.profile.Appearance.Bars[Bar[i]].Texture
@@ -548,7 +547,7 @@ function RUF_Options.Bars()
 							type = 'select',
 							order = 20.02,
 							hidden = i==1 or i==4,
-							values = LSM:HashTable('border'),
+							values = RUF:MediaList('border'),
 							dialogControl = 'LSM30_Border',
 							get = function(info)
 								return RUF.db.profile.Appearance.Bars[Bar[i]].Border.Style.edgeFile
@@ -757,7 +756,7 @@ function RUF_Options.Bars()
 						name = L["Texture"],
 						type = 'select',
 						order = 0.02,
-						values = LSM:HashTable('statusbar'),
+						values = RUF:MediaList('statusbar'),
 						dialogControl = 'LSM30_Statusbar',
 						get = function(info)
 							return RUF.db.profile.Appearance.Bars.HealPrediction.Player.Texture
@@ -1017,7 +1016,7 @@ function RUF_Options.Bars()
 						name = L["Texture"],
 						type = 'select',
 						order = 0.02,
-						values = LSM:HashTable('statusbar'),
+						values = RUF:MediaList('statusbar'),
 						dialogControl = 'LSM30_Statusbar',
 						get = function(info)
 							return RUF.db.profile.Appearance.Bars.HealPrediction.Others.Texture

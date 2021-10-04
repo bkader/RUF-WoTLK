@@ -1,8 +1,5 @@
 assert(RUF, "RUF not found!")
 local RUF = RUF
-local LSM = LibStub("LibSharedMedia-3.0")
-local _, ns = ...
-local oUF = ns.oUF
 
 local GetSpecialization = RUF.GetSpecialization
 
@@ -39,7 +36,7 @@ function RUF.CreateAuraIcon(element, index)
 	pixel:SetAllPoints(button)
 	pixel:SetFrameLevel(17)
 	pixel:SetBackdrop({
-		edgeFile = LSM:Fetch("border", RUF.db.profile.Appearance.Aura.Pixel.Style.edgeFile),
+		edgeFile = RUF:MediaFetch("border", RUF.db.profile.Appearance.Aura.Pixel.Style.edgeFile),
 		edgeSize = RUF.db.profile.Appearance.Aura.Pixel.Style.edgeSize
 	})
 	local pixelr, pixelg, pixelb, pixela = unpack(RUF.db.profile.Appearance.Colors.Aura.Pixel)
@@ -66,7 +63,7 @@ function RUF.CreateAuraIcon(element, index)
 	border:SetAllPoints(button)
 	border:SetFrameLevel(18)
 	border:SetBackdrop({
-		edgeFile = LSM:Fetch("border", RUF.db.profile.Appearance.Aura.Border.Style.edgeFile),
+		edgeFile = RUF:MediaFetch("border", RUF.db.profile.Appearance.Aura.Border.Style.edgeFile),
 		edgeSize = RUF.db.profile.Appearance.Aura.Border.Style.edgeSize
 	})
 	local borderr, borderg, borderb, bordera = unpack(RUF.db.profile.Appearance.Colors.Aura.DefaultBuff)

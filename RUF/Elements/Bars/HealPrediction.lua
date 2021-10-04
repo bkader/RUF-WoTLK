@@ -1,8 +1,5 @@
 assert(RUF, "RUF not found!")
 local RUF = RUF
-local LSM = LibStub("LibSharedMedia-3.0")
-local _, ns = ...
-local oUF = ns.oUF
 
 local HealComm = LibStub("LibHealComm-4.0")
 
@@ -85,7 +82,7 @@ function RUF.SetHealPrediction(self, unit)
 	end
 
 	local profileReference = RUF.db.profile.Appearance.Bars.HealPrediction
-	local texture = LSM:Fetch("statusbar", profileReference.Player.Texture)
+	local texture = RUF:MediaFetch("statusbar", profileReference.Player.Texture)
 	PlayerHeals:SetPoint("TOP")
 	PlayerHeals:SetPoint("BOTTOM")
 	PlayerHeals:SetPoint(anchorFrom, self.Health:GetStatusBarTexture(), anchorTo)
@@ -97,7 +94,7 @@ function RUF.SetHealPrediction(self, unit)
 	PlayerHeals.FillStyle = RUF.db.profile.unit[unit].Frame.Bars.Health.Fill
 	PlayerHeals.Enabled = profileReference.Player.Enabled
 
-	texture = LSM:Fetch("statusbar", profileReference.Others.Texture)
+	texture = RUF:MediaFetch("statusbar", profileReference.Others.Texture)
 	OtherHeals:SetPoint("TOP")
 	OtherHeals:SetPoint("BOTTOM")
 	OtherHeals:SetPoint(anchorFrom, PlayerHeals:GetStatusBarTexture(), anchorTo)
@@ -140,7 +137,7 @@ function RUF.HealPredictionUpdateOptions(self)
 		anchorTo = "RIGHT"
 	end
 
-	local texture = LSM:Fetch("statusbar", profileReference.Player.Texture)
+	local texture = RUF:MediaFetch("statusbar", profileReference.Player.Texture)
 	PlayerHeals:ClearAllPoints()
 	PlayerHeals:SetPoint("TOP")
 	PlayerHeals:SetPoint("BOTTOM")
@@ -156,7 +153,7 @@ function RUF.HealPredictionUpdateOptions(self)
 	else
 		anchorTexture = self.__owner.Health:GetStatusBarTexture()
 	end
-	texture = LSM:Fetch("statusbar", profileReference.Others.Texture)
+	texture = RUF:MediaFetch("statusbar", profileReference.Others.Texture)
 
 	OtherHeals:ClearAllPoints()
 	OtherHeals:SetPoint("TOP")

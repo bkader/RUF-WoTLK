@@ -1,8 +1,8 @@
 assert(RUF, "RUF not found!")
 local RUF = RUF
-local LSM = LibStub("LibSharedMedia-3.0")
 local _, ns = ...
 local oUF = ns.oUF
+
 local offsetFix = 0.3
 
 local anchorSwaps = {
@@ -16,6 +16,12 @@ local anchorSwaps = {
 	["TOPLEFT"] = "BOTTOMRIGHT",
 	["TOPRIGHT"] = "BOTTOMLEFT"
 }
+
+local function PortraitPostUpdate(self, unit)
+	if self and self.Alpha then
+		self:SetAlpha(self.Alpha)
+	end
+end
 
 function RUF.SetFramePortrait(self, unit)
 	local profileReference = RUF.db.profile.unit[unit].Frame.Portrait
@@ -35,7 +41,7 @@ function RUF.SetFramePortrait(self, unit)
 	Border:SetPoint("BOTTOMRIGHT", Portrait, "BOTTOMRIGHT", offset + offsetFix, -(offset + offsetFix))
 	Border:SetFrameLevel(Portrait:GetFrameLevel() + 1)
 	Border:SetBackdrop({
-		edgeFile = LSM:Fetch("border", profileReference.Border.Style.edgeFile),
+		edgeFile = RUF:MediaFetch("border", profileReference.Border.Style.edgeFile),
 		edgeSize = profileReference.Border.Style.edgeSize
 	})
 
@@ -44,7 +50,7 @@ function RUF.SetFramePortrait(self, unit)
 
 	-- Background
 	r, g, b = unpack(profileReference.Background.Color)
-	Background:SetTexture(LSM:Fetch("background", "Solid"))
+	Background:SetTexture(RUF:MediaFetch("background", "Solid"))
 	Background:SetVertexColor(r, g, b, profileReference.Background.Alpha)
 	Background:SetPoint("TOPLEFT", Portrait, "TOPLEFT", -offsetFix, offsetFix)
 	Background:SetPoint("BOTTOMRIGHT", Portrait, "BOTTOMRIGHT", offsetFix, -offsetFix)
@@ -52,7 +58,7 @@ function RUF.SetFramePortrait(self, unit)
 	if profileReference.Style == 1 then
 		Background:Hide()
 		Border:Hide()
-		Portrait:SetAlpha(profileReference.Alpha)
+		Portrait.Alpha = profileReference.Alpha
 		if profileReference.Cutaway == true then
 			Portrait:ClearAllPoints()
 			local ofs = -0.15
@@ -64,7 +70,7 @@ function RUF.SetFramePortrait(self, unit)
 			Portrait:SetAllPoints(self)
 		end
 	elseif profileReference.Style == 2 then
-		Portrait:SetAlpha(1)
+		Portrait.Alpha = 1
 		Portrait:SetSize(profileReference.Width, profileReference.Height)
 		Portrait:ClearAllPoints()
 		Portrait:SetPoint(profileReference.Position.AnchorFrom, self, profileReference.Position.AnchorTo, profileReference.Position.x - offsetFix, profileReference.Position.y - offsetFix)
@@ -75,6 +81,7 @@ function RUF.SetFramePortrait(self, unit)
 	self.Portrait.Border = Border
 	self.Portrait.Background = Background
 	self.Portrait.UpdateOptions = RUF.PortraitUpdateOptions
+	self.Portrait.PostUpdate = PortraitPostUpdate
 	self.Portrait.Enabled = true
 
 	if profileReference.Enabled ~= true then
@@ -98,6 +105,7 @@ function RUF.PortraitUpdateOptions(self)
 			Background:Hide()
 			Border:Hide()
 			Portrait.Cutaway = profileReference.Cutaway
+			Portrait.Alpha = profileReference.Alpha
 			Portrait:SetAlpha(profileReference.Alpha)
 			if profileReference.Cutaway == true then
 				Portrait:ClearAllPoints()
@@ -111,6 +119,7 @@ function RUF.PortraitUpdateOptions(self)
 		elseif profileReference.Style == 2 or profileReference.Style == 3 then
 			Background:Show()
 			Border:Show()
+			Portrait.Alpha = 1
 			Portrait:SetAlpha(1)
 			Portrait:ClearAllPoints()
 
@@ -120,7 +129,7 @@ function RUF.PortraitUpdateOptions(self)
 			Border:SetPoint("BOTTOMRIGHT", Portrait, "BOTTOMRIGHT", offset + offsetFix, -(offset + offsetFix))
 			Border:SetFrameLevel(17)
 			Border:SetBackdrop({
-				edgeFile = LSM:Fetch("border", profileReference.Border.Style.edgeFile),
+				edgeFile = RUF:MediaFetch("border", profileReference.Border.Style.edgeFile),
 				edgeSize = profileReference.Border.Style.edgeSize
 			})
 			local r, g, b = unpack(profileReference.Border.Color)
@@ -128,7 +137,7 @@ function RUF.PortraitUpdateOptions(self)
 
 			-- Background
 			r, g, b = unpack(profileReference.Background.Color)
-			Background:SetTexture(LSM:Fetch("background", "Solid"))
+			Background:SetTexture(RUF:MediaFetch("background", "Solid"))
 			Background:SetVertexColor(r, g, b, profileReference.Background.Alpha)
 			Background:SetPoint("TOPLEFT", Portrait, "TOPLEFT", -offsetFix, offsetFix)
 			Background:SetPoint("BOTTOMRIGHT", Portrait, "BOTTOMRIGHT", offsetFix, -offsetFix)

@@ -1,10 +1,7 @@
 assert(RUF, "RUF not found!")
 local RUF = RUF
-local LSM = LibStub("LibSharedMedia-3.0")
-local _, ns = ...
-local oUF = ns.oUF
+local uClass = RUF.uClass
 
-local uClass = select(2, UnitClass("player"))
 function RUF.SetRunes(self, unit)
 	if uClass ~= "DEATHKNIGHT" then return end
 	local classPowerBar = {}
@@ -27,7 +24,7 @@ function RUF.SetRunes(self, unit)
 		Holder.anchorTo = "BOTTOM"
 	end
 
-	local texture = LSM:Fetch("statusbar", RUF.db.profile.Appearance.Bars.Class.Texture)
+	local texture = RUF:MediaFetch("statusbar", RUF.db.profile.Appearance.Bars.Class.Texture)
 	local r, g, b = unpack(RUF.db.profile.Appearance.Colors.PowerColors[5])
 	local bgMult = RUF.db.profile.Appearance.Bars.Class.Background.Multiplier
 	local colorAdd = RUF.db.profile.Appearance.Bars.Class.Color.SegmentMultiplier
@@ -64,7 +61,7 @@ function RUF.SetRunes(self, unit)
 		Border:SetPoint("BOTTOMRIGHT", Bar, "BOTTOMRIGHT", offset, -offset)
 		Border:SetFrameLevel(17)
 		Border:SetBackdrop({
-			edgeFile = LSM:Fetch("border", RUF.db.profile.Appearance.Bars.Class.Border.Style.edgeFile),
+			edgeFile = RUF:MediaFetch("border", RUF.db.profile.Appearance.Bars.Class.Border.Style.edgeFile),
 			edgeSize = RUF.db.profile.Appearance.Bars.Class.Border.Style.edgeSize
 		})
 		local borderr, borderg, borderb = unpack(RUF.db.profile.Appearance.Bars.Class.Border.Color)
@@ -72,7 +69,7 @@ function RUF.SetRunes(self, unit)
 
 		-- Set Background
 		Background:SetAllPoints(Bar)
-		Background:SetTexture(LSM:Fetch("background", "Solid"))
+		Background:SetTexture(RUF:MediaFetch("background", "Solid"))
 		Background:SetVertexColor(r * bgMult, g * bgMult, b * bgMult, RUF.db.profile.Appearance.Bars.Class.Background.Alpha)
 
 		classPowerBar[i] = Bar
@@ -209,7 +206,7 @@ function RUF.RunesUpdateOptions(self)
 		return
 	end
 	local unit = self.__owner.frame
-	local texture = LSM:Fetch("statusbar", RUF.db.profile.Appearance.Bars.Class.Texture)
+	local texture = RUF:MediaFetch("statusbar", RUF.db.profile.Appearance.Bars.Class.Texture)
 	local r, g, b = unpack(RUF.db.profile.Appearance.Colors.PowerColors[5])
 	local bgMult = RUF.db.profile.Appearance.Bars.Class.Background.Multiplier
 	local colorAdd = RUF.db.profile.Appearance.Bars.Class.Color.SegmentMultiplier
@@ -245,7 +242,7 @@ function RUF.RunesUpdateOptions(self)
 		Border:SetPoint("BOTTOMRIGHT", Bar, "BOTTOMRIGHT", offset, -offset)
 		Border:SetFrameLevel(17)
 		Border:SetBackdrop({
-			edgeFile = LSM:Fetch("border", RUF.db.profile.Appearance.Bars.Class.Border.Style.edgeFile),
+			edgeFile = RUF:MediaFetch("border", RUF.db.profile.Appearance.Bars.Class.Border.Style.edgeFile),
 			edgeSize = RUF.db.profile.Appearance.Bars.Class.Border.Style.edgeSize
 		})
 		local borderr, borderg, borderb = unpack(RUF.db.profile.Appearance.Bars.Class.Border.Color)
@@ -253,7 +250,7 @@ function RUF.RunesUpdateOptions(self)
 
 		-- Set Background
 		Background:SetAllPoints(Bar)
-		Background:SetTexture(LSM:Fetch("background", "Solid"))
+		Background:SetTexture(RUF:MediaFetch("background", "Solid"))
 		Background:SetVertexColor(r * bgMult, g * bgMult, b * bgMult, RUF.db.profile.Appearance.Bars.Class.Background.Alpha)
 
 		self:UpdateColor(i)

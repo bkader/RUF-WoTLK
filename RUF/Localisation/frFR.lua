@@ -399,7 +399,7 @@ L["Rainbow Mode"] = "Mode arc-en-ciel"
 L["Enables rainbow RGB animations for this bar."] = "Active les animations RVB arc-en-ciel pour cette barre."
 L["Disable Blizzard Frames"] = "Désactiver les cadres Blizzard"
 L["Show in Arena"] = "Afficher en arène"
-L["Pixel Perfect scaling"] = "Mise à l'échelle Pixel Perfect"
+L["Pixel Perfect scaling"] = "Mode Pixel Perfect"
 L["Scales RUF to be pixel perfect if it isn't already. Only affects RUF."] = "Redimensionne RUF pour être \"Pixel Perfect\" si ce n'est déjà fait. N'affecte que RUF."
 --[[Translation missing --]]
 L["Word Wrap"] = "Word Wrap"

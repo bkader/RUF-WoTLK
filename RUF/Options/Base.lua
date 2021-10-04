@@ -1,18 +1,15 @@
 assert(RUF, "RUF not found!")
 local RUF = RUF
-local L = LibStub('AceLocale-3.0'):GetLocale('RUF')
-local RUF_Options = RUF:GetModule('Options')
-local LSM = LibStub('LibSharedMedia-3.0')
 local _, ns = ...
 local oUF = ns.oUF
-local _, PlayerClass = UnitClass('player')
+local RUF_Options = RUF:GetModule('Options')
+
+local L = LibStub('AceLocale-3.0'):GetLocale('RUF')
 
 function RUF_Options.MainOptions()
 	local options = {
 		type = 'group',
-		name = function(info)
-			return "RUF [|c5500DBBDRaeli's Unit Frames|r] r|c5500DBBD" .. RUF.db.global.Version ..'|r'
-		end,
+		name = "RUF r|c5500DBBD" .. RUF.db.global.Version ..'|r',
 		order = 0,
 		childGroups = 'tab',
 		args = {
@@ -261,7 +258,7 @@ function RUF_Options.MainOptions()
 										name = L["Texture"],
 										type = 'select',
 										order = 1,
-										values = LSM:HashTable('border'),
+										values = RUF:MediaList('border'),
 										dialogControl = 'LSM30_Border',
 										get = function(info)
 											return RUF.db.profile.Appearance.Aura.Border.Style.edgeFile
@@ -345,7 +342,7 @@ function RUF_Options.MainOptions()
 										name = L["Texture"],
 										type = 'select',
 										order = 15.1,
-										values = LSM:HashTable('border'),
+										values = RUF:MediaList('border'),
 										dialogControl = 'LSM30_Border',
 										get = function(info)
 											return RUF.db.profile.Appearance.Aura.Pixel.Style.edgeFile
@@ -441,7 +438,7 @@ function RUF_Options.MainOptions()
 										name = L["Texture"],
 										type = 'select',
 										order = 0.02,
-										values = LSM:HashTable('border'),
+										values = RUF:MediaList('border'),
 										dialogControl = 'LSM30_Border',
 										get = function(info)
 											return RUF.db.profile.Appearance.Border.Glow.Style.edgeFile
@@ -523,7 +520,7 @@ function RUF_Options.MainOptions()
 										name = L["Sound"],
 										type = 'select',
 										order = 0.09,
-										values = LSM:HashTable('sound'),
+										values = RUF:MediaList('sound'),
 										dialogControl = 'LSM30_Sound',
 										--hidden = true,
 										hidden = function() return not RUF.db.profile.Appearance.Border.Glow.SoundEnabled end,
@@ -581,7 +578,7 @@ function RUF_Options.MainOptions()
 								name = L["Texture"],
 								type = 'select',
 								order = 0.02,
-								values = LSM:HashTable('border'),
+								values = RUF:MediaList('border'),
 								dialogControl = 'LSM30_Border',
 								get = function(info)
 									return RUF.db.profile.Appearance.Border.Style.edgeFile

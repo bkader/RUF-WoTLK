@@ -1,10 +1,14 @@
 assert(RUF, "RUF not found!")
 local RUF = RUF
-local LSM = LibStub("LibSharedMedia-3.0")
-local _, ns = ...
-local oUF = ns.oUF
-local PlayerClass
+local uClass = RUF.uClass
 
+local pairs, select = pairs, select
+local unpack, tonumber = unpack, tonumber
+local CreateFrame = CreateFrame
+local UnitIsFriend = UnitIsFriend
+local UnitInRaid = UnitInRaid
+local UnitClass = UnitClass
+local UnitPlayerOrPetInParty = UnitPlayerOrPetInParty
 local IsInGroup, IsInRaid = RUF.IsInGroup, RUF.IsInRaid
 local GetSpecialization = RUF.GetSpecialization
 
@@ -78,7 +82,7 @@ local function CustomBuffFilter(element, unit, button, ...)
 	if UnitIsFriend("player", unit) then
 		BuffTypes = "None" -- Cannot dispel friendly buffs
 	else
-		BuffTypes = BuffDispel[PlayerClass][RUF.Specialization]
+		BuffTypes = BuffDispel[uClass][RUF.Specialization]
 	end
 	local removable = false
 	if BuffTypes == "None" then
@@ -161,7 +165,7 @@ local function PostUpdateBuffIcon(self, unit, button, index, position, duration,
 	if UnitIsFriend("player", unit) then
 		BuffTypes = "None" -- Cannot dispel friendly buffs
 	else
-		BuffTypes = BuffDispel[PlayerClass][RUF.Specialization]
+		BuffTypes = BuffDispel[uClass][RUF.Specialization]
 	end
 	local removable = false
 	if BuffTypes == "None" then
@@ -188,7 +192,7 @@ local function PostUpdateBuffIcon(self, unit, button, index, position, duration,
 		icon:SetTexCoord(left, right, top, bottom)
 		local border = self[position].border
 		border:SetBackdrop({
-			edgeFile = LSM:Fetch("border", RUF.db.profile.Appearance.Aura.Border.Style.edgeFile),
+			edgeFile = RUF:MediaFetch("border", RUF.db.profile.Appearance.Aura.Border.Style.edgeFile),
 			edgeSize = RUF.db.profile.Appearance.Aura.Border.Style.edgeSize
 		})
 		border:SetBackdropBorderColor(r, g, b, a)
@@ -202,7 +206,7 @@ local function PostUpdateBuffIcon(self, unit, button, index, position, duration,
 		end
 		local pixel = self[position].pixel
 		pixel:SetBackdrop({
-			edgeFile = LSM:Fetch("border", RUF.db.profile.Appearance.Aura.Pixel.Style.edgeFile),
+			edgeFile = RUF:MediaFetch("border", RUF.db.profile.Appearance.Aura.Pixel.Style.edgeFile),
 			edgeSize = RUF.db.profile.Appearance.Aura.Pixel.Style.edgeSize
 		})
 		local pixelr, pixelg, pixelb, pixela = unpack(RUF.db.profile.Appearance.Colors.Aura.Pixel)
@@ -240,7 +244,7 @@ local function PostUpdateBuffIcon(self, unit, button, index, position, duration,
 end
 
 function RUF.SetBuffs(self, unit)
-	PlayerClass = PlayerClass or select(2, UnitClass("player"))
+	uClass = uClass or RUF.uClass or select(2, UnitClass("player"))
 	RUF.Specialization = GetSpecialization()
 	local Buffs = CreateFrame("Frame", nil, self)
 	Buffs:SetPoint(

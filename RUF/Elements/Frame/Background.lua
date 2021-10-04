@@ -1,8 +1,5 @@
 assert(RUF, "RUF not found!")
 local RUF = RUF
-local LSM = LibStub("LibSharedMedia-3.0")
-local _, ns = ...
-local oUF = ns.oUF
 
 function RUF.SetFrameBackground(self, unit)
 	local name = self:GetName()
@@ -17,7 +14,7 @@ function RUF.SetFrameBackground(self, unit)
 	-- Base Background
 	local BaseFrame = CreateFrame("Frame", name .. ".Background.Base", Background)
 	local BaseTexture = BaseFrame:CreateTexture(name .. ".Background.Base.Texture", "BACKGROUND")
-	BaseTexture:SetTexture(LSM:Fetch("background", "Solid"))
+	BaseTexture:SetTexture(RUF:MediaFetch("background", "Solid"))
 	BaseTexture:SetVertexColor(r * bgMult, g * bgMult, b * bgMult, RUF.db.profile.Appearance.Bars.Health.Background.Alpha)
 	BaseFrame:SetAllPoints(Background)
 	BaseTexture:SetAllPoints(BaseFrame)

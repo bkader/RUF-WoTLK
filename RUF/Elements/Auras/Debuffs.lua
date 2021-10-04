@@ -1,9 +1,6 @@
 assert(RUF, "RUF not found!")
 local RUF = RUF
-local LSM = LibStub("LibSharedMedia-3.0")
-local _, ns = ...
-local oUF = ns.oUF
-local PlayerClass
+local uClass = RUF.uClass
 
 local IsInGroup, IsInRaid = RUF.IsInGroup, RUF.IsInRaid
 local GetSpecialization = RUF.GetSpecialization
@@ -76,7 +73,7 @@ local function CustomDebuffFilter(element, unit, button, ...)
 
 	local BuffTypes
 	if UnitIsFriend("player", unit) then
-		BuffTypes = DebuffDispel[PlayerClass][RUF.Specialization]
+		BuffTypes = DebuffDispel[uClass][RUF.Specialization]
 	else
 		BuffTypes = "None" -- Can't dispel a debuff from an enemy.
 	end
@@ -160,7 +157,7 @@ local function PostUpdateDebuffIcon(self, unit, button, index, position, duratio
 
 	local BuffTypes
 	if UnitIsFriend("player", unit) then
-		BuffTypes = DebuffDispel[PlayerClass][RUF.Specialization]
+		BuffTypes = DebuffDispel[uClass][RUF.Specialization]
 	else
 		BuffTypes = "None" -- Can't dispel a debuff from an enemy.
 	end
@@ -189,7 +186,7 @@ local function PostUpdateDebuffIcon(self, unit, button, index, position, duratio
 		icon:SetTexCoord(left, right, top, bottom)
 		local border = self[position].border
 		border:SetBackdrop({
-			edgeFile = LSM:Fetch("border", RUF.db.profile.Appearance.Aura.Border.Style.edgeFile),
+			edgeFile = RUF:MediaFetch("border", RUF.db.profile.Appearance.Aura.Border.Style.edgeFile),
 			edgeSize = RUF.db.profile.Appearance.Aura.Border.Style.edgeSize
 		})
 		border:SetBackdropBorderColor(r, g, b, a)
@@ -203,7 +200,7 @@ local function PostUpdateDebuffIcon(self, unit, button, index, position, duratio
 		end
 		local pixel = self[position].pixel
 		pixel:SetBackdrop({
-			edgeFile = LSM:Fetch("border", RUF.db.profile.Appearance.Aura.Pixel.Style.edgeFile),
+			edgeFile = RUF:MediaFetch("border", RUF.db.profile.Appearance.Aura.Pixel.Style.edgeFile),
 			edgeSize = RUF.db.profile.Appearance.Aura.Pixel.Style.edgeSize
 		})
 		local pixelr, pixelg, pixelb, pixela = unpack(RUF.db.profile.Appearance.Colors.Aura.Pixel)
@@ -241,7 +238,7 @@ local function PostUpdateDebuffIcon(self, unit, button, index, position, duratio
 end
 
 function RUF.SetDebuffs(self, unit)
-	PlayerClass = PlayerClass or select(2, UnitClass("player"))
+	uClass = uClass or RUF.uClass or select(2, UnitClass("player"))
 	RUF.Specialization = GetSpecialization()
 	local Debuffs = CreateFrame("Frame", nil, self)
 	Debuffs:SetPoint(

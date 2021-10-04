@@ -46,8 +46,7 @@ Supported class powers:
 
 local _, ns = ...
 local oUF = ns.oUF
-
-local _, PlayerClass = UnitClass('player')
+local uClass = select(2, UnitClass('player'))
 
 -- sourced from FrameXML/Constants.lua
 local SPELL_POWER_ENERGY = 3
@@ -157,7 +156,7 @@ local function Visibility(self, event, unit)
 			end
 			if not shouldEnable and not scheduled then
 				scheduled = true
-				RUF.After(1, function() Visibility(self, event, unit) end)
+				Visibility(self, event, unit)
 			end
 		end
 	end
@@ -224,11 +223,11 @@ do
 		Path(self, 'ClassPowerDisable', 'player', ClassPowerType)
 	end
 
-	if(PlayerClass == 'ROGUE' or PlayerClass == 'DRUID') then
+	if(uClass == 'ROGUE' or uClass == 'DRUID') then
 		ClassPowerID = SPELL_POWER_COMBO_POINTS
 		ClassPowerType = 'COMBO_POINTS'
 
-		if(PlayerClass == 'DRUID') then
+		if(uClass == 'DRUID') then
 			RequirePower = SPELL_POWER_ENERGY
 			RequireSpell = 768 -- Cat Form
 		end

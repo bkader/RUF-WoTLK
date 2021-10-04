@@ -62,14 +62,14 @@ local function Update(self, event, unit)
 			if (not isAvailable) then
 				element:SetModelScale(4.25)
 				element:SetCamera(0)
-				element:SetPosition(0, 0, -1.5)
+				element:SetPosition(0, 0, -0.5)
 				element:SetModel([[Interface\Buttons\TalkToMeQuestionMark.m2]])
 			elseif (element.guid ~= guid or event == "UNIT_MODEL_CHANGED") then
 				element:ClearModel()
 				element:SetUnit(unit)
-				element:SetModelScale(1)
+				-- element:SetModelScale(1)
 				element:SetCamera(0)
-				element:SetPosition(0, 0, 0)
+				-- element:SetPosition(0, 0, 0)
 			else
 				element:SetCamera(0)
 			end

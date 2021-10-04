@@ -1,9 +1,6 @@
 assert(RUF, "RUF not found!")
 local RUF = RUF
-local LSM = LibStub("LibSharedMedia-3.0")
-local _, ns = ...
-local oUF = ns.oUF
-local uClass = select(2, UnitClass("player"))
+local uClass = RUF.uClass
 
 function RUF:GetBarColor(element, unit, barType, overridePowerType, testCurrent)
 	local pType, uClass, _

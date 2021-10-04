@@ -1,7 +1,7 @@
 local RUF = RUF or LibStub("AceAddon-3.0"):GetAddon("RUF")
-local LSM = LibStub("LibSharedMedia-3.0")
 local _, ns = ...
 local oUF = ns.oUF
+
 local elementName = 'TargetMark'
 
 local stringIconCircle = RUF.IndicatorGlyphs['Target-Circle']
@@ -31,35 +31,35 @@ local function Update(self, event)
 			if index == 1 then -- Star
 				element:SetText(stringIconStar)
 				element:SetWidth(element:GetStringWidth()+2)
-				element:SetTextColor(1,234/255,0/255)
+				element:SetTextColor(1,0.92,0.00)
 			elseif index == 2 then -- Circle
 				element:SetText(stringIconCircle)
 				element:SetWidth(element:GetStringWidth()+2)
-				element:SetTextColor(1,156/255,0/255)
+				element:SetTextColor(1,0.61,0.00)
 			elseif index == 3 then -- Diamond
 				element:SetText(stringIconDiamond)
 				element:SetWidth(element:GetStringWidth()+2)
-				element:SetTextColor(240/255,0/255,255/255)
+				element:SetTextColor(0.94,0.00,1.00)
 			elseif index == 4 then -- Triangle
 				element:SetText(stringIconTriangle)
 				element:SetWidth(element:GetStringWidth()+2)
-				element:SetTextColor(46/255,206/255,0/255)
+				element:SetTextColor(0.18,0.81,0.00)
 			elseif index == 5 then -- Moon
 				element:SetText(stringIconMoon)
 				element:SetWidth(element:GetStringWidth()+2)
-				element:SetTextColor(163/255,217/255,255/255)
+				element:SetTextColor(0.64,0.85,1.00)
 			elseif index == 6 then -- Square
 				element:SetText(stringIconSquare)
 				element:SetWidth(element:GetStringWidth()+2)
-				element:SetTextColor(61/255,180/255,255/255)
+				element:SetTextColor(0.24,0.71,1.00)
 			elseif index == 7 then -- Cross
 				element:SetText(stringIconCross)
 				element:SetWidth(element:GetStringWidth()+2)
-				element:SetTextColor(1,52/255,52/255)
+				element:SetTextColor(1,0.20,0.20)
 			elseif index == 8 then -- Skull
 				element:SetText(stringIconSkull)
 				element:SetWidth(element:GetStringWidth()+2)
-				element:SetTextColor(1,253/255,229/255)
+				element:SetTextColor(1,0.99,0.90)
 			else
 				element:SetText(" ")
 				element:SetWidth(1)
@@ -73,7 +73,7 @@ local function Update(self, event)
 
 		if RUF.db.global.TestMode == true then
 			element:SetText(stringIconStar) -- Star
-			element:SetTextColor(1,234/255,0/255)
+			element:SetTextColor(1,0.92,0.00)
 			element:SetWidth(element:GetStringWidth()+2)
 			element:Show()
 		end

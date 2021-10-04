@@ -1,9 +1,6 @@
 assert(RUF, "RUF not found!")
 local RUF = RUF
-local LSM = LibStub("LibSharedMedia-3.0")
-local _, ns = ...
-local oUF = ns.oUF
-local uClass = select(2, UnitClass("player"))
+local uClass = RUF.uClass
 
 local GetSpecialization = RUF.GetSpecialization
 
@@ -125,7 +122,7 @@ function RUF.SetFrameBorder(self, unit)
 
 	Border:SetFrameLevel(35)
 	Border:SetBackdrop({
-		edgeFile = LSM:Fetch("border", RUF.db.profile.Appearance.Border.Style.edgeFile),
+		edgeFile = RUF:MediaFetch("border", RUF.db.profile.Appearance.Border.Style.edgeFile),
 		edgeSize = RUF.db.profile.Appearance.Border.Style.edgeSize
 	})
 	local r, g, b = unpack(RUF.db.profile.Appearance.Border.Color)
@@ -169,7 +166,7 @@ function RUF.UpdateGlowBorder(self, event)
 		self.GlowBorder:Show()
 		if RUF.db.profile.Appearance.Border.Glow.SoundEnabled and self.frame ~= "target" then
 			if not self.auraSound then
-				PlaySoundFile(LSM:Fetch("sound", RUF.db.profile.Appearance.Border.Glow.Sound), "Master")
+				PlaySoundFile(RUF:MediaFetch("sound", RUF.db.profile.Appearance.Border.Glow.Sound), "Master")
 				self.auraSound = true
 			end
 		end
@@ -191,7 +188,7 @@ function RUF.SetGlowBorder(self, unit) -- Aura Highlight Border
 	GlowBorder:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", offset, -offset)
 	GlowBorder:SetFrameLevel(35)
 	GlowBorder:SetBackdrop({
-		edgeFile = LSM:Fetch("border", profileReference.Style.edgeFile),
+		edgeFile = RUF:MediaFetch("border", profileReference.Style.edgeFile),
 		edgeSize = profileReference.Style.edgeSize
 	})
 	GlowBorder:SetBackdropBorderColor(0, 0, 0, profileReference.Alpha)

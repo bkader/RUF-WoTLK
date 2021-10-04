@@ -2,7 +2,6 @@ local RUF = LibStub("AceAddon-3.0"):NewAddon("RUF", "LibCompat-1.0", "AceConsole
 _G.RUF = RUF
 local _, ns = ...
 local oUF = ns.oUF
-local L = LibStub('AceLocale-3.0'):GetLocale('RUF')
 local ACD = LibStub('AceConfigDialog-3.0')
 local LSM = LibStub('LibSharedMedia-3.0')
 local includedLayouts = {"Alidie's Layout", "Raeli's Layout",}
@@ -11,6 +10,9 @@ RUF.UIParent = CreateFrame("Frame", "RUFParent", UIParent)
 RUF.UIParent:SetFrameLevel(UIParent:GetFrameLevel())
 RUF.UIParent:SetSize(UIParent:GetSize())
 RUF.UIParent:SetPoint("CENTER", UIParent, "CENTER")
+
+-- player class
+RUF.uClass = RUF.uClass or select(2, UnitClass("player"))
 
 local frames = {
 	'Player',
@@ -96,12 +98,10 @@ function RUF:OnInitialize()
 		end
 	end
 
-	RUF.playerClass = RUF.playerClass or select(2, UnitClass("player"))
-
 	-- remove buggy SetFocus
 	for k, v in pairs(UnitPopupMenus) do
 		for x, y in pairs(v) do
-			if y == "SET_FOCUS" or y == "CLEAR_FOCUS" or y == "LOCK_FOCUS_FRAME" or y == "UNLOCK_FOCUS_FRAME" or (RUF.playerClass == "HUNTER" and y == "PET_DISMISS") then
+			if y == "SET_FOCUS" or y == "CLEAR_FOCUS" or y == "LOCK_FOCUS_FRAME" or y == "UNLOCK_FOCUS_FRAME" or (RUF.uClass == "HUNTER" and y == "PET_DISMISS") then
 				table.remove(UnitPopupMenus[k], x)
 			end
 		end
@@ -141,4 +141,12 @@ function RUF:RefreshConfig()
 	end
 	RUF.db.profile = self.db.profile
 	RUF:UpdateAllUnitSettings()
+end
+
+function RUF:MediaFetch(mediatype, key, default)
+	return (key and LSM:Fetch(mediatype, key)) or (default and LSM:Fetch(mediatype, default)) or default
+end
+
+function RUF:MediaList(mediatype)
+	return LSM:HashTable(mediatype)
 end

@@ -1,6 +1,5 @@
 assert(RUF, "RUF not found!")
 local RUF = RUF
-local LSM = LibStub('LibSharedMedia-3.0')
 local _, ns = ...
 local oUF = ns.oUF
 
@@ -327,7 +326,7 @@ function RUF.ReturnTextColors(self, unit, tag, cur, max, test) -- Get Text Color
 		r, g, b = unpack(RUF.db.profile.Appearance.Colors.ClassColors[class])
 	elseif RUF.db.profile.Appearance.Text[tag].Color.Reaction then -- If we want to show unit reaction colors
 		if UnitPlayerControlled(unit) and not UnitCanAttack(unit, 'player') and not UnitIsPlayer(unit) then -- If the unit is an allied pet then show as blue.
-			r, g, b = unpack(RUF.db.profile.Appearance.Colors.ReactionColors[10])
+			r, g, b = unpack(RUF.db.profile.Appearance.Colors.ReactionColors[5])
 		elseif UnitReaction(unit, 'player') then -- If the unit is an offline party member, possibly others too?
 			r, g, b = unpack(RUF.db.profile.Appearance.Colors.ReactionColors[UnitReaction(unit, 'player')])
 		elseif UnitInParty(unit) then

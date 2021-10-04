@@ -96,6 +96,7 @@ local function Enable(self)
 		element.ForceUpdate = ForceUpdate
 
 		self:RegisterEvent("PARTY_MEMBERS_CHANGED", Path, true)
+		self:RegisterEvent("RAID_ROSTER_UPDATE", Path, true)
 
 		return true
 	end
@@ -107,6 +108,7 @@ local function Disable(self)
 		element:Hide()
 
 		self:UnregisterEvent("PARTY_MEMBERS_CHANGED", Path)
+		self:UnregisterEvent("RAID_ROSTER_UPDATE", Path)
 	end
 end
 

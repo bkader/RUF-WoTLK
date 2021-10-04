@@ -1,9 +1,8 @@
 assert(RUF, "RUF not found!")
 local RUF = RUF
-local L = LibStub('AceLocale-3.0'):GetLocale('RUF')
-local LSM = LibStub('LibSharedMedia-3.0')
 local _, ns = ...
 local oUF = ns.oUF
+local L = LibStub('AceLocale-3.0'):GetLocale('RUF')
 
 --[[
 	Easiest 'best' version:
@@ -46,7 +45,7 @@ function RUF.SetTextParent(self,unit)
 	testModeDisplayName:SetAllPoints(self)
 
 	local text = testModeDisplayName:CreateFontString(name .. '.Text.DisplayName.String', 'OVERLAY', 'Raeli')
-	local font = LSM:Fetch('font', 'RUF')
+	local font = RUF:MediaFetch('font', 'RUF')
 	text:SetFont(font,21,'OUTLINE')
 	local displayText = name:gsub('oUF_RUF_',''):gsub('UnitButton','')
 	local unitNum = displayText:match('%d')
@@ -104,7 +103,7 @@ function RUF.CreateTextArea(self, unit, textName)
 
 
 	local Font = ''
-	Font = LSM:Fetch('font', profileReference.Font)
+	Font = RUF:MediaFetch('font', profileReference.Font, 'RUF')
 	local size = profileReference.Size or 18
 
 	local Text = self.Text[textName]:CreateFontString(name .. '.Text.' .. textName .. '.String' , 'OVERLAY')

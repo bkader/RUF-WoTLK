@@ -107,6 +107,7 @@ local Private = oUF.Private
 
 local xpcall = Private.xpcall
 local unitExists = Private.unitExists
+local unpack = unpack
 
 local GetComboPoints = GetComboPoints
 local GetNumRaidMembers = GetNumRaidMembers
@@ -687,6 +688,11 @@ local function getTagFunc(tagstr)
 			_ENV._FRAME = parent
 			for i, f in next, args do
 				tmp[i] = f(unit, realUnit) or ""
+			end
+
+			-- security measure for fonts
+			if self:GetFont() == nil then
+				self:SetFont(unpack(Private.defaultFont))
 			end
 
 			-- We do 1, numTags because tmp can hold several unneeded variables.

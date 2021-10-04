@@ -1,8 +1,8 @@
 assert(RUF, "RUF not found!")
 local RUF = RUF
-local LSM = LibStub('LibSharedMedia-3.0')
 local _, ns = ...
 local oUF = ns.oUF
+
 local elementName = 'PetHappiness'
 local elementString1 = RUF.IndicatorGlyphs['PetHappiness1']
 local elementString2 = RUF.IndicatorGlyphs['PetHappiness2']
@@ -96,7 +96,6 @@ local function Disable(self)
 end
 
 oUF:AddElement('PetHappinessIndicator', Path, Enable, Disable)
-
 
 function RUF.Indicators.PetHappiness(self, unit)
 	if (unit == 'player' or unit == 'pet') then

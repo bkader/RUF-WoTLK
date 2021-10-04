@@ -1,8 +1,5 @@
 assert(RUF, "RUF not found!")
 local RUF = RUF
-local LSM = LibStub("LibSharedMedia-3.0")
-local _, ns = ...
-local oUF = ns.oUF
 
 local function DrawRainbow(element)
 	local a, b, c, x, y, z = RUF:GetRainbow()
@@ -80,7 +77,7 @@ function RUF.HealthUpdate(self, event, unit)
 end
 
 function RUF.SetHealthBar(self, unit)
-	local texture = LSM:Fetch("statusbar", RUF.db.profile.Appearance.Bars.Health.Texture)
+	local texture = RUF:MediaFetch("statusbar", RUF.db.profile.Appearance.Bars.Health.Texture)
 	local Bar = RUF.StatusBarPrototype(nil, self)
 
 	-- Bar
@@ -106,7 +103,7 @@ end
 
 function RUF.HealthUpdateOptions(self)
 	local unit = self.__owner.frame
-	local texture = LSM:Fetch("statusbar", RUF.db.profile.Appearance.Bars.Health.Texture)
+	local texture = RUF:MediaFetch("statusbar", RUF.db.profile.Appearance.Bars.Health.Texture)
 	local Bar = self
 
 	Bar.colorClass = RUF.db.profile.Appearance.Bars.Health.Color.Class
