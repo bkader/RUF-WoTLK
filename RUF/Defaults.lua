@@ -42,8 +42,6 @@ local cfg = {
 				damagedOverride = true,
 				damagedPercent = 95,
 				damagedAlpha = 1,
-				animate = false,
-				animationDuration = 0.25,
 			},
 			Bars = {
 				Health = {
@@ -74,7 +72,7 @@ local cfg = {
 					},
 				},
 				Absorb = {
-					Type = 1, -- 1 Health Overlay = 0, 2 Bar If 1 then use Frame.Bars.Absorb.Alpha If 2 then use Unit.Player.Bars.Absorb.Position and Order and Alpha
+					Type = 1,
 					Texture = "RUF 5",
 					Color = {
 						BaseColor = {1, 1, 1},
@@ -315,13 +313,6 @@ local cfg = {
 					[12] = {0,247/255,202/255}, -- Chi
 					[13] = {102/255,0,204/255}, -- Insanity
 					[14] = {1,245/255,105/255}, -- Classic Combo Points
-					[15] = {0,158/255,1}, -- Unused
-					[16] = {0,178/255,250/255}, -- Arcane Charges
-					[17] = {200/255,66/255,252/255}, -- Fury
-					[18] = {1,156/255,0}, -- Pain
-					[50] = {180/255,0,20/255}, -- Blood Runes
-					[51] = {60/255,205/255,1}, -- Frost Runes
-					[52] = {145/255,190/255,15/255}, -- Unholy Runes
 				},
 				ReactionColors = {
 					[1] = {230/255,77/255,56/255}, -- Hated
@@ -332,8 +323,6 @@ local cfg = {
 					[6] = {0,153/255,26/255}, -- Honored
 					[7] = {0,153/255,26/255}, -- Revered
 					[8] = {0,153/255,26/255}, -- Exalted
-					[9] = {56/255,77/255,230/255}, -- Paragon
-					[10] = {56/255,77/255,230/255}, -- Friendly Pet
 				},
 			},
 			Text = {
@@ -673,18 +662,6 @@ local cfg = {
 						},
 					},
 					["Indicators"] = {
-						["Objective"] = {
-							["Enabled"] = true,
-							["Size"] = 26,
-							["Style"] = "RUF",
-							["Position"] = {
-								["y"] = 0,
-								["x"] = 0,
-								["AnchorTo"] = "RIGHT",
-								["AnchorFrom"] = "CENTER",
-								["AnchorFrame"] = "Frame",
-							},
-						},
 						["TargetMark"] = {
 							["Enabled"] = true,
 							["Size"] = 26,
@@ -720,19 +697,6 @@ local cfg = {
 								["AnchorFrom"] = "CENTER",
 								["AnchorFrame"] = "Frame",
 							},
-						},
-						["Honor"] = {
-							["AlwaysShow"] = false,
-							["Position"] = {
-								["y"] = 0,
-								["x"] = 0,
-								["AnchorTo"] = "LEFT",
-								["AnchorFrom"] = "CENTER",
-								["AnchorFrame"] = "Frame",
-							},
-							["Enabled"] = true,
-							["Badge"] = true,
-							["Size"] = 32,
 						},
 						["Lead"] = {
 							["Enabled"] = true,
@@ -1143,18 +1107,6 @@ local cfg = {
 						},
 					},
 					["Indicators"] = {
-						["Objective"] = {
-							["Enabled"] = true,
-							["Size"] = 26,
-							["Style"] = "RUF",
-							["Position"] = {
-								["y"] = 4,
-								["x"] = -2,
-								["AnchorTo"] = "LEFT",
-								["AnchorFrom"] = "CENTER",
-								["AnchorFrame"] = "Frame",
-							},
-						},
 						["TargetMark"] = {
 							["Enabled"] = true,
 							["Size"] = 26,
@@ -1178,19 +1130,6 @@ local cfg = {
 								["AnchorFrom"] = "CENTER",
 								["AnchorFrame"] = "Frame",
 							},
-						},
-						["Honor"] = {
-							["AlwaysShow"] = false,
-							["Position"] = {
-								["y"] = 0,
-								["x"] = 0,
-								["AnchorTo"] = "LEFT",
-								["AnchorFrom"] = "CENTER",
-								["AnchorFrame"] = "Frame",
-							},
-							["Enabled"] = false,
-							["Badge"] = false,
-							["Size"] = 32,
 						},
 						["Lead"] = {
 							["Enabled"] = true,
@@ -1585,18 +1524,6 @@ local cfg = {
 						},
 					},
 					["Indicators"] = {
-						["Objective"] = {
-							["Enabled"] = true,
-							["Size"] = 26,
-							["Style"] = "RUF",
-							["Position"] = {
-								["y"] = 0,
-								["x"] = 0,
-								["AnchorTo"] = "RIGHT",
-								["AnchorFrom"] = "CENTER",
-								["AnchorFrame"] = "Frame",
-							},
-						},
 						["TargetMark"] = {
 							["Enabled"] = true,
 							["Size"] = 26,
@@ -1632,19 +1559,6 @@ local cfg = {
 								["AnchorFrom"] = "CENTER",
 								["AnchorFrame"] = "Frame",
 							},
-						},
-						["Honor"] = {
-							["AlwaysShow"] = false,
-							["Position"] = {
-								["y"] = 0,
-								["x"] = 0,
-								["AnchorTo"] = "RIGHT",
-								["AnchorFrom"] = "CENTER",
-								["AnchorFrame"] = "Frame",
-							},
-							["Enabled"] = false,
-							["Badge"] = false,
-							["Size"] = 32,
 						},
 						["Lead"] = {
 							["Enabled"] = true,
@@ -2051,31 +1965,6 @@ local cfg = {
 						},
 					},
 					["Indicators"] = {
-						["Objective"] = {
-							["Enabled"] = false,
-							["Size"] = 26,
-							["Style"] = "RUF",
-							["Position"] = {
-								["y"] = 0,
-								["x"] = 0,
-								["AnchorTo"] = "BOTTOMRIGHT",
-								["AnchorFrom"] = "BOTTOM",
-								["AnchorFrame"] = "Frame",
-							},
-						},
-						["Honor"] = {
-							["AlwaysShow"] = false,
-							["Position"] = {
-								["y"] = 0,
-								["x"] = 0,
-								["AnchorTo"] = "CENTER",
-								["AnchorFrom"] = "CENTER",
-								["AnchorFrame"] = "PvPCombat",
-							},
-							["Enabled"] = false,
-							["Badge"] = false,
-							["Size"] = 26,
-						},
 						["LootMaster"] = {
 							["Enabled"] = false,
 							["Size"] = 26,
@@ -2477,31 +2366,6 @@ local cfg = {
 						},
 					},
 					["Indicators"] = {
-						["Objective"] = {
-							["Enabled"] = false,
-							["Size"] = 26,
-							["Style"] = "RUF",
-							["Position"] = {
-								["y"] = 0,
-								["x"] = 0,
-								["AnchorTo"] = "BOTTOMLEFT",
-								["AnchorFrom"] = "BOTTOM",
-								["AnchorFrame"] = "Frame",
-							},
-						},
-						["Honor"] = {
-							["AlwaysShow"] = false,
-							["Position"] = {
-								["y"] = 0,
-								["x"] = 0,
-								["AnchorTo"] = "CENTER",
-								["AnchorFrom"] = "CENTER",
-								["AnchorFrame"] = "PvPCombat",
-							},
-							["Enabled"] = false,
-							["Badge"] = false,
-							["Size"] = 26,
-						},
 						["LootMaster"] = {
 							["Enabled"] = false,
 							["Size"] = 26,
@@ -2903,31 +2767,6 @@ local cfg = {
 						},
 					},
 					["Indicators"] = {
-						["Objective"] = {
-							["Enabled"] = false,
-							["Size"] = 26,
-							["Style"] = "RUF",
-							["Position"] = {
-								["y"] = 0,
-								["x"] = 0,
-								["AnchorTo"] = "RIGHT",
-								["AnchorFrom"] = "LEFT",
-								["AnchorFrame"] = "TargetMark",
-							},
-						},
-						["Honor"] = {
-							["AlwaysShow"] = false,
-							["Position"] = {
-								["y"] = 0,
-								["x"] = 0,
-								["AnchorTo"] = "TOPRIGHT",
-								["AnchorFrom"] = "CENTER",
-								["AnchorFrame"] = "PvPCombat",
-							},
-							["Enabled"] = false,
-							["Badge"] = false,
-							["Size"] = 18,
-						},
 						["LootMaster"] = {
 							["Enabled"] = false,
 							["Size"] = 18,
@@ -3329,31 +3168,6 @@ local cfg = {
 						},
 					},
 					["Indicators"] = {
-						["Objective"] = {
-							["Enabled"] = false,
-							["Size"] = 26,
-							["Style"] = "RUF",
-							["Position"] = {
-								["y"] = 0,
-								["x"] = 0,
-								["AnchorTo"] = "BOTTOMRIGHT",
-								["AnchorFrom"] = "BOTTOM",
-								["AnchorFrame"] = "Frame",
-							},
-						},
-						["Honor"] = {
-							["AlwaysShow"] = false,
-							["Position"] = {
-								["y"] = 0,
-								["x"] = 0,
-								["AnchorTo"] = "CENTER",
-								["AnchorFrom"] = "CENTER",
-								["AnchorFrame"] = "PvPCombat",
-							},
-							["Enabled"] = false,
-							["Badge"] = false,
-							["Size"] = 26,
-						},
 						["LootMaster"] = {
 							["Enabled"] = false,
 							["Size"] = 26,
@@ -3755,31 +3569,6 @@ local cfg = {
 						},
 					},
 					["Indicators"] = {
-						["Objective"] = {
-							["Enabled"] = false,
-							["Size"] = 26,
-							["Style"] = "RUF",
-							["Position"] = {
-								["y"] = 0,
-								["x"] = 0,
-								["AnchorTo"] = "RIGHT",
-								["AnchorFrom"] = "LEFT",
-								["AnchorFrame"] = "TargetMark",
-							},
-						},
-						["Honor"] = {
-							["AlwaysShow"] = false,
-							["Position"] = {
-								["y"] = 0,
-								["x"] = 0,
-								["AnchorTo"] = "TOPRIGHT",
-								["AnchorFrom"] = "CENTER",
-								["AnchorFrame"] = "PvPCombat",
-							},
-							["Enabled"] = false,
-							["Badge"] = false,
-							["Size"] = 18,
-						},
 						["LootMaster"] = {
 							["Enabled"] = false,
 							["Size"] = 18,
@@ -4181,18 +3970,6 @@ local cfg = {
 						},
 					},
 					["Indicators"] = {
-						["Objective"] = {
-							["Enabled"] = true,
-							["Size"] = 26,
-							["Style"] = "RUF",
-							["Position"] = {
-								["y"] = 0,
-								["x"] = 0,
-								["AnchorTo"] = "RIGHT",
-								["AnchorFrom"] = "CENTER",
-								["AnchorFrame"] = "Frame",
-							},
-						},
 						["TargetMark"] = {
 							["Enabled"] = true,
 							["Size"] = 26,
@@ -4228,19 +4005,6 @@ local cfg = {
 								["AnchorFrom"] = "CENTER",
 								["AnchorFrame"] = "Frame",
 							},
-						},
-						["Honor"] = {
-							["AlwaysShow"] = false,
-							["Position"] = {
-								["y"] = 0,
-								["x"] = 0,
-								["AnchorTo"] = "RIGHT",
-								["AnchorFrom"] = "CENTER",
-								["AnchorFrame"] = "Frame",
-							},
-							["Enabled"] = false,
-							["Badge"] = false,
-							["Size"] = 32,
 						},
 						["Lead"] = {
 							["Enabled"] = true,
@@ -4655,31 +4419,6 @@ local cfg = {
 						},
 					},
 					["Indicators"] = {
-						["Objective"] = {
-							["Enabled"] = false,
-							["Size"] = 26,
-							["Style"] = "RUF",
-							["Position"] = {
-								["y"] = 0,
-								["x"] = 0,
-								["AnchorTo"] = "RIGHT",
-								["AnchorFrom"] = "LEFT",
-								["AnchorFrame"] = "TargetMark",
-							},
-						},
-						["Honor"] = {
-							["AlwaysShow"] = false,
-							["Position"] = {
-								["y"] = 0,
-								["x"] = 0,
-								["AnchorTo"] = "TOPRIGHT",
-								["AnchorFrom"] = "CENTER",
-								["AnchorFrame"] = "PvPCombat",
-							},
-							["Enabled"] = false,
-							["Badge"] = false,
-							["Size"] = 18,
-						},
 						["LootMaster"] = {
 							["Enabled"] = false,
 							["Size"] = 18,
@@ -5087,31 +4826,6 @@ local cfg = {
 						},
 					},
 					["Indicators"] = {
-						["Objective"] = {
-							["Enabled"] = false,
-							["Size"] = 26,
-							["Style"] = "RUF",
-							["Position"] = {
-								["y"] = 0,
-								["x"] = 0,
-								["AnchorTo"] = "RIGHT",
-								["AnchorFrom"] = "LEFT",
-								["AnchorFrame"] = "TargetMark",
-							},
-						},
-						["Honor"] = {
-							["AlwaysShow"] = false,
-							["Position"] = {
-								["y"] = 0,
-								["x"] = 0,
-								["AnchorTo"] = "TOPRIGHT",
-								["AnchorFrom"] = "CENTER",
-								["AnchorFrame"] = "PvPCombat",
-							},
-							["Enabled"] = false,
-							["Badge"] = false,
-							["Size"] = 18,
-						},
 						["LootMaster"] = {
 							["Enabled"] = false,
 							["Size"] = 18,
@@ -5517,18 +5231,6 @@ local cfg = {
 						},
 					},
 					["Indicators"] = {
-						["Objective"] = {
-							["Enabled"] = true,
-							["Size"] = 26,
-							["Style"] = "RUF",
-							["Position"] = {
-								["y"] = 0,
-								["x"] = 0,
-								["AnchorTo"] = "LEFT",
-								["AnchorFrom"] = "CENTER",
-								["AnchorFrame"] = "Frame",
-							},
-						},
 						["TargetMark"] = {
 							["Enabled"] = true,
 							["Size"] = 26,
@@ -5552,19 +5254,6 @@ local cfg = {
 								["AnchorFrom"] = "CENTER",
 								["AnchorFrame"] = "Frame",
 							},
-						},
-						["Honor"] = {
-							["AlwaysShow"] = false,
-							["Position"] = {
-								["y"] = 0,
-								["x"] = 0,
-								["AnchorTo"] = "LEFT",
-								["AnchorFrom"] = "CENTER",
-								["AnchorFrame"] = "Frame",
-							},
-							["Enabled"] = false,
-							["Badge"] = false,
-							["Size"] = 32,
 						},
 						["Lead"] = {
 							["Enabled"] = true,
@@ -5974,31 +5663,6 @@ local cfg = {
 						},
 					},
 					["Indicators"] = {
-						["Objective"] = {
-							["Enabled"] = false,
-							["Size"] = 26,
-							["Style"] = "RUF",
-							["Position"] = {
-								["y"] = 0,
-								["x"] = 0,
-								["AnchorTo"] = "RIGHT",
-								["AnchorFrom"] = "LEFT",
-								["AnchorFrame"] = "TargetMark",
-							},
-						},
-						["Honor"] = {
-							["AlwaysShow"] = false,
-							["Position"] = {
-								["y"] = 0,
-								["x"] = 0,
-								["AnchorTo"] = "TOPRIGHT",
-								["AnchorFrom"] = "CENTER",
-								["AnchorFrame"] = "PvPCombat",
-							},
-							["Enabled"] = false,
-							["Badge"] = false,
-							["Size"] = 18,
-						},
 						["LootMaster"] = {
 							["Enabled"] = false,
 							["Size"] = 18,
@@ -6404,18 +6068,6 @@ local cfg = {
 						},
 					},
 					["Indicators"] = {
-						["Objective"] = {
-							["Enabled"] = true,
-							["Size"] = 26,
-							["Style"] = "RUF",
-							["Position"] = {
-								["y"] = 4,
-								["x"] = -2,
-								["AnchorTo"] = "LEFT",
-								["AnchorFrom"] = "CENTER",
-								["AnchorFrame"] = "Frame",
-							},
-						},
 						["TargetMark"] = {
 							["Enabled"] = true,
 							["Size"] = 26,
@@ -6439,19 +6091,6 @@ local cfg = {
 								["AnchorFrom"] = "CENTER",
 								["AnchorFrame"] = "Frame",
 							},
-						},
-						["Honor"] = {
-							["AlwaysShow"] = false,
-							["Position"] = {
-								["y"] = 0,
-								["x"] = 0,
-								["AnchorTo"] = "LEFT",
-								["AnchorFrom"] = "CENTER",
-								["AnchorFrame"] = "Frame",
-							},
-							["Enabled"] = false,
-							["Badge"] = false,
-							["Size"] = 32,
 						},
 						["Lead"] = {
 							["Enabled"] = true,
@@ -6861,31 +6500,6 @@ local cfg = {
 						},
 					},
 					["Indicators"] = {
-						["Objective"] = {
-							["Enabled"] = false,
-							["Size"] = 26,
-							["Style"] = "RUF",
-							["Position"] = {
-								["y"] = 0,
-								["x"] = 0,
-								["AnchorTo"] = "RIGHT",
-								["AnchorFrom"] = "LEFT",
-								["AnchorFrame"] = "TargetMark",
-							},
-						},
-						["Honor"] = {
-							["AlwaysShow"] = false,
-							["Position"] = {
-								["y"] = 0,
-								["x"] = 0,
-								["AnchorTo"] = "TOPRIGHT",
-								["AnchorFrom"] = "CENTER",
-								["AnchorFrame"] = "PvPCombat",
-							},
-							["Enabled"] = false,
-							["Badge"] = false,
-							["Size"] = 18,
-						},
 						["LootMaster"] = {
 							["Enabled"] = false,
 							["Size"] = 18,
@@ -7303,12 +6917,6 @@ local Alidie = {
 					0.662745098039216, -- [2]
 					0.250980392156863, -- [3]
 				}, -- [8]
-				nil, -- [9]
-				{
-					0.188235294117647, -- [1]
-					0.443137254901961, -- [2]
-					0.749019607843137, -- [3]
-				}, -- [10]
 			},
 			["ClassColors"] = {
 				["DEATHKNIGHT"] = {
@@ -7474,31 +7082,6 @@ local Alidie = {
 			["Enabled"] = true,
 			["Frame"] = {
 				["Indicators"] = {
-					["Objective"] = {
-						["Enabled"] = true,
-						["Size"] = 26,
-						["Style"] = "RUF",
-						["Position"] = {
-							["y"] = 0,
-							["x"] = 0,
-							["AnchorTo"] = "RIGHT",
-							["AnchorFrom"] = "CENTER",
-							["AnchorFrame"] = "Frame",
-						},
-					},
-					["Honor"] = {
-						["Enabled"] = true,
-						["Position"] = {
-							["y"] = 0,
-							["x"] = 0,
-							["AnchorTo"] = "LEFT",
-							["AnchorFrom"] = "CENTER",
-							["AnchorFrame"] = "Frame",
-						},
-						["Badge"] = true,
-						["AlwaysShow"] = false,
-						["Size"] = 32,
-					},
 					["InCombat"] = {
 						["Enabled"] = true,
 						["Size"] = 20,
@@ -7923,31 +7506,6 @@ local Alidie = {
 			["Enabled"] = true,
 			["Frame"] = {
 				["Indicators"] = {
-					["Objective"] = {
-						["Enabled"] = true,
-						["Size"] = 26,
-						["Style"] = "RUF",
-						["Position"] = {
-							["y"] = 0,
-							["x"] = -2,
-							["AnchorTo"] = "LEFT",
-							["AnchorFrom"] = "CENTER",
-							["AnchorFrame"] = "Frame",
-						},
-					},
-					["Honor"] = {
-						["Badge"] = false,
-						["Position"] = {
-							["y"] = 0,
-							["x"] = 0,
-							["AnchorTo"] = "LEFT",
-							["AnchorFrom"] = "CENTER",
-							["AnchorFrame"] = "Frame",
-						},
-						["AlwaysShow"] = false,
-						["Enabled"] = false,
-						["Size"] = 32,
-					},
 					["LootMaster"] = {
 						["Enabled"] = true,
 						["Size"] = 14,
@@ -8344,31 +7902,6 @@ local Alidie = {
 			["Enabled"] = true,
 			["Frame"] = {
 				["Indicators"] = {
-					["Objective"] = {
-						["Enabled"] = true,
-						["Size"] = 26,
-						["Style"] = "RUF",
-						["Position"] = {
-							["y"] = 0,
-							["x"] = -2,
-							["AnchorTo"] = "RIGHT",
-							["AnchorFrom"] = "CENTER",
-							["AnchorFrame"] = "Frame",
-						},
-					},
-					["Honor"] = {
-						["Badge"] = false,
-						["Position"] = {
-							["y"] = 0,
-							["x"] = 0,
-							["AnchorTo"] = "RIGHT",
-							["AnchorFrom"] = "CENTER",
-							["AnchorFrame"] = "Frame",
-						},
-						["AlwaysShow"] = false,
-						["Enabled"] = false,
-						["Size"] = 32,
-					},
 					["LootMaster"] = {
 						["Enabled"] = true,
 						["Size"] = 14,
@@ -8741,31 +8274,6 @@ local Alidie = {
 			["Enabled"] = true,
 			["Frame"] = {
 				["Indicators"] = {
-					["Objective"] = {
-						["Enabled"] = false,
-						["Size"] = 26,
-						["Style"] = "RUF",
-						["Position"] = {
-							["y"] = 0,
-							["x"] = 0,
-							["AnchorTo"] = "BOTTOMRIGHT",
-							["AnchorFrom"] = "BOTTOM",
-							["AnchorFrame"] = "Frame",
-						},
-					},
-					["Honor"] = {
-						["Badge"] = false,
-						["Position"] = {
-							["y"] = 0,
-							["x"] = 0,
-							["AnchorTo"] = "CENTER",
-							["AnchorFrom"] = "CENTER",
-							["AnchorFrame"] = "PvPCombat",
-						},
-						["AlwaysShow"] = false,
-						["Enabled"] = false,
-						["Size"] = 26,
-					},
 					["LootMaster"] = {
 						["Enabled"] = false,
 						["Size"] = 26,
@@ -9118,31 +8626,6 @@ local Alidie = {
 			["Enabled"] = true,
 			["Frame"] = {
 				["Indicators"] = {
-					["Objective"] = {
-						["Enabled"] = false,
-						["Size"] = 26,
-						["Style"] = "RUF",
-						["Position"] = {
-							["y"] = 0,
-							["x"] = 0,
-							["AnchorTo"] = "BOTTOMLEFT",
-							["AnchorFrom"] = "BOTTOM",
-							["AnchorFrame"] = "Frame",
-						},
-					},
-					["Honor"] = {
-						["Badge"] = false,
-						["Position"] = {
-							["y"] = 0,
-							["x"] = 0,
-							["AnchorTo"] = "CENTER",
-							["AnchorFrom"] = "CENTER",
-							["AnchorFrame"] = "PvPCombat",
-						},
-						["AlwaysShow"] = false,
-						["Enabled"] = false,
-						["Size"] = 26,
-					},
 					["LootMaster"] = {
 						["Enabled"] = false,
 						["Size"] = 26,
@@ -9495,31 +8978,6 @@ local Alidie = {
 			["Enabled"] = false,
 			["Frame"] = {
 				["Indicators"] = {
-					["Objective"] = {
-						["Enabled"] = false,
-						["Size"] = 26,
-						["Style"] = "RUF",
-						["Position"] = {
-							["y"] = 0,
-							["x"] = 0,
-							["AnchorTo"] = "RIGHT",
-							["AnchorFrom"] = "LEFT",
-							["AnchorFrame"] = "TargetMark",
-						},
-					},
-					["Honor"] = {
-						["Badge"] = false,
-						["Position"] = {
-							["y"] = 0,
-							["x"] = 0,
-							["AnchorTo"] = "TOPRIGHT",
-							["AnchorFrom"] = "CENTER",
-							["AnchorFrame"] = "PvPCombat",
-						},
-						["AlwaysShow"] = false,
-						["Enabled"] = false,
-						["Size"] = 18,
-					},
 					["LootMaster"] = {
 						["Enabled"] = false,
 						["Size"] = 18,
@@ -9872,31 +9330,6 @@ local Alidie = {
 			["Enabled"] = true,
 			["Frame"] = {
 				["Indicators"] = {
-					["Objective"] = {
-						["Enabled"] = false,
-						["Size"] = 26,
-						["Style"] = "RUF",
-						["Position"] = {
-							["y"] = 0,
-							["x"] = 0,
-							["AnchorTo"] = "BOTTOMRIGHT",
-							["AnchorFrom"] = "BOTTOM",
-							["AnchorFrame"] = "Frame",
-						},
-					},
-					["Honor"] = {
-						["Badge"] = false,
-						["Position"] = {
-							["y"] = 0,
-							["x"] = 0,
-							["AnchorTo"] = "CENTER",
-							["AnchorFrom"] = "CENTER",
-							["AnchorFrame"] = "PvPCombat",
-						},
-						["AlwaysShow"] = false,
-						["Enabled"] = false,
-						["Size"] = 26,
-					},
 					["LootMaster"] = {
 						["Enabled"] = false,
 						["Size"] = 26,
@@ -10249,31 +9682,6 @@ local Alidie = {
 			["Enabled"] = false,
 			["Frame"] = {
 				["Indicators"] = {
-					["Objective"] = {
-						["Enabled"] = false,
-						["Size"] = 26,
-						["Style"] = "RUF",
-						["Position"] = {
-							["y"] = 0,
-							["x"] = 0,
-							["AnchorTo"] = "RIGHT",
-							["AnchorFrom"] = "LEFT",
-							["AnchorFrame"] = "TargetMark",
-						},
-					},
-					["Honor"] = {
-						["Badge"] = false,
-						["Position"] = {
-							["y"] = 0,
-							["x"] = 0,
-							["AnchorTo"] = "TOPRIGHT",
-							["AnchorFrom"] = "CENTER",
-							["AnchorFrame"] = "PvPCombat",
-						},
-						["AlwaysShow"] = false,
-						["Enabled"] = false,
-						["Size"] = 18,
-					},
 					["LootMaster"] = {
 						["Enabled"] = false,
 						["Size"] = 18,
@@ -10677,31 +10085,6 @@ local Alidie = {
 			["showRaid"] = false,
 			["Frame"] = {
 				["Indicators"] = {
-					["Objective"] = {
-						["Enabled"] = true,
-						["Size"] = 26,
-						["Style"] = "RUF",
-						["Position"] = {
-							["y"] = 0,
-							["x"] = 0,
-							["AnchorTo"] = "RIGHT",
-							["AnchorFrom"] = "CENTER",
-							["AnchorFrame"] = "Frame",
-						},
-					},
-					["Honor"] = {
-						["Badge"] = false,
-						["Position"] = {
-							["y"] = 0,
-							["x"] = 0,
-							["AnchorTo"] = "RIGHT",
-							["AnchorFrom"] = "CENTER",
-							["AnchorFrame"] = "Frame",
-						},
-						["AlwaysShow"] = false,
-						["Enabled"] = false,
-						["Size"] = 32,
-					},
 					["InCombat"] = {
 						["Enabled"] = true,
 						["Size"] = 20,
@@ -11090,31 +10473,6 @@ local Alidie = {
 					},
 				},
 				["Indicators"] = {
-					["Objective"] = {
-						["Enabled"] = false,
-						["Size"] = 26,
-						["Style"] = "RUF",
-						["Position"] = {
-							["y"] = 0,
-							["x"] = 0,
-							["AnchorTo"] = "RIGHT",
-							["AnchorFrom"] = "LEFT",
-							["AnchorFrame"] = "TargetMark",
-						},
-					},
-					["Honor"] = {
-						["AlwaysShow"] = false,
-						["Position"] = {
-							["y"] = 0,
-							["x"] = 0,
-							["AnchorTo"] = "TOPRIGHT",
-							["AnchorFrom"] = "CENTER",
-							["AnchorFrame"] = "PvPCombat",
-						},
-						["Enabled"] = false,
-						["Badge"] = false,
-						["Size"] = 18,
-					},
 					["LootMaster"] = {
 						["Enabled"] = false,
 						["Size"] = 18,
@@ -11517,31 +10875,6 @@ local Alidie = {
 					},
 				},
 				["Indicators"] = {
-					["Objective"] = {
-						["Enabled"] = false,
-						["Size"] = 26,
-						["Style"] = "RUF",
-						["Position"] = {
-							["y"] = 0,
-							["x"] = 0,
-							["AnchorTo"] = "RIGHT",
-							["AnchorFrom"] = "LEFT",
-							["AnchorFrame"] = "TargetMark",
-						},
-					},
-					["Honor"] = {
-						["AlwaysShow"] = false,
-						["Position"] = {
-							["y"] = 0,
-							["x"] = 0,
-							["AnchorTo"] = "TOPRIGHT",
-							["AnchorFrom"] = "CENTER",
-							["AnchorFrame"] = "PvPCombat",
-						},
-						["Enabled"] = false,
-						["Badge"] = false,
-						["Size"] = 18,
-					},
 					["LootMaster"] = {
 						["Enabled"] = false,
 						["Size"] = 18,
@@ -11917,31 +11250,6 @@ local Alidie = {
 			["Enabled"] = true,
 			["Frame"] = {
 				["Indicators"] = {
-					["Objective"] = {
-						["Enabled"] = true,
-						["Size"] = 26,
-						["Style"] = "RUF",
-						["Position"] = {
-							["y"] = 0,
-							["x"] = 0,
-							["AnchorTo"] = "LEFT",
-							["AnchorFrom"] = "CENTER",
-							["AnchorFrame"] = "Frame",
-						},
-					},
-					["Honor"] = {
-						["Badge"] = false,
-						["Position"] = {
-							["y"] = 0,
-							["x"] = 0,
-							["AnchorTo"] = "LEFT",
-							["AnchorFrom"] = "CENTER",
-							["AnchorFrame"] = "Frame",
-						},
-						["AlwaysShow"] = false,
-						["Enabled"] = false,
-						["Size"] = 32,
-					},
 					["LootMaster"] = {
 						["Enabled"] = true,
 						["Size"] = 14,
@@ -12352,31 +11660,6 @@ local Alidie = {
 					},
 				},
 				["Indicators"] = {
-					["Objective"] = {
-						["Enabled"] = false,
-						["Size"] = 26,
-						["Style"] = "RUF",
-						["Position"] = {
-							["y"] = 0,
-							["x"] = 0,
-							["AnchorTo"] = "RIGHT",
-							["AnchorFrom"] = "LEFT",
-							["AnchorFrame"] = "TargetMark",
-						},
-					},
-					["Honor"] = {
-						["AlwaysShow"] = false,
-						["Position"] = {
-							["y"] = 0,
-							["x"] = 0,
-							["AnchorTo"] = "TOPRIGHT",
-							["AnchorFrom"] = "CENTER",
-							["AnchorFrame"] = "PvPCombat",
-						},
-						["Enabled"] = false,
-						["Badge"] = false,
-						["Size"] = 18,
-					},
 					["LootMaster"] = {
 						["Enabled"] = false,
 						["Size"] = 18,
@@ -12752,18 +12035,6 @@ local Alidie = {
 			["Enabled"] = true,
 			["Frame"] = {
 				["Indicators"] = {
-					["Objective"] = {
-						["Enabled"] = true,
-						["Size"] = 26,
-						["Style"] = "RUF",
-						["Position"] = {
-							["y"] = 4,
-							["x"] = -2,
-							["AnchorTo"] = "LEFT",
-							["AnchorFrom"] = "CENTER",
-							["AnchorFrame"] = "Frame",
-						},
-					},
 					["TargetMark"] = {
 						["Enabled"] = true,
 						["Size"] = 26,
@@ -13082,31 +12353,6 @@ local Alidie = {
 					},
 				},
 				["Indicators"] = {
-					["Objective"] = {
-						["Enabled"] = false,
-						["Size"] = 26,
-						["Style"] = "RUF",
-						["Position"] = {
-							["y"] = 0,
-							["x"] = 0,
-							["AnchorTo"] = "RIGHT",
-							["AnchorFrom"] = "LEFT",
-							["AnchorFrame"] = "TargetMark",
-						},
-					},
-					["Honor"] = {
-						["AlwaysShow"] = false,
-						["Position"] = {
-							["y"] = 0,
-							["x"] = 0,
-							["AnchorTo"] = "TOPRIGHT",
-							["AnchorFrom"] = "CENTER",
-							["AnchorFrame"] = "PvPCombat",
-						},
-						["Enabled"] = false,
-						["Badge"] = false,
-						["Size"] = 18,
-					},
 					["LootMaster"] = {
 						["Enabled"] = false,
 						["Size"] = 18,
@@ -13527,12 +12773,6 @@ local Raeli = {
 					0.666666666666667, -- [2]
 					0.372549019607843, -- [3]
 				}, -- [8]
-				nil, -- [9]
-				{
-					0.188235294117647, -- [1]
-					0.443137254901961, -- [2]
-					0.749019607843137, -- [3]
-				}, -- [10]
 			},
 			["ClassColors"] = {
 				["DEATHKNIGHT"] = {
@@ -13591,12 +12831,6 @@ local Raeli = {
 					0.588235294117647, -- [1]
 					0.466666666666667, -- [2]
 					0.898039215686275, -- [3]
-				},
-				[18] = {
-					[3] = 0.00392156862745098,
-				},
-				[17] = {
-					[3] = 0.00392156862745098,
 				},
 			},
 			["DifficultyColors"] = {
@@ -13720,18 +12954,6 @@ local Raeli = {
 			["Enabled"] = true,
 			["Frame"] = {
 				["Indicators"] = {
-					["Objective"] = {
-						["Enabled"] = true,
-						["Size"] = 26,
-						["Style"] = "RUF",
-						["Position"] = {
-							["y"] = 0,
-							["x"] = 0,
-							["AnchorTo"] = "RIGHT",
-							["AnchorFrom"] = "CENTER",
-							["AnchorFrame"] = "Frame",
-						},
-					},
 					["TargetMark"] = {
 						["Enabled"] = true,
 						["Position"] = {
@@ -13767,19 +12989,6 @@ local Raeli = {
 							["AnchorFrom"] = "RIGHT",
 							["AnchorFrame"] = "MainTankAssist",
 						},
-					},
-					["Honor"] = {
-						["Badge"] = true,
-						["Position"] = {
-							["y"] = 0,
-							["x"] = 0,
-							["AnchorTo"] = "LEFT",
-							["AnchorFrom"] = "CENTER",
-							["AnchorFrame"] = "Frame",
-						},
-						["AlwaysShow"] = false,
-						["Enabled"] = true,
-						["Size"] = 32,
 					},
 					["Lead"] = {
 						["Enabled"] = true,
@@ -14155,18 +13364,6 @@ local Raeli = {
 			["Enabled"] = true,
 			["Frame"] = {
 				["Indicators"] = {
-					["Objective"] = {
-						["Enabled"] = true,
-						["Size"] = 26,
-						["Style"] = "RUF",
-						["Position"] = {
-							["y"] = 0,
-							["x"] = -2,
-							["AnchorTo"] = "LEFT",
-							["AnchorFrom"] = "CENTER",
-							["AnchorFrame"] = "Frame",
-						},
-					},
 					["TargetMark"] = {
 						["Enabled"] = true,
 						["Position"] = {
@@ -14190,19 +13387,6 @@ local Raeli = {
 							["AnchorFrom"] = "LEFT",
 							["AnchorFrame"] = "MainTankAssist",
 						},
-					},
-					["Honor"] = {
-						["Badge"] = true,
-						["Position"] = {
-							["y"] = 0,
-							["x"] = 0,
-							["AnchorTo"] = "RIGHT",
-							["AnchorFrom"] = "CENTER",
-							["AnchorFrame"] = "Frame",
-						},
-						["AlwaysShow"] = false,
-						["Enabled"] = true,
-						["Size"] = 32,
 					},
 					["Lead"] = {
 						["Enabled"] = true,
@@ -14560,18 +13744,6 @@ local Raeli = {
 			["Enabled"] = true,
 			["Frame"] = {
 				["Indicators"] = {
-					["Objective"] = {
-						["Enabled"] = true,
-						["Size"] = 26,
-						["Style"] = "RUF",
-						["Position"] = {
-							["y"] = 0,
-							["x"] = -2,
-							["AnchorTo"] = "RIGHT",
-							["AnchorFrom"] = "CENTER",
-							["AnchorFrame"] = "Frame",
-						},
-					},
 					["TargetMark"] = {
 						["Enabled"] = true,
 						["Position"] = {
@@ -14607,19 +13779,6 @@ local Raeli = {
 							["AnchorFrom"] = "CENTER",
 							["AnchorFrame"] = "Frame",
 						},
-					},
-					["Honor"] = {
-						["Badge"] = false,
-						["Position"] = {
-							["y"] = 0,
-							["x"] = 0,
-							["AnchorTo"] = "RIGHT",
-							["AnchorFrom"] = "CENTER",
-							["AnchorFrame"] = "Frame",
-						},
-						["AlwaysShow"] = false,
-						["Enabled"] = false,
-						["Size"] = 32,
 					},
 					["Lead"] = {
 						["Enabled"] = true,
@@ -14978,31 +14137,6 @@ local Raeli = {
 			["Enabled"] = true,
 			["Frame"] = {
 				["Indicators"] = {
-					["Objective"] = {
-						["Enabled"] = false,
-						["Size"] = 26,
-						["Style"] = "RUF",
-						["Position"] = {
-							["y"] = 0,
-							["x"] = 0,
-							["AnchorTo"] = "BOTTOMRIGHT",
-							["AnchorFrom"] = "BOTTOM",
-							["AnchorFrame"] = "Frame",
-						},
-					},
-					["Honor"] = {
-						["Badge"] = false,
-						["Position"] = {
-							["y"] = 0,
-							["x"] = 0,
-							["AnchorTo"] = "CENTER",
-							["AnchorFrom"] = "CENTER",
-							["AnchorFrame"] = "PvPCombat",
-						},
-						["AlwaysShow"] = false,
-						["Enabled"] = false,
-						["Size"] = 26,
-					},
 					["LootMaster"] = {
 						["Enabled"] = false,
 						["Size"] = 26,
@@ -15355,18 +14489,6 @@ local Raeli = {
 			["Enabled"] = true,
 			["Frame"] = {
 				["Indicators"] = {
-					["Objective"] = {
-						["Enabled"] = false,
-						["Position"] = {
-							["y"] = 0,
-							["x"] = 0,
-							["AnchorTo"] = "LEFT",
-							["AnchorFrom"] = "CENTER",
-							["AnchorFrame"] = "Frame",
-						},
-						["Style"] = "RUF",
-						["Size"] = 20,
-					},
 					["TargetMark"] = {
 						["Enabled"] = true,
 						["Position"] = {
@@ -15474,19 +14596,6 @@ local Raeli = {
 							["AnchorFrom"] = "LEFT",
 							["AnchorFrame"] = "Frame",
 						},
-					},
-					["Honor"] = {
-						["Badge"] = false,
-						["Position"] = {
-							["y"] = 0,
-							["x"] = 0,
-							["AnchorTo"] = "CENTER",
-							["AnchorFrom"] = "CENTER",
-							["AnchorFrame"] = "PvPCombat",
-						},
-						["AlwaysShow"] = false,
-						["Enabled"] = false,
-						["Size"] = 26,
 					},
 					["Ready"] = {
 						["Enabled"] = false,
@@ -15732,18 +14841,6 @@ local Raeli = {
 			["Enabled"] = false,
 			["Frame"] = {
 				["Indicators"] = {
-					["Objective"] = {
-						["Enabled"] = false,
-						["Position"] = {
-							["y"] = 0,
-							["x"] = -2,
-							["AnchorTo"] = "RIGHT",
-							["AnchorFrom"] = "CENTER",
-							["AnchorFrame"] = "Frame",
-						},
-						["Style"] = "RUF",
-						["Size"] = 20,
-					},
 					["TargetMark"] = {
 						["Enabled"] = true,
 						["Position"] = {
@@ -15851,19 +14948,6 @@ local Raeli = {
 							["AnchorFrom"] = "CENTER",
 							["AnchorFrame"] = "Frame",
 						},
-					},
-					["Honor"] = {
-						["Badge"] = false,
-						["Position"] = {
-							["y"] = 0,
-							["x"] = 0,
-							["AnchorTo"] = "TOPRIGHT",
-							["AnchorFrom"] = "CENTER",
-							["AnchorFrame"] = "PvPCombat",
-						},
-						["AlwaysShow"] = false,
-						["Enabled"] = false,
-						["Size"] = 18,
 					},
 					["Ready"] = {
 						["Enabled"] = false,
@@ -16109,18 +15193,6 @@ local Raeli = {
 			["Enabled"] = true,
 			["Frame"] = {
 				["Indicators"] = {
-					["Objective"] = {
-						["Enabled"] = false,
-						["Position"] = {
-							["y"] = 0,
-							["x"] = -2,
-							["AnchorTo"] = "RIGHT",
-							["AnchorFrom"] = "CENTER",
-							["AnchorFrame"] = "Frame",
-						},
-						["Style"] = "RUF",
-						["Size"] = 20,
-					},
 					["TargetMark"] = {
 						["Enabled"] = true,
 						["Position"] = {
@@ -16228,19 +15300,6 @@ local Raeli = {
 							["AnchorFrom"] = "RIGHT",
 							["AnchorFrame"] = "Frame",
 						},
-					},
-					["Honor"] = {
-						["Badge"] = false,
-						["Position"] = {
-							["y"] = 0,
-							["x"] = 0,
-							["AnchorTo"] = "CENTER",
-							["AnchorFrom"] = "CENTER",
-							["AnchorFrame"] = "PvPCombat",
-						},
-						["AlwaysShow"] = false,
-						["Enabled"] = false,
-						["Size"] = 26,
 					},
 					["Ready"] = {
 						["Enabled"] = false,
@@ -16486,18 +15545,6 @@ local Raeli = {
 			["Enabled"] = false,
 			["Frame"] = {
 				["Indicators"] = {
-					["Objective"] = {
-						["Enabled"] = false,
-						["Position"] = {
-							["y"] = 0,
-							["x"] = -2,
-							["AnchorTo"] = "RIGHT",
-							["AnchorFrom"] = "CENTER",
-							["AnchorFrame"] = "Frame",
-						},
-						["Style"] = "RUF",
-						["Size"] = 20,
-					},
 					["TargetMark"] = {
 						["Enabled"] = true,
 						["Position"] = {
@@ -16605,19 +15652,6 @@ local Raeli = {
 							["AnchorFrom"] = "CENTER",
 							["AnchorFrame"] = "Frame",
 						},
-					},
-					["Honor"] = {
-						["Badge"] = false,
-						["Position"] = {
-							["y"] = 0,
-							["x"] = 0,
-							["AnchorTo"] = "TOPRIGHT",
-							["AnchorFrom"] = "CENTER",
-							["AnchorFrame"] = "PvPCombat",
-						},
-						["AlwaysShow"] = false,
-						["Enabled"] = false,
-						["Size"] = 18,
 					},
 					["Ready"] = {
 						["Enabled"] = false,
@@ -16966,31 +16000,6 @@ local Raeli = {
 			},
 			["Frame"] = {
 				["Indicators"] = {
-					["Objective"] = {
-						["Enabled"] = true,
-						["Size"] = 26,
-						["Style"] = "RUF",
-						["Position"] = {
-							["y"] = 0,
-							["x"] = 0,
-							["AnchorTo"] = "LEFT",
-							["AnchorFrom"] = "CENTER",
-							["AnchorFrame"] = "Frame",
-						},
-					},
-					["Honor"] = {
-						["Badge"] = true,
-						["Position"] = {
-							["y"] = 0,
-							["x"] = 0,
-							["AnchorTo"] = "LEFT",
-							["AnchorFrom"] = "CENTER",
-							["AnchorFrame"] = "Frame",
-						},
-						["AlwaysShow"] = false,
-						["Enabled"] = true,
-						["Size"] = 32,
-					},
 					["InCombat"] = {
 						["Enabled"] = true,
 						["Size"] = 20,
@@ -17313,31 +16322,6 @@ local Raeli = {
 					},
 				},
 				["Indicators"] = {
-					["Objective"] = {
-						["Enabled"] = false,
-						["Size"] = 26,
-						["Style"] = "RUF",
-						["Position"] = {
-							["y"] = 0,
-							["x"] = 0,
-							["AnchorTo"] = "RIGHT",
-							["AnchorFrom"] = "LEFT",
-							["AnchorFrame"] = "TargetMark",
-						},
-					},
-					["Honor"] = {
-						["AlwaysShow"] = false,
-						["Position"] = {
-							["y"] = 0,
-							["x"] = 0,
-							["AnchorTo"] = "TOPRIGHT",
-							["AnchorFrom"] = "CENTER",
-							["AnchorFrame"] = "PvPCombat",
-						},
-						["Enabled"] = false,
-						["Badge"] = false,
-						["Size"] = 18,
-					},
 					["LootMaster"] = {
 						["Enabled"] = false,
 						["Size"] = 18,
@@ -17740,31 +16724,6 @@ local Raeli = {
 					},
 				},
 				["Indicators"] = {
-					["Objective"] = {
-						["Enabled"] = false,
-						["Size"] = 26,
-						["Style"] = "RUF",
-						["Position"] = {
-							["y"] = 0,
-							["x"] = 0,
-							["AnchorTo"] = "RIGHT",
-							["AnchorFrom"] = "LEFT",
-							["AnchorFrame"] = "TargetMark",
-						},
-					},
-					["Honor"] = {
-						["AlwaysShow"] = false,
-						["Position"] = {
-							["y"] = 0,
-							["x"] = 0,
-							["AnchorTo"] = "TOPRIGHT",
-							["AnchorFrom"] = "CENTER",
-							["AnchorFrame"] = "PvPCombat",
-						},
-						["Enabled"] = false,
-						["Badge"] = false,
-						["Size"] = 18,
-					},
 					["LootMaster"] = {
 						["Enabled"] = false,
 						["Size"] = 18,
@@ -18140,31 +17099,6 @@ local Raeli = {
 			["Enabled"] = true,
 			["Frame"] = {
 				["Indicators"] = {
-					["Objective"] = {
-						["Enabled"] = true,
-						["Size"] = 26,
-						["Style"] = "RUF",
-						["Position"] = {
-							["y"] = 0,
-							["x"] = 0,
-							["AnchorTo"] = "RIGHT",
-							["AnchorFrom"] = "CENTER",
-							["AnchorFrame"] = "Frame",
-						},
-					},
-					["Honor"] = {
-						["Enabled"] = false,
-						["Position"] = {
-							["y"] = 0,
-							["x"] = 0,
-							["AnchorTo"] = "RIGHT",
-							["AnchorFrom"] = "CENTER",
-							["AnchorFrame"] = "Frame",
-						},
-						["Badge"] = false,
-						["AlwaysShow"] = false,
-						["Size"] = 32,
-					},
 					["LootMaster"] = {
 						["Enabled"] = true,
 						["Size"] = 14,
@@ -18562,31 +17496,6 @@ local Raeli = {
 					},
 				},
 				["Indicators"] = {
-					["Objective"] = {
-						["Enabled"] = false,
-						["Size"] = 26,
-						["Style"] = "RUF",
-						["Position"] = {
-							["y"] = 0,
-							["x"] = 0,
-							["AnchorTo"] = "RIGHT",
-							["AnchorFrom"] = "LEFT",
-							["AnchorFrame"] = "TargetMark",
-						},
-					},
-					["Honor"] = {
-						["AlwaysShow"] = false,
-						["Position"] = {
-							["y"] = 0,
-							["x"] = 0,
-							["AnchorTo"] = "TOPRIGHT",
-							["AnchorFrom"] = "CENTER",
-							["AnchorFrame"] = "PvPCombat",
-						},
-						["Enabled"] = false,
-						["Badge"] = false,
-						["Size"] = 18,
-					},
 					["LootMaster"] = {
 						["Enabled"] = false,
 						["Size"] = 18,
@@ -18962,31 +17871,6 @@ local Raeli = {
 			["Enabled"] = true,
 			["Frame"] = {
 				["Indicators"] = {
-					["Objective"] = {
-						["Enabled"] = true,
-						["Size"] = 26,
-						["Style"] = "RUF",
-						["Position"] = {
-							["y"] = 4,
-							["x"] = -2,
-							["AnchorTo"] = "RIGHT",
-							["AnchorFrom"] = "CENTER",
-							["AnchorFrame"] = "Frame",
-						},
-					},
-					["Honor"] = {
-						["Enabled"] = false,
-						["Position"] = {
-							["y"] = 0,
-							["x"] = 0,
-							["AnchorTo"] = "RIGHT",
-							["AnchorFrom"] = "CENTER",
-							["AnchorFrame"] = "Frame",
-						},
-						["Badge"] = false,
-						["AlwaysShow"] = false,
-						["Size"] = 32,
-					},
 					["LootMaster"] = {
 						["Enabled"] = true,
 						["Size"] = 14,
@@ -19384,31 +18268,6 @@ local Raeli = {
 					},
 				},
 				["Indicators"] = {
-					["Objective"] = {
-						["Enabled"] = false,
-						["Size"] = 26,
-						["Style"] = "RUF",
-						["Position"] = {
-							["y"] = 0,
-							["x"] = 0,
-							["AnchorTo"] = "RIGHT",
-							["AnchorFrom"] = "LEFT",
-							["AnchorFrame"] = "TargetMark",
-						},
-					},
-					["Honor"] = {
-						["AlwaysShow"] = false,
-						["Position"] = {
-							["y"] = 0,
-							["x"] = 0,
-							["AnchorTo"] = "TOPRIGHT",
-							["AnchorFrom"] = "CENTER",
-							["AnchorFrame"] = "PvPCombat",
-						},
-						["Enabled"] = false,
-						["Badge"] = false,
-						["Size"] = 18,
-					},
 					["LootMaster"] = {
 						["Enabled"] = false,
 						["Size"] = 18,

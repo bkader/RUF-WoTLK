@@ -13,15 +13,14 @@ A default texture will be applied if the widget is a Texture and doesn't have a 
 
 ## Examples
 
-    -- Position and size
-    local RestingIndicator = self:CreateTexture(nil, 'OVERLAY')
-    RestingIndicator:SetSize(16, 16)
-    RestingIndicator:SetPoint('TOPLEFT', self)
+	-- Position and size
+	local RestingIndicator = self:CreateTexture(nil, 'OVERLAY')
+	RestingIndicator:SetSize(16, 16)
+	RestingIndicator:SetPoint('TOPLEFT', self)
 
-    -- Register it with oUF
-    self.RestingIndicator = RestingIndicator
+	-- Register it with oUF
+	self.RestingIndicator = RestingIndicator
 --]]
-
 local _, ns = ...
 local oUF = ns.oUF
 
@@ -35,12 +34,11 @@ local function Update(self, event)
 
 	* self - the RestingIndicator element
 	--]]
-	if(element.PreUpdate) then
+	if (element.PreUpdate) then
 		element:PreUpdate()
 	end
 
-	local isResting = IsResting()
-	if(isResting) then
+	if (IsResting()) then
 		element:Show()
 	else
 		element:Hide()
@@ -52,7 +50,7 @@ local function Update(self, event)
 	* self      - the RestingIndicator element
 	* isResting - indicates if the player is resting (boolean)
 	--]]
-	if(element.PostUpdate) then
+	if (element.PostUpdate) then
 		return element:PostUpdate(isResting)
 	end
 end
@@ -64,22 +62,22 @@ local function Path(self, ...)
 	* self  - the parent object
 	* event - the event triggering the update (string)
 	--]]
-	return (self.RestingIndicator.Override or Update) (self, ...)
+	return (self.RestingIndicator.Override or Update)(self, ...)
 end
 
 local function ForceUpdate(element)
-	return Path(element.__owner, 'ForceUpdate')
+	return Path(element.__owner, "ForceUpdate")
 end
 
 local function Enable(self, unit)
 	local element = self.RestingIndicator
-	if(element and unit == 'player') then
+	if (element and unit == "player") then
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
 
-		self:RegisterEvent('PLAYER_UPDATE_RESTING', Path, true)
+		self:RegisterEvent("PLAYER_UPDATE_RESTING", Path, true)
 
-		if(element:IsObjectType('Texture') and not element:GetTexture()) then
+		if (element:IsObjectType("Texture") and not element:GetTexture()) then
 			element:SetTexture([[Interface\CharacterFrame\UI-StateIcon]])
 			element:SetTexCoord(0, 0.5, 0, 0.421875)
 		end
@@ -90,11 +88,11 @@ end
 
 local function Disable(self)
 	local element = self.RestingIndicator
-	if(element) then
+	if (element) then
 		element:Hide()
 
-		self:UnregisterEvent('PLAYER_UPDATE_RESTING', Path)
+		self:UnregisterEvent("PLAYER_UPDATE_RESTING", Path)
 	end
 end
 
-oUF:AddElement('RestingIndicator', Path, Enable, Disable)
+oUF:AddElement("RestingIndicator", Path, Enable, Disable)

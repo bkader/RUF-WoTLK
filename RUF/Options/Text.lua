@@ -239,7 +239,7 @@ function RUF_Options.Texts()
 				},
 				HideWhenPrimaryIsMana = {
 					name = L["Hide if Primary Power is Mana."],
-					desc = L["Sets this to hidden if your primary resource is mana, so it only shows if you have a class resource, such as Maelstrom."],
+					desc = L["Sets this to hidden if your primary resource is mana, so it only shows if you have a class resource, such as Energy."],
 					type = 'toggle',
 					width = 'full',
 					hidden = function()

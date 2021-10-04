@@ -11,8 +11,6 @@ RUF.IndicatorGlyphs = {
 	['LootMaster'] = '',
 	['MainAssist'] = '',
 	['MainTank'] = '',
-	['Objective'] = '',
-	['Phased'] = '',
 	['PvP-Alliance'] = '',
 	['PvP-Horde'] = '',
 	['Ready-No'] = '',
@@ -56,6 +54,5 @@ function RUF.SetIndicators(self, unit)
 	RUF.Indicators.Ready(self, unit)
 	RUF.Indicators.Rest(self, unit)
 	RUF.Indicators.TargetMark(self, unit)
-	RUF.Indicators.Objective(self, unit) -- No UnitIsQuestBoss()
-	RUF.Indicators.Role(self, unit) -- No UnitGroupRolesAssigned()
+	RUF.Indicators.Role(self, unit)
 end

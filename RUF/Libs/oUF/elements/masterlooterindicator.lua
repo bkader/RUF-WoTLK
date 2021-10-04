@@ -13,15 +13,14 @@ A default texture will be applied if the widget is a Texture and doesn't have a 
 
 ## Examples
 
-    -- Position and size
-    local MasterLooterIndicator = self:CreateTexture(nil, 'OVERLAY')
-    MasterLooterIndicator:SetSize(16, 16)
-    MasterLooterIndicator:SetPoint('TOPRIGHT', self)
+	-- Position and size
+	local MasterLooterIndicator = self:CreateTexture(nil, 'OVERLAY')
+	MasterLooterIndicator:SetSize(16, 16)
+	MasterLooterIndicator:SetPoint('TOPRIGHT', self)
 
-    -- Register it with oUF
-    self.MasterLooterIndicator = MasterLooterIndicator
+	-- Register it with oUF
+	self.MasterLooterIndicator = MasterLooterIndicator
 --]]
-
 local _, ns = ...
 local oUF = ns.oUF
 
@@ -39,23 +38,23 @@ local function Update(self, event)
 
 	* self - the MasterLooterIndicator element
 	--]]
-	if(element.PreUpdate) then
+	if (element.PreUpdate) then
 		element:PreUpdate()
 	end
 
 	local isShown = false
-	if(UnitInParty(unit) or UnitInRaid(unit)) then
+	if (UnitInParty(unit) or UnitInRaid(unit)) then
 		local method, partyIndex, raidIndex = GetLootMethod()
-		if(method == 'master') then
+		if (method == "master") then
 			local mlUnit
-			if(partyIndex) then
-				if(partyIndex == 0) then
-					mlUnit = 'player'
+			if (partyIndex) then
+				if (partyIndex == 0) then
+					mlUnit = "player"
 				else
-					mlUnit = 'party' .. partyIndex
+					mlUnit = "party" .. partyIndex
 				end
-			elseif(raidIndex) then
-				mlUnit = 'raid' .. raidIndex
+			elseif (raidIndex) then
+				mlUnit = "raid" .. raidIndex
 			end
 
 			isShown = mlUnit and UnitIsUnit(unit, mlUnit)
@@ -74,7 +73,7 @@ local function Update(self, event)
 	* self    - the MasterLooterIndicator element
 	* isShown - indicates whether the element is shown (boolean)
 	--]]
-	if(element.PostUpdate) then
+	if (element.PostUpdate) then
 		return element:PostUpdate(isShown)
 	end
 end
@@ -87,23 +86,23 @@ local function Path(self, ...)
 	* event - the event triggering the update (string)
 	* ...   - the arguments accompanying the event
 	--]]
-	return (self.MasterLooterIndicator.Override or Update) (self, ...)
+	return (self.MasterLooterIndicator.Override or Update)(self, ...)
 end
 
 local function ForceUpdate(element)
-	return Path(element.__owner, 'ForceUpdate')
+	return Path(element.__owner, "ForceUpdate")
 end
 
 local function Enable(self, unit)
 	local element = self.MasterLooterIndicator
-	if(element) then
+	if (element) then
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
 
-		self:RegisterEvent('PARTY_LOOT_METHOD_CHANGED', Path, true)
-		self:RegisterEvent('PARTY_MEMBERS_CHANGED', Path, true)
+		self:RegisterEvent("PARTY_LOOT_METHOD_CHANGED", Path, true)
+		self:RegisterEvent("PARTY_MEMBERS_CHANGED", Path, true)
 
-		if(element:IsObjectType('Texture') and not element:GetTexture()) then
+		if (element:IsObjectType("Texture") and not element:GetTexture()) then
 			element:SetTexture([[Interface\GroupFrame\UI-Group-MasterLooter]])
 		end
 
@@ -113,12 +112,12 @@ end
 
 local function Disable(self)
 	local element = self.MasterLooterIndicator
-	if(element) then
+	if (element) then
 		element:Hide()
 
-		self:UnregisterEvent('PARTY_LOOT_METHOD_CHANGED', Path)
-		self:UnregisterEvent('PARTY_MEMBERS_CHANGED', Path)
+		self:UnregisterEvent("PARTY_LOOT_METHOD_CHANGED", Path)
+		self:UnregisterEvent("PARTY_MEMBERS_CHANGED", Path)
 	end
 end
 
-oUF:AddElement('MasterLooterIndicator', Path, Enable, Disable)
+oUF:AddElement("MasterLooterIndicator", Path, Enable, Disable)

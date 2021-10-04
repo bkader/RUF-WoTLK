@@ -82,7 +82,6 @@ local function SetupFrames(self, unit)
 	self.Health.Override = RUF.HealthUpdate
 	self.Health.UpdateColor = RUF.HealthUpdateColor
 
-
 	RUF.SetHealPrediction(self, unit)
 	self.HealPrediction.PostUpdate = RUF.HealPredictionUpdateColor
 
@@ -105,10 +104,7 @@ local function SetupFrames(self, unit)
 	RUF.SetFramePortrait(self, unit)
 
 
-	if unit == 'player' or unit == 'target' then
-		RUF.SetCastBar(self, unit)
-	end
-	if unit == 'focus' then
+	if unit == 'player' or unit == 'target' or unit == 'focus' then
 		RUF.SetCastBar(self, unit)
 	end
 
@@ -156,9 +152,7 @@ local function SetupFrames(self, unit)
 	RUF.SetBarLocation(self, unit)
 
 	if unit ~= 'player' then
-		if not self.RangeCheck then
-			self.RangeCheck = {}
-		end
+		self.RangeCheck = self.RangeCheck or {}
 		self.RangeCheck.enabled = profileReference.Frame.RangeFading.Enabled
 		self.RangeCheck.insideAlpha = 1
 		self.RangeCheck.outsideAlpha = profileReference.Frame.RangeFading.Alpha or 0.55
@@ -168,7 +162,6 @@ local function SetupFrames(self, unit)
 
 	self.Alpha = {}
 	self.Alpha.current = 1
-
 end
 
 function RUF:OnEnable()
@@ -192,33 +185,31 @@ function RUF:OnEnable()
 		local groupFrames = RUF.frameList.groupFrames
 		local headers = RUF.frameList.headers
 
-		for i = 1, #frames do
-			local profile = string.lower(frames[i])
-			if _G['oUF_RUF_' .. frames[i]] then
-				if _G['oUF_RUF_' .. frames[i]]:GetObjectType() ~= 'Button' then
-					_G['oUF_RUF_' .. frames[i]] = nil
+		for _, frameName in ipairs(frames) do
+			local unit = frameName:lower()
+			if _G['oUF_RUF_' .. frameName] then
+				if _G['oUF_RUF_' .. frameName]:GetObjectType() ~= 'Button' then
+					_G['oUF_RUF_' .. frameName] = nil
 				end
 			end
-			local anchorFrame = RUF.db.profile.unit[profile].Frame.Position.AnchorFrame
-			if not _G[RUF.db.profile.unit[profile].Frame.Position.AnchorFrame] then
+			local anchorFrame = RUF.db.profile.unit[unit].Frame.Position.AnchorFrame
+			if not _G[RUF.db.profile.unit[unit].Frame.Position.AnchorFrame] then
 				anchorFrame = 'UIParent'
 			end
-			self:Spawn(profile):SetPoint(
-				RUF.db.profile.unit[profile].Frame.Position.AnchorFrom,
+			self:Spawn(unit):SetPoint(
+				RUF.db.profile.unit[unit].Frame.Position.AnchorFrom,
 				anchorFrame,
-				RUF.db.profile.unit[profile].Frame.Position.AnchorTo,
-				RUF.db.profile.unit[profile].Frame.Position.x,
-				RUF.db.profile.unit[profile].Frame.Position.y)
-			if RUF.db.profile.unit[profile].Enabled == false and _G['oUF_RUF_' .. frames[i]] then
-				_G['oUF_RUF_' .. frames[i]]:Disable()
-			else
-
+				RUF.db.profile.unit[unit].Frame.Position.AnchorTo,
+				RUF.db.profile.unit[unit].Frame.Position.x,
+				RUF.db.profile.unit[unit].Frame.Position.y)
+			if RUF.db.profile.unit[unit].Enabled == false and _G['oUF_RUF_' .. frameName] then
+				_G['oUF_RUF_' .. frameName]:Disable()
 			end
 		end
 
 		-- Spawn Headers
 		for i = 1, #headers do
-			for j = 4, 1 do
+			for j = 4, 1, -1 do
 				if _G['oUF_RUF_' .. headers[i] .. 'UnitButton' .. j] then
 					if _G['oUF_RUF_' .. headers[i] .. 'UnitButton' .. j]:GetObjectType() ~= 'Button' then
 						_G['oUF_RUF_' .. headers[i] .. 'UnitButton' .. j] = nil
@@ -226,8 +217,7 @@ function RUF:OnEnable()
 				end
 			end
 			local profile = RUF.db.profile.unit[string.lower(headers[i])]
-			local template = 'SecureGroupHeaderTemplate'
-			if headers[i] == 'PartyPet' then template = 'SecureGroupPetHeaderTemplate' end
+			local template = (headers[i] == 'PartyPet') and 'SecureGroupPetHeaderTemplate' or 'SecureGroupHeaderTemplate'
 			local anchorFrom
 			if profile.Frame.Position.growth == 'BOTTOM' then
 				anchorFrom = 'TOP'
@@ -291,15 +281,15 @@ function RUF:OnEnable()
 			end
 
 			-- Create Party Holder for dragging.
-			local MoveBG = CreateFrame('Frame', currentHeader:GetName() .. '.MoveBG', currentHeader)
-			MoveBG:SetAllPoints(currentHeader)
-			local Background = MoveBG:CreateTexture(currentHeader:GetName() .. '.MoveBG.BG', 'BACKGROUND')
+			local Mover = CreateFrame('Frame', currentHeader:GetName() .. 'Mover', currentHeader)
+			Mover:SetAllPoints(currentHeader)
+			local Background = Mover:CreateTexture('$parentBG', 'BACKGROUND')
 			Background:SetTexture(LSM:Fetch('background', 'Solid'))
-			Background:SetAllPoints(MoveBG)
+			Background:SetAllPoints(Mover)
 			Background:SetVertexColor(0, 0, 0, 0)
-			MoveBG:SetFrameStrata('HIGH')
-			MoveBG:Hide()
-			currentHeader.MoveBG = MoveBG
+			Mover:SetFrameStrata('HIGH')
+			Mover:Hide()
+			currentHeader.Mover = Mover
 		end
 
 		-- Spawn single frames for Boss, Arena, and Party Targets

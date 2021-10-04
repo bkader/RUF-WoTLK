@@ -114,7 +114,7 @@ function RUF.SetHealPrediction(self, unit)
 		myBar = PlayerHeals,
 		otherBar = OtherHeals,
 		maxOverflow = 1 + profileReference.Overflow or 0,
-		frequentUpdates = true --RUF.Client == 2 -- UNIT_HEALTH_FREQUENT removed from 9.0, use it for Classic though.
+		frequentUpdates = true
 	}
 	self.HealPrediction.UpdateOptions = RUF.HealPredictionUpdateOptions
 end
@@ -122,7 +122,7 @@ end
 function RUF.HealPredictionUpdateOptions(self)
 	local unit = self.__owner.frame
 	local profileReference = RUF.db.profile.Appearance.Bars.HealPrediction
-	self.frequentUpdates = true --RUF.Client == 2 -- UNIT_HEALTH_FREQUENT removed from 9.0, use it for Classic though.
+	self.frequentUpdates = true
 	self.maxOverflow = 1 + profileReference.Overflow or 0
 
 	local PlayerHeals = self.myBar

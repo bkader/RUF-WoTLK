@@ -4,13 +4,11 @@
 <Script file="Icons\Assist.lua"/>
 <Script file="Icons\Combat.lua"/>
 <Script file="Icons\GroupRole.lua"/>
-<Script file="Icons\Honor.lua"/>
 <Script file="Icons\Leader.lua"/>
 <Script file="Icons\LootMaster.lua"/>
 <Script file="Icons\MainTankAssist.lua"/>
 <Script file="Icons\PetHappiness.lua"/>
 <Script file="Icons\PvPStatus.lua"/>
-<Script file="Icons\QuestObjective.lua"/>
 <Script file="Icons\ReadyCheck.lua"/>
 <Script file="Icons\Resting.lua"/>
 <Script file="Icons\TargetMark.lua"/>

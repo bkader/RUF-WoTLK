@@ -6,6 +6,9 @@ local oUF = ns.oUF
 local elementName = 'Assist'
 local elementString = RUF.IndicatorGlyphs['Assist']
 
+local UnitIsGroupAssistant = RUF.UnitIsGroupAssistant
+local UnitIsGroupLeader = RUF.UnitIsGroupLeader
+
 local function Update(self, event)
 	local element = self.AssistIndicator
 	element.Enabled = RUF.db.profile.unit[self.frame].Frame.Indicators[elementName].Enabled

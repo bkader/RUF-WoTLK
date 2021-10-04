@@ -12,13 +12,6 @@ RUF.UIParent:SetFrameLevel(UIParent:GetFrameLevel())
 RUF.UIParent:SetSize(UIParent:GetSize())
 RUF.UIParent:SetPoint("CENTER", UIParent, "CENTER")
 
-local variant = WOW_PROJECT_MAINLINE
---[===[@non-retail@
-variant = WOW_PROJECT_CLASSIC
---@end-non-retail@]===]
-
-RUF.Client = 2
-
 local frames = {
 	'Player',
 	'Pet',
@@ -89,16 +82,16 @@ function RUF:OnInitialize()
 	--project-revision
 	RUF.db.global.Version = string.match(GetAddOnMetadata('RUF','Version'),'%d+')
 
-	if not RUF.db.profiles then
+	if not RUFDB.profiles then
 		RUF.FirstRun = true
-		RUF.db.profiles = {}
+		RUFDB.profiles = {}
 		for i = 1,#includedLayouts do
-			RUF.db.profiles[includedLayouts[i]] = RUF.Layout[includedLayouts[i]]
+			RUFDB.profiles[includedLayouts[i]] = RUF.Layout[includedLayouts[i]]
 		end
 	else
 		for i = 1,#includedLayouts do
-			if not RUF.db.profiles[includedLayouts[i]] then
-				RUF.db.profiles[includedLayouts[i]] = RUF.Layout[includedLayouts[i]]
+			if not RUFDB.profiles[includedLayouts[i]] then
+				RUFDB.profiles[includedLayouts[i]] = RUF.Layout[includedLayouts[i]]
 			end
 		end
 	end

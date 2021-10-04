@@ -13,19 +13,24 @@ A default texture will be applied if the widget is a Texture and doesn't have a 
 
 ## Examples
 
-    -- Position and size
-    local GroupRoleIndicator = self:CreateTexture(nil, 'OVERLAY')
-    GroupRoleIndicator:SetSize(16, 16)
-    GroupRoleIndicator:SetPoint('LEFT', self)
+	-- Position and size
+	local GroupRoleIndicator = self:CreateTexture(nil, 'OVERLAY')
+	GroupRoleIndicator:SetSize(16, 16)
+	GroupRoleIndicator:SetPoint('LEFT', self)
 
-    -- Register it with oUF
-    self.GroupRoleIndicator = GroupRoleIndicator
+	-- Register it with oUF
+	self.GroupRoleIndicator = GroupRoleIndicator
 --]]
-
-local _, ns = ...
+local parent, ns = ...
 local oUF = ns.oUF
 
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned
+
+local roleCoords = {
+	TANK = {0, 0.30, 0.34, 0.64},
+	HEALER = {0.31, 0.61, 0.02, 0.31},
+	DAMAGER = {0.31, 0.61, 0.34, 0.64}
+}
 
 local function Update(self, event)
 	local element = self.GroupRoleIndicator
@@ -35,16 +40,18 @@ local function Update(self, event)
 
 	* self - the GroupRoleIndicator element
 	--]]
-	if(element.PreUpdate) then
+	if (element.PreUpdate) then
 		element:PreUpdate()
 	end
 
+	--"Interface\\LFGFrame\\LFGRole.blp"
 	local isTank, isHealer, isDamage = UnitGroupRolesAssigned(self.unit)
-	if(isTank or isHealer or isDamage) then
-		local role = isTank and "tank" or isHealer and "healer" or isDamage and "dps"
-		element:SetTexture("Interface\\AddOns\\RUF\\Media\\role-" .. role)
+	if (isTank or isHealer or isDamage) then
+		local role = isTank and "TANK" or isHealer and "HEALER" or isDamage and "DAMAGER"
+		element:SetTexCoord(roleCoords[role])
 		element:Show()
 	else
+		element:SetTexture(nil)
 		element:Hide()
 	end
 
@@ -52,10 +59,10 @@ local function Update(self, event)
 	Called after the element has been updated.
 
 	* self - the GroupRoleIndicator element
-	* isTank, isHealer, isDamage - the role as returned by [UnitGroupRolesAssigned](http://wowprogramming.com/docs/api/UnitGroupRolesAssigned)
+	* role - the role as returned by [UnitGroupRolesAssigned](http://wowprogramming.com/docs/api/UnitGroupRolesAssigned.html)
 	--]]
-	if(element.PostUpdate) then
-		return element:PostUpdate(isTank, isHealer, isDamage)
+	if (element.PostUpdate) then
+		return element:PostUpdate(role)
 	end
 end
 
@@ -67,26 +74,26 @@ local function Path(self, ...)
 	* event - the event triggering the update (string)
 	* ...   - the arguments accompanying the event
 	--]]
-	return (self.GroupRoleIndicator.Override or Update) (self, ...)
+	return (self.GroupRoleIndicator.Override or Update)(self, ...)
 end
 
 local function ForceUpdate(element)
-	return Path(element.__owner, 'ForceUpdate')
+	return Path(element.__owner, "ForceUpdate")
 end
 
 local function Enable(self)
 	local element = self.GroupRoleIndicator
-	if(element) then
+	if (element) then
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
 
-		if(self.unit == 'player') then
-			self:RegisterEvent('PLAYER_ROLES_ASSIGNED', Path, true)
+		if (self.unit == "player") then
+			self:RegisterEvent("PLAYER_ROLES_ASSIGNED", Path, true)
 		else
-			self:RegisterEvent('PARTY_MEMBERS_CHANGED', Path, true)
+			self:RegisterEvent("PARTY_MEMBERS_CHANGED", Path, true)
 		end
 
-		if(element:IsObjectType('Texture') and not element:GetTexture()) then
+		if (element:IsObjectType("Texture") and not element:GetTexture()) then
 			element:SetTexture([[Interface\LFGFrame\UI-LFG-ICON-PORTRAITROLES]])
 		end
 
@@ -96,12 +103,12 @@ end
 
 local function Disable(self)
 	local element = self.GroupRoleIndicator
-	if(element) then
+	if (element) then
 		element:Hide()
 
-		self:UnregisterEvent('PLAYER_ROLES_ASSIGNED', Path)
-		self:UnregisterEvent('PARTY_MEMBERS_CHANGED', Path)
+		self:UnregisterEvent("PLAYER_ROLES_ASSIGNED", Path)
+		self:UnregisterEvent("PARTY_MEMBERS_CHANGED", Path, true)
 	end
 end
 
-oUF:AddElement('GroupRoleIndicator', Path, Enable, Disable)
+oUF:AddElement("GroupRoleIndicator", Path, Enable, Disable)

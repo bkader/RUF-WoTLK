@@ -13,15 +13,14 @@ A default texture will be applied if the widget is a Texture and doesn't have a 
 
 ## Examples
 
-    -- Position and size
-    local AssistantIndicator = self:CreateTexture(nil, 'OVERLAY')
-    AssistantIndicator:SetSize(16, 16)
-    AssistantIndicator:SetPoint('TOP', self)
+	-- Position and size
+	local AssistantIndicator = self:CreateTexture(nil, 'OVERLAY')
+	AssistantIndicator:SetSize(16, 16)
+	AssistantIndicator:SetPoint('TOP', self)
 
-    -- Register it with oUF
-    self.AssistantIndicator = AssistantIndicator
+	-- Register it with oUF
+	self.AssistantIndicator = AssistantIndicator
 --]]
-
 local _, ns = ...
 local oUF = ns.oUF
 
@@ -37,13 +36,13 @@ local function Update(self, event)
 
 	* self - the AssistantIndicator element
 	--]]
-	if(element.PreUpdate) then
+	if (element.PreUpdate) then
 		element:PreUpdate()
 	end
 
 	local unit = self.unit
 	local isAssistant = UnitInRaid(unit) and UnitIsRaidOfficer(unit) and not UnitIsPartyLeader(unit)
-	if(isAssistant) then
+	if (isAssistant) then
 		element:Show()
 	else
 		element:Hide()
@@ -55,7 +54,7 @@ local function Update(self, event)
 	* self        - the AssistantIndicator element
 	* isAssistant - indicates whether the unit is a raid assistant (boolean)
 	--]]
-	if(element.PostUpdate) then
+	if (element.PostUpdate) then
 		return element:PostUpdate(isAssistant)
 	end
 end
@@ -68,22 +67,23 @@ local function Path(self, ...)
 	* event - the event triggering the update (string)
 	* ...   - the arguments accompanying the event (string)
 	--]]
-	return (self.AssistantIndicator.Override or Update) (self, ...)
+	return (self.AssistantIndicator.Override or Update)(self, ...)
 end
 
 local function ForceUpdate(element)
-	return Path(element.__owner, 'ForceUpdate')
+	return Path(element.__owner, "ForceUpdate")
 end
 
 local function Enable(self)
 	local element = self.AssistantIndicator
-	if(element) then
+	if (element) then
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
 
-		self:RegisterEvent('PARTY_MEMBERS_CHANGED', Path, true)
+		self:RegisterEvent("PARTY_MEMBERS_CHANGED", Path, true)
+		self:RegisterEvent("RAID_ROSTER_UPDATE", Path, true)
 
-		if(element:IsObjectType('Texture') and not element:GetTexture()) then
+		if (element:IsObjectType("Texture") and not element:GetTexture()) then
 			element:SetTexture([[Interface\GroupFrame\UI-Group-AssistantIcon]])
 		end
 
@@ -93,11 +93,12 @@ end
 
 local function Disable(self)
 	local element = self.AssistantIndicator
-	if(element) then
+	if (element) then
 		element:Hide()
 
-		self:UnregisterEvent('PARTY_MEMBERS_CHANGED', Path)
+		self:UnregisterEvent("PARTY_MEMBERS_CHANGED", Path)
+		self:UnregisterEvent("RAID_ROSTER_UPDATE", Path)
 	end
 end
 
-oUF:AddElement('AssistantIndicator', Path, Enable, Disable)
+oUF:AddElement("AssistantIndicator", Path, Enable, Disable)

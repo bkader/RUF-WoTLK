@@ -15,28 +15,27 @@ A default texture will be applied if the widget is a Texture and doesn't have a 
 ## Options
 
 .feedbackUnit - The unit whose threat situation is being requested. If defined, it'll be passed as the first argument to
-                [GetThreatStatusColor](http://wowprogramming.com/docs/api/UnitThreatSituation).
+				[GetThreatStatusColor](http://wowprogramming.com/docs/api/UnitThreatSituation.html).
 
 ## Examples
 
-    -- Position and size
-    local ThreatIndicator = self:CreateTexture(nil, 'OVERLAY')
-    ThreatIndicator:SetSize(16, 16)
-    ThreatIndicator:SetPoint('TOPRIGHT', self)
+	-- Position and size
+	local ThreatIndicator = self:CreateTexture(nil, 'OVERLAY')
+	ThreatIndicator:SetSize(16, 16)
+	ThreatIndicator:SetPoint('TOPRIGHT', self)
 
-    -- Register it with oUF
-    self.ThreatIndicator = ThreatIndicator
+	-- Register it with oUF
+	self.ThreatIndicator = ThreatIndicator
 --]]
-
 local _, ns = ...
 local oUF = ns.oUF
 
-local GetThreatStatusColor = GetThreatStatusColor
-local UnitExists = UnitExists
+local unitExists = oUF.Private.unitExists
 local UnitThreatSituation = UnitThreatSituation
+local GetThreatStatusColor = GetThreatStatusColor
 
 local function Update(self, event, unit)
-	if(not unit or self.unit ~= unit) then return end
+	if (unit ~= self.unit) then return end
 
 	local element = self.ThreatIndicator
 	--[[ Callback: ThreatIndicator:PreUpdate(unit)
@@ -45,15 +44,17 @@ local function Update(self, event, unit)
 	* self - the ThreatIndicator element
 	* unit - the unit for which the update has been triggered (string)
 	--]]
-	if(element.PreUpdate) then element:PreUpdate(unit) end
+	if (element.PreUpdate) then
+		element:PreUpdate(unit)
+	end
 
 	local feedbackUnit = element.feedbackUnit
 	unit = unit or self.unit
 
 	local status
 	-- BUG: Non-existent '*target' or '*pet' units cause UnitThreatSituation() errors
-	if(UnitExists(unit)) then
-		if(feedbackUnit and feedbackUnit ~= unit and UnitExists(feedbackUnit)) then
+	if (unitExists(unit)) then
+		if (feedbackUnit and feedbackUnit ~= unit and unitExists(feedbackUnit)) then
 			status = UnitThreatSituation(feedbackUnit, unit)
 		else
 			status = UnitThreatSituation(unit)
@@ -61,10 +62,14 @@ local function Update(self, event, unit)
 	end
 
 	local r, g, b
-	if(status and status > 0) then
-		r, g, b = GetThreatStatusColor(status)
+	if (status and status > 0) then
+		if self.colors.threat and self.colors.threat[status] then
+			r, g, b = unpack(self.colors.threat[status])
+		else
+			r, g, b = GetThreatStatusColor(status)
+		end
 
-		if(element.SetVertexColor) then
+		if (element.SetVertexColor) then
 			element:SetVertexColor(r, g, b)
 		end
 
@@ -78,12 +83,12 @@ local function Update(self, event, unit)
 
 	* self   - the ThreatIndicator element
 	* unit   - the unit for which the update has been triggered (string)
-	* status - the unit's threat status (see [UnitThreatSituation](http://wowprogramming.com/docs/api/UnitThreatSituation))
+	* status - the unit's threat status (see [UnitThreatSituation](http://wowprogramming.com/docs/api/UnitThreatSituation.html))
 	* r      - the red color component based on the unit's threat status (number?)[0-1]
 	* g      - the green color component based on the unit's threat status (number?)[0-1]
 	* b      - the blue color component based on the unit's threat status (number?)[0-1]
 	--]]
-	if(element.PostUpdate) then
+	if (element.PostUpdate) then
 		return element:PostUpdate(unit, status, r, g, b)
 	end
 end
@@ -96,25 +101,25 @@ local function Path(self, ...)
 	* event - the event triggering the update (string)
 	* ...   - the arguments accompanying the event
 	--]]
-	return (self.ThreatIndicator.Override or Update) (self, ...)
+	return (self.ThreatIndicator.Override or Update)(self, ...)
 end
 
 local function ForceUpdate(element)
-	return Path(element.__owner, 'ForceUpdate', element.__owner.unit)
+	return Path(element.__owner, "ForceUpdate", element.__owner.unit)
 end
 
 local function Enable(self)
 	local element = self.ThreatIndicator
-	if(element) then
+	if (element) then
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
 
-		self:RegisterEvent('UNIT_THREAT_SITUATION_UPDATE', Path)
-		self:RegisterEvent('UNIT_THREAT_LIST_UPDATE', Path)
+		self:RegisterEvent("UNIT_THREAT_SITUATION_UPDATE", Path)
+		self:RegisterEvent("UNIT_THREAT_LIST_UPDATE", Path)
 
-		if(element:IsObjectType('Texture') and not element:GetTexture()) then
+		if (element:IsObjectType("Texture") and not element:GetTexture()) then
 			element:SetTexture([[Interface\Minimap\ObjectIcons]])
-			element:SetTexCoord(6/8, 7/8, 1/8, 2/8)
+			element:SetTexCoord(0.75, 0.88, 0.12, 0.25)
 		end
 
 		return true
@@ -123,12 +128,12 @@ end
 
 local function Disable(self)
 	local element = self.ThreatIndicator
-	if(element) then
+	if (element) then
 		element:Hide()
 
-		self:UnregisterEvent('UNIT_THREAT_SITUATION_UPDATE', Path)
-		self:UnregisterEvent('UNIT_THREAT_LIST_UPDATE', Path)
+		self:UnregisterEvent("UNIT_THREAT_SITUATION_UPDATE", Path)
+		self:UnregisterEvent("UNIT_THREAT_LIST_UPDATE", Path)
 	end
 end
 
-oUF:AddElement('ThreatIndicator', Path, Enable, Disable)
+oUF:AddElement("ThreatIndicator", Path, Enable, Disable)

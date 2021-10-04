@@ -501,7 +501,7 @@ function RUF:OptionsUpdateTexts(singleFrame,groupFrame,header,text)
 			end
 		end
 		unitFrame = _G['oUF_RUF_' .. currentUnit]
-		if not unitFrame then return end
+		if not unitFrame or not unitFrame.Text then return end
 
 		local currentText = unitFrame.Text[text].String
 		if not currentText then return end -- When refresh profile,ensure we don't try to update indicators that don't exist.
@@ -509,7 +509,7 @@ function RUF:OptionsUpdateTexts(singleFrame,groupFrame,header,text)
 		currentText:SetFont(LSM:Fetch('font',profileReference.Font),profileReference.Size,profileReference.Outline)
 		currentText:SetShadowColor(0,0,0,profileReference.Shadow)
 		currentText:ClearAllPoints()
-		currentText:SetHeight(5) -- FIXMEcurrentText:GetLineHeight())
+		-- currentText:SetHeight(5) -- FIXME currentText:GetLineHeight())
 		local anchorFrame
 		if profileReference.Position.AnchorFrame == "Frame" then
 			anchorFrame = unitFrame
@@ -581,13 +581,13 @@ function RUF:OptionsUpdatePortraits(singleFrame,groupFrame,header)
 			profileReference = RUF.db.profile.unit[string.lower(singleFrame)].Frame.Portrait
 		end
 		unitFrame = _G['oUF_RUF_' .. currentUnit]
-		if not unitFrame then return end
+		if unitFrame and unitFrame.Portrait then
+			unitFrame.Portrait.Enabled = profileReference.Enabled
+			unitFrame.Portrait.Cutaway = profileReference.Cutaway
 
-		unitFrame.Portrait.Enabled = profileReference.Enabled
-		unitFrame.Portrait.Cutaway = profileReference.Cutaway
-
-		unitFrame.Portrait:UpdateOptions()
-		unitFrame.Portrait:ForceUpdate()
+			unitFrame.Portrait:UpdateOptions()
+			unitFrame.Portrait:ForceUpdate()
+		end
 	end
 
 	if header ~= 'none' then
@@ -655,15 +655,15 @@ function RUF:OptionsUpdateFrame(singleFrame,groupFrame,header)
 
 		if profileReference.Frame.RangeFading.Enabled == true then
 			if singleFrame ~= 'Player' then
-				unitFrame:EnableElement('RangeCheck')
-				if not unitFrame.RangeCheck then
-					unitFrame.RangeCheck = {}
+				if unitFrame.EnableElement then
+					unitFrame:EnableElement('RangeCheck')
+					unitFrame.RangeCheck = unitFrame.RangeCheckor or {}
+					unitFrame.RangeCheck.enabled = profileReference.Frame.RangeFading.Enabled
+					unitFrame.RangeCheck.insideAlpha = 1
+					unitFrame.RangeCheck.outsideAlpha = profileReference.Frame.RangeFading.Alpha or 0.55
 				end
-				unitFrame.RangeCheck.enabled = profileReference.Frame.RangeFading.Enabled
-				unitFrame.RangeCheck.insideAlpha = 1
-				unitFrame.RangeCheck.outsideAlpha = profileReference.Frame.RangeFading.Alpha or 0.55
 			end
-		else
+		elseif unitFrame.DisableElement then
 			unitFrame:DisableElement('RangeCheck')
 		end
 

@@ -220,15 +220,13 @@ L["Enable the Unit Frame."] = "Aktivieren der Unit-Frames"
 L["Enable to force the bar to a specific color if the cast cannot be interrupted."] = "Enable to force the bar to a specific color if the cast cannot be interrupted."
 --[[Translation missing --]]
 L["Enable to replace this unit frame with the vehicle frame when in a vehicle. If disabled, the pet frame will become the vehicle frame instead."] = "Enable to replace this unit frame with the vehicle frame when in a vehicle. If disabled, the pet frame will become the vehicle frame instead."
---[[Translation missing --]]
-L["Enable to smoothly transition between different alpha values."] = "Enable to smoothly transition between different alpha values."
 L["Enabled"] = "Aktiviert"
 --[[Translation missing --]]
 L["Enables the cooldown spiral showing duration remaining on buff or debuff icons."] = "Enables the cooldown spiral showing duration remaining on buff or debuff icons."
 --[[Translation missing --]]
 L["Enrage"] = "Enrage"
 L["Fade out of Range"] = "Verberge außerhalb der Reichweite"
-L["Fade the unit frame it the target is out of range of your spells."] = "Verberge Einheitenrahmen, wenn das Ziel außerhalb der Reichweite deiner Zauber ist."
+L["Fade the unit frame if the target is out of range of your spells."] = "Verberge Einheitenrahmen, wenn das Ziel außerhalb der Reichweite deiner Zauber ist."
 L["Feedback"] = true
 L["Fill Type"] = "Füllart"
 L["Filtering"] = "Filterung"
@@ -246,9 +244,7 @@ L["Frame Lock"] = "Rahmensperre"
 --[[Translation missing --]]
 L["Free floating"] = "Free floating"
 --[[Translation missing --]]
-L["Freeze Animation"] = "Freeze Animation"
 L["Friendly"] = "Freundlich"
-L["Friendly Pet"] = "Freundliches Haustier"
 --[[Translation missing --]]
 L["General"] = "General"
 L["Ghost"] = "Geist"
@@ -259,7 +255,6 @@ L["Hard"] = "Hart"
 --[[Translation missing --]]
 L["Heal Prediction"] = "Heal Prediction"
 L["Health"] = "Leben"
-L["Health Bar Overlay"] = "Gesundheitsbalken-Overlay"
 --[[Translation missing --]]
 L["Health Cutaway"] = "Health Cutaway"
 L["Height"] = "Höhe"
@@ -271,7 +266,6 @@ L["Hide this tag at 0 or always display."] = "Verstecke TAG bei 0 oder zeige es 
 L["Highlight Texture"] = "Markiere die Textur"
 --[[Translation missing --]]
 L["Highlight Thickness"] = "Highlight Thickness"
-L["Honor"] = true
 --[[Translation missing --]]
 L["Horizonal"] = "Horizonal"
 L["Horizontal Growth"] = "Horizontales Wachstum"
@@ -279,8 +273,6 @@ L["Horizontal Offset from the Anchor."] = "Horizontaler Versatz vom Anker."
 L["Horizontal Offset from the Frame Anchor."] = "Horizontaler Versatz vom Rahmenanker."
 L["Horizontal Offset from the previous unit in the group."] = "Horizontal Offset von der vorherigen Einheit in der Gruppe."
 L["Horizontal Spacing"] = "Horizontaler Abstand"
---[[Translation missing --]]
-L["How long the frames take to smoothly transition between different alpha values."] = "How long the frames take to smoothly transition between different alpha values."
 L["HPPerc"] = "Health: %"
 --[[Translation missing --]]
 L["Icon Height"] = "Icon Height"
@@ -341,7 +333,6 @@ L["Normal"] = true
 --[[Translation missing --]]
 L["Not Interruptible Color"] = "Not Interruptible Color"
 --[[Translation missing --]]
-L["Objective"] = "Quest Objective"
 L["Offline"] = true
 L["Offset"] = true
 --[[Translation missing --]]
@@ -356,7 +347,6 @@ L["Out of combat alpha"] = "Out of combat alpha"
 L["Out of Range transparency"] = "Außer Reichweite Transparenz"
 L["Outline"] = true
 L["Overlay Alpha"] = true
-L["Paragon"] = true
 L["party"] = "Gruppen"
 --[[Translation missing --]]
 L["party %s"] = "Party %s"
@@ -372,7 +362,6 @@ L["pet"] = "Pet"
 --[[Translation missing --]]
 L["PetHappiness"] = "Pet Happiness"
 L["pettarget"] = "Pet-Ziel"
-L["Phased"] = "Stufenweise"
 --[[Translation missing --]]
 L["Play sound on highlight"] = "Play sound on highlight"
 L["Player"] = true
@@ -423,15 +412,11 @@ L["Role"] = "Group Role"
 L["Rows"] = "Reihen"
 --[[Translation missing --]]
 L["RUF [|c5500DBBDRaeli's Unit Frames|r] needs to reload your UI to properly finish installing on first use. Please do this now."] = "RUF [|c5500DBBDRaeli's Unit Frames|r] needs to reload your UI to properly finish installing on first use. Please do this now."
-L["Runes - Blood"] = "Runen - Blut"
-L["Runes - Frost"] = "Runen - Frost"
-L["Runes - Unholy"] = "Runen - Unholy"
 L["Segment Multiplier"] = "Segment-Multiplikator"
-L["Separate Bar"] = "Getrennte Leiste"
 L["Set class colors to the default Blizzard colors."] = "Setze Klassenfarben auf die Standard-Blizzard-Farben."
 --[[Translation missing --]]
 L["Sets if RUF will use class colours from the Class Colors addon if you have it installed."] = "Sets if RUF will use class colours from the Class Colors addon if you have it installed."
-L["Sets this to hidden if your primary resource is mana, so it only shows if you have a class resource, such as Maelstrom."] = "Stellt dies auf Versteckt ein, wenn es sich bei Ihrer primären Ressource um Mana handelt. Dies wird nur angezeigt, wenn Sie eine Klassenressource wie Maelstrom haben."
+L["Sets this to hidden if your primary resource is mana, so it only shows if you have a class resource, such as Energy."] = "Stellt dies auf Versteckt ein, wenn es sich bei Ihrer primären Ressource um Mana handelt. Dies wird nur angezeigt, wenn Sie eine Klassenressource wie Energie haben."
 L["Shadow"] = "Schatten"
 --[[Translation missing --]]
 L["Show %s"] = "Show %s"
@@ -468,10 +453,9 @@ L["Simple Border"] = "Simple Border"
 L["Size"] = "Größe"
 --[[Translation missing --]]
 L["Size relative to the aura icon"] = "Size relative to the aura icon"
+L["Combo Points"] = "Combopunkte"
 --[[Translation missing --]]
-L["Smooth transitions"] = "Smooth transitions"
---[[Translation missing --]]
-L["Smoothly animate bar changes. Does not affect class resources that are split into chunks such as Combo Points, or Holy Power."] = "Smoothly animate bar changes. Does not affect class resources that are split into chunks such as Combo Points, or Holy Power."
+L["Smoothly animate bar changes. Does not affect class resources that are split into chunks such as Combo Points or Runes."] = "Smoothly animate bar changes. Does not affect class resources that are split into chunks such as Combo Points or Runes."
 L["Sort By"] = "Sortiere nach"
 L["Sort Direction"] = "Sortierrichtung"
 L["Sorting"] = "Sortierung"
@@ -519,16 +503,11 @@ L["Top"] = "Oben"
 L["Top-left"] = "Oben-Links"
 L["Top-right"] = "Oben-Rechts"
 --[[Translation missing --]]
-L["Transition duration"] = "Transition duration"
---[[Translation missing --]]
 L["Trigger below this percent"] = "Trigger below this percent"
 --[[Translation missing --]]
 L["Trim"] = "Trim"
 --[[Translation missing --]]
-L[ [=[Trim simply removes any letters above the limit.
-Elipsis adds an elipsis to the end of the trimmed name to signify it has been cut short.
-Abbreviate turns any words that would be trimmed into an initial.
-Initialism turns the entire name into initials if it would be trimmed.]=] ] = [=[Trim simply removes any letters above the limit.
+L["Trim simply removes any letters above the limit.\nElipsis adds an elipsis to the end of the trimmed name to signify it has been cut short.\nAbbreviate turns any words that would be trimmed into an initial.\nInitialism turns the entire name into initials if it would be trimmed."] = [=[Trim simply removes any letters above the limit.
 Elipsis adds an elipsis to the end of the trimmed name to signify it has been cut short.
 Abbreviate turns any words that would be trimmed into an initial.
 Initialism turns the entire name into initials if it would be trimmed.]=]
@@ -567,5 +546,3 @@ L["X Offset"] = true
 L["X Spacing"] = "X Abstand"
 L["Y Offset"] = true
 L["Y Spacing"] = "Y Abstand"
---[[Translation missing --]]
-L["Z Offset"] = "Z Offset"

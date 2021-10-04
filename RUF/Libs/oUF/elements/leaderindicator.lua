@@ -13,15 +13,14 @@ A default texture will be applied if the widget is a Texture and doesn't have a 
 
 ## Examples
 
-    -- Position and size
-    local LeaderIndicator = self:CreateTexture(nil, 'OVERLAY')
-    LeaderIndicator:SetSize(16, 16)
-    LeaderIndicator:SetPoint('BOTTOM', self, 'TOP')
+	-- Position and size
+	local LeaderIndicator = self:CreateTexture(nil, 'OVERLAY')
+	LeaderIndicator:SetSize(16, 16)
+	LeaderIndicator:SetPoint('BOTTOM', self, 'TOP')
 
-    -- Register it with oUF
-    self.LeaderIndicator = LeaderIndicator
+	-- Register it with oUF
+	self.LeaderIndicator = LeaderIndicator
 --]]
-
 local _, ns = ...
 local oUF = ns.oUF
 
@@ -31,19 +30,19 @@ local UnitIsPartyLeader = UnitIsPartyLeader
 
 local function Update(self, event)
 	local element = self.LeaderIndicator
+	local unit = self.unit
 
 	--[[ Callback: LeaderIndicator:PreUpdate()
 	Called before the element has been updated.
 
 	* self - the LeaderIndicator element
 	--]]
-	if(element.PreUpdate) then
+	if (element.PreUpdate) then
 		element:PreUpdate()
 	end
 
-	local unit = self.unit
 	local isLeader = (UnitInParty(unit) or UnitInRaid(unit)) and UnitIsPartyLeader(unit)
-	if(isLeader) then
+	if (isLeader) then
 		element:Show()
 	else
 		element:Hide()
@@ -55,7 +54,7 @@ local function Update(self, event)
 	* self     - the LeaderIndicator element
 	* isLeader - indicates whether the element is shown (boolean)
 	--]]
-	if(element.PostUpdate) then
+	if (element.PostUpdate) then
 		return element:PostUpdate(isLeader)
 	end
 end
@@ -68,24 +67,24 @@ local function Path(self, ...)
 	* event - the event triggering the update (string)
 	* ...   - the arguments accompanying the event
 	--]]
-	return (self.LeaderIndicator.Override or Update) (self, ...)
+	return (self.LeaderIndicator.Override or Update)(self, ...)
 end
 
 local function ForceUpdate(element)
-	return Path(element.__owner, 'ForceUpdate')
+	return Path(element.__owner, "ForceUpdate")
 end
 
 local function Enable(self)
 	local element = self.LeaderIndicator
-	if(element) then
+	if (element) then
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
 
-		self:RegisterEvent('PARTY_LEADER_CHANGED', Path, true)
-		self:RegisterEvent('PARTY_MEMBERS_CHANGED', Path, true)
-		self:RegisterEvent('RAID_ROSTER_UPDATE', Path, true)
+		self:RegisterEvent("PARTY_LEADER_CHANGED", Path, true)
+		self:RegisterEvent("PARTY_MEMBERS_CHANGED", Path, true)
+		self:RegisterEvent("RAID_ROSTER_UPDATE", Path, true)
 
-		if(element:IsObjectType('Texture') and not element:GetTexture()) then
+		if (element:IsObjectType("Texture") and not element:GetTexture()) then
 			element:SetTexture([[Interface\GroupFrame\UI-Group-LeaderIcon]])
 		end
 
@@ -95,13 +94,13 @@ end
 
 local function Disable(self)
 	local element = self.LeaderIndicator
-	if(element) then
+	if (element) then
 		element:Hide()
 
-		self:UnregisterEvent('PARTY_LEADER_CHANGED', Path)
-		self:UnregisterEvent('PARTY_MEMBERS_CHANGED', Path)
-		self:UnregisterEvent('RAID_ROSTER_UPDATE', Path)
+		self:UnregisterEvent("PARTY_LEADER_CHANGED", Path)
+		self:UnregisterEvent("PARTY_MEMBERS_CHANGED", Path)
+		self:UnregisterEvent("RAID_ROSTER_UPDATE", Path)
 	end
 end
 
-oUF:AddElement('LeaderIndicator', Path, Enable, Disable)
+oUF:AddElement("LeaderIndicator", Path, Enable, Disable)

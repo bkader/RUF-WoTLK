@@ -14,15 +14,14 @@ A default texture will be applied if the widget is a Texture and doesn't have a 
 
 ## Examples
 
-    -- Position and size
-    local HappinessIndicator = self:CreateTexture(nil, 'OVERLAY')
-    HappinessIndicator:SetSize(16, 16)
-    HappinessIndicator:SetPoint('TOPRIGHT', self)
+	-- Position and size
+	local HappinessIndicator = self:CreateTexture(nil, 'OVERLAY')
+	HappinessIndicator:SetSize(16, 16)
+	HappinessIndicator:SetPoint('TOPRIGHT', self)
 
-    -- Register it with oUF
-    self.HappinessIndicator = HappinessIndicator
+	-- Register it with oUF
+	self.HappinessIndicator = HappinessIndicator
 --]]
-
 local _, ns = ...
 local oUF = ns.oUF
 
@@ -30,7 +29,7 @@ local GetPetHappiness = GetPetHappiness
 local HasPetUI = HasPetUI
 
 local function Update(self, event, unit)
-	if(not unit or self.unit ~= unit) then return end
+	if (not unit or self.unit ~= unit) then return end
 
 	local element = self.HappinessIndicator
 
@@ -39,19 +38,19 @@ local function Update(self, event, unit)
 
 	* self - the ComboPoints element
 	--]]
-	if(element.PreUpdate) then
+	if (element.PreUpdate) then
 		element:PreUpdate()
 	end
 
 	local _, hunterPet = HasPetUI()
 	local happiness, damagePercentage = GetPetHappiness()
 
-	if(hunterPet and happiness) then
-		if(happiness == 1) then
+	if (hunterPet and happiness) then
+		if (happiness == 1) then
 			element:SetTexCoord(0.375, 0.5625, 0, 0.359375)
-		elseif(happiness == 2) then
+		elseif (happiness == 2) then
 			element:SetTexCoord(0.1875, 0.375, 0, 0.359375)
-		elseif(happiness == 3) then
+		elseif (happiness == 3) then
 			element:SetTexCoord(0, 0.1875, 0, 0.359375)
 		end
 
@@ -68,7 +67,7 @@ local function Update(self, event, unit)
 	* happiness        - the numerical happiness value of the pet (1 = unhappy, 2 = content, 3 = happy) (number)
 	* damagePercentage - damage modifier, happiness affects this (unhappy = 75%, content = 100%, happy = 125%) (number)
 	--]]
-	if(element.PostUpdate) then
+	if (element.PostUpdate) then
 		return element:PostUpdate(unit, happiness, damagePercentage)
 	end
 end
@@ -81,22 +80,22 @@ local function Path(self, ...)
 	* event - the event triggering the update (string)
 	* ...   - the arguments accompanying the event
 	--]]
-	return (self.HappinessIndicator.Override or Update) (self, ...)
+	return (self.HappinessIndicator.Override or Update)(self, ...)
 end
 
 local function ForceUpdate(element)
-	return Path(element.__owner, 'ForceUpdate', element.__owner.unit)
+	return Path(element.__owner, "ForceUpdate", element.__owner.unit)
 end
 
 local function Enable(self)
 	local element = self.HappinessIndicator
-	if(element) then
+	if (element) then
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
 
-		self:RegisterEvent('UNIT_HAPPINESS', Path)
+		self:RegisterEvent("UNIT_HAPPINESS", Path)
 
-		if(element:IsObjectType('Texture') and not element:GetTexture()) then
+		if (element:IsObjectType("Texture") and not element:GetTexture()) then
 			element:SetTexture([[Interface\PetPaperDollFrame\UI-PetHappiness]])
 		end
 
@@ -106,11 +105,11 @@ end
 
 local function Disable(self)
 	local element = self.HappinessIndicator
-	if(element) then
+	if (element) then
 		element:Hide()
 
-		self:UnregisterEvent('UNIT_HAPPINESS', Path)
+		self:UnregisterEvent("UNIT_HAPPINESS", Path)
 	end
 end
 
-oUF:AddElement('HappinessIndicator', Path, Enable, Disable)
+oUF:AddElement("HappinessIndicator", Path, Enable, Disable)

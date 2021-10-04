@@ -1,3 +1,3 @@
 local parent, ns = ...
-ns.oUF = {}
-ns.oUF.Private = {}
+ns.oUF = ns.oUF or {}
+ns.oUF.Private = ns.oUF.Private or {}

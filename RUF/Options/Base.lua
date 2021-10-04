@@ -683,39 +683,6 @@ function RUF_Options.MainOptions()
 									RUF.CombatFaderRegister()
 								end,
 							},
-							animate = {
-								hidden = true,
-								name = L["Smooth transitions"],
-								desc = L["Enable to smoothly transition between different alpha values."],
-								type = 'toggle',
-								order = 0.121,
-								get = function(info)
-									return RUF.db.profile.Appearance.CombatFader.animate
-								end,
-								set = function(info, value)
-									RUF.db.profile.Appearance.CombatFader.animate = value
-									RUF.CombatFaderUpdate()
-								end,
-							},
-							animationDuration = {
-								hidden = true,
-								name = L["Transition duration"],
-								desc = L["How long the frames take to smoothly transition between different alpha values."],
-								type = 'range',
-								order = 0.122,
-								min = 0,
-								max = 10,
-								softMin = 0,
-								softMax = 3,
-								step = 0.001,
-								bigStep = 0.01,
-								get = function(info)
-									return RUF.db.profile.Appearance.CombatFader.animationDuration
-								end,
-								set = function(info, value)
-									RUF.db.profile.Appearance.CombatFader.animationDuration = value
-								end,
-							},
 							enabledSpacer = {
 								name = " ",
 								type = 'description',

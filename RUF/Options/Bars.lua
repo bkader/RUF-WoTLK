@@ -88,24 +88,6 @@ function RUF_Options.Bars()
 								RUF:OptionsUpdateAllBars()
 							end,
 						},
-						barType = {
-							name = L["Type"],
-							type = 'select',
-							order = 0.02,
-							hidden = function() return i ~= 4 end,
-							disabled = true,
-							values = {
-								[1] = L["Health Bar Overlay"],
-								[2] = L["Separate Bar"],
-							},
-							get = function(info)
-								return RUF.db.profile.Appearance.Bars[Bar[i]].Type
-							end,
-							set = function(info, value)
-								RUF.db.profile.Appearance.Bars[Bar[i]].Type = value
-								RUF:OptionsUpdateAllBars()
-							end,
-						},
 						overlayAlpha = {
 							name = L["Alpha"],
 							desc = L["Overlay Alpha"],

@@ -84,20 +84,9 @@ end
 
 local function Enable(self, unit)
 	local element = self.ReadyIndicator
-	--if(element and (unit and (unit:sub(1, 5) == 'party' or unit:sub(1,4) == 'raid'))) then
 	if(element) then
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
-
-		-- local AnimationGroup = element:CreateAnimationGroup()
-		-- AnimationGroup:HookScript('OnFinished', OnFinished)
-		-- element.Animation = AnimationGroup
-
-		-- local Animation = AnimationGroup:CreateAnimation('Alpha')
-		-- Animation:SetFromAlpha(1)
-		-- Animation:SetToAlpha(0)
-		-- Animation:SetDuration(element.fadeTime or 1.5)
-		-- Animation:SetStartDelay(element.finishedTime or 10)
 
 		self:RegisterEvent('READY_CHECK', Path, true)
 		self:RegisterEvent('READY_CHECK_CONFIRM', Path, true)

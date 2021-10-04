@@ -3,21 +3,9 @@ local RUF = RUF
 local _, ns = ...
 local oUF = ns.oUF
 
-local function ChangeAlpha(self, to, duration)
-	local profileReference = RUF.db.profile.Appearance.CombatFader
-	if profileReference.animate then
-		RUF.db.profile.Appearance.CombatFader.animate = false
-		-- RUF.AnimateAlpha(self, to, duration)
-	end
-	--else
-	if self.Animator then
-		if self.Animator:IsPlaying() then
-			self.Animator:Stop()
-		end
-	end
+local function ChangeAlpha(self, to)
 	self:SetAlpha(to)
 	self.Alpha.target = to
-	--end
 
 	if self.RangeCheck then
 		if self.RangeCheck.enabled and self.RangeCheck.ForceUpdate then
@@ -27,22 +15,10 @@ local function ChangeAlpha(self, to, duration)
 end
 
 local function Reset(fast)
-	if fast then
-		for k, v in next, oUF.objects do
-			if v.Animator then
-				if v.Animator:IsPlaying() then
-					v.Animator:Stop()
-				end
-			end
-			v.Alpha.target = 1
-			v.Alpha.current = 1
-			v:SetAlpha(1)
-		end
-	else
-		local profileReference = RUF.db.profile.Appearance.CombatFader
-		for k, v in next, oUF.objects do
-			ChangeAlpha(v, 1, profileReference.animationDuration)
-		end
+	for k, v in next, oUF.objects do
+		v.Alpha.target = 1
+		v.Alpha.current = 1
+		v:SetAlpha(1)
 	end
 end
 
@@ -55,12 +31,12 @@ function RUF.CombatFaderUpdate()
 		end
 		if UnitExists("target") and profileReference.targetOverride == true then
 			for k, v in next, oUF.objects do
-				ChangeAlpha(v, profileReference.targetAlpha or 1, profileReference.animationDuration or 0.5)
+				ChangeAlpha(v, profileReference.targetAlpha or 1)
 			end
 		else
 			for k, v in next, oUF.objects do
 				if UnitExists(v.unit) then
-					ChangeAlpha(v, profileReference.restAlpha or 0.5, profileReference.animationDuration or 0.5)
+					ChangeAlpha(v, profileReference.restAlpha or 0.5)
 				else
 					v:SetAlpha(profileReference.restAlpha)
 					v.Alpha.target = profileReference.restAlpha
@@ -71,7 +47,7 @@ function RUF.CombatFaderUpdate()
 				local playerPercentHealth = RUF:Percent(UnitHealth("player"), UnitHealthMax("player"))
 				if playerPercentHealth < (profileReference.damagedPercent or 100) then
 					if oUF_RUF_Player then
-						ChangeAlpha(oUF_RUF_Player, profileReference.damagedAlpha or 1, profileReference.animationDuration or 0.5)
+						ChangeAlpha(oUF_RUF_Player, profileReference.damagedAlpha or 1)
 					end
 				end
 			end

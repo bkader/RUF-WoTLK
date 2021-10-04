@@ -190,14 +190,12 @@ L["Enable the Unit Frame."] = "유닛 프레임 사용"
 L["Enable to force the bar to a specific color if the cast cannot be interrupted."] = "시전을 중단 할 수 없는 경우 바를 특정 색상으로 강제 설정할 수 있습니다."
 --[[Translation missing --]]
 L["Enable to replace this unit frame with the vehicle frame when in a vehicle. If disabled, the pet frame will become the vehicle frame instead."] = "Enable to replace this unit frame with the vehicle frame when in a vehicle. If disabled, the pet frame will become the vehicle frame instead."
---[[Translation missing --]]
-L["Enable to smoothly transition between different alpha values."] = "Enable to smoothly transition between different alpha values."
 L["Enabled"] = "사용함"
 --[[Translation missing --]]
 L["Enables the cooldown spiral showing duration remaining on buff or debuff icons."] = "Enables the cooldown spiral showing duration remaining on buff or debuff icons."
 L["Enrage"] = "분노"
 L["Fade out of Range"] = "범위에서 사라짐"
-L["Fade the unit frame it the target is out of range of your spells."] = "대상이 주문 범위를 벗어나면 유닛 프레임을 사라지게 합니다."
+L["Fade the unit frame if the target is out of range of your spells."] = "대상이 주문 범위를 벗어나면 유닛 프레임을 사라지게 합니다."
 L["Feedback"] = "피드백"
 L["Fill Type"] = "적용 유형"
 --[[Translation missing --]]
@@ -212,9 +210,7 @@ L["Frame Highlighting"] = "프레임 강조"
 L["Frame Lock"] = "프레임 고정"
 --[[Translation missing --]]
 L["Free floating"] = "Free floating"
-L["Freeze Animation"] = "얼리는 애니메이션"
 L["Friendly"] = "아군"
-L["Friendly Pet"] = "아군의 소환수"
 --[[Translation missing --]]
 L["General"] = "General"
 L["Ghost"] = "유령"
@@ -224,7 +220,6 @@ L["Growth Direction"] = "성장 방향"
 L["Hard"] = "어려움"
 L["Heal Prediction"] = "치유 예측"
 L["Health"] = "생명력"
-L["Health Bar Overlay"] = "생명력 바 오버레이"
 --[[Translation missing --]]
 L["Health Cutaway"] = "Health Cutaway"
 L["Height"] = "높이"
@@ -235,7 +230,6 @@ L["Hide the level text if the unit is the same level as you."] = "유닛이 당�
 L["Hide this tag at 0 or always display."] = "이 태그가 0이면 숨기거나 항상 표시합니다."
 L["Highlight Texture"] = "강조 무늬"
 L["Highlight Thickness"] = "강조 두께"
-L["Honor"] = "명예"
 --[[Translation missing --]]
 L["Horizonal"] = "Horizonal"
 L["Horizontal Growth"] = "수평 성장"
@@ -243,8 +237,6 @@ L["Horizontal Offset from the Anchor."] = "기준으로부터의 수평 좌표"
 L["Horizontal Offset from the Frame Anchor."] = "프레임 기준으로부터의 수평 좌표입니다."
 L["Horizontal Offset from the previous unit in the group."] = "그룹 안 이전 유닛으로부터의 수평 좌표입니다."
 L["Horizontal Spacing"] = "수평 간격"
---[[Translation missing --]]
-L["How long the frames take to smoothly transition between different alpha values."] = "How long the frames take to smoothly transition between different alpha values."
 --[[Translation missing --]]
 L["HPPerc"] = "Health: %"
 L["Icon Height"] = "아이콘 높이"
@@ -293,7 +285,6 @@ L["Name"] = "상태: 이름"
 L["None"] = "없음"
 L["Normal"] = "표준"
 L["Not Interruptible Color"] = "차단 불가 색상"
-L["Objective"] = "퀘스트 수행목표"
 L["Offline"] = "접속종료"
 L["Offset"] = "좌표"
 L["Open Configuration Panel"] = "구성 패널 열기"
@@ -306,7 +297,6 @@ L["Out of Range transparency"] = "범위 벗어남 투명도"
 L["Outline"] = "외곽선"
 L["Overlay Alpha"] = "오버레이 투명도"
 --[[Translation missing --]]
-L["Paragon"] = "Paragon"
 L["party"] = "파티"
 --[[Translation missing --]]
 L["party %s"] = "Party %s"
@@ -320,7 +310,6 @@ L["partytarget %s"] = "Party Target %s"
 L["pet"] = "소환수"
 L["PetHappiness"] = "소환수 만족도"
 L["pettarget"] = "소환수의 대상"
-L["Phased"] = "단계별"
 L["Play sound on highlight"] = "강조 시 소리 재생"
 L["Player"] = "플레이어"
 L["player"] = "플레이어"
@@ -362,15 +351,11 @@ L["Role"] = "Group Role"
 L["Rows"] = "행"
 --[[Translation missing --]]
 L["RUF [|c5500DBBDRaeli's Unit Frames|r] needs to reload your UI to properly finish installing on first use. Please do this now."] = "RUF [|c5500DBBDRaeli's Unit Frames|r] needs to reload your UI to properly finish installing on first use. Please do this now."
-L["Runes - Blood"] = "룬 - 혈기"
-L["Runes - Frost"] = "룬 - 냉기"
-L["Runes - Unholy"] = "룬 - 부정"
 L["Segment Multiplier"] = "분할 배율"
-L["Separate Bar"] = "별도 바"
 L["Set class colors to the default Blizzard colors."] = "기본 블리자드 색상으로 직업 색상을 설정합니다."
 --[[Translation missing --]]
 L["Sets if RUF will use class colours from the Class Colors addon if you have it installed."] = "Sets if RUF will use class colours from the Class Colors addon if you have it installed."
-L["Sets this to hidden if your primary resource is mana, so it only shows if you have a class resource, such as Maelstrom."] = "주력 자원이 마나인 경우 이를 숨기고, 소용돌이와 같은 직업 자원이 있는 경우에만 표시하도록 설정합니다."
+L["Sets this to hidden if your primary resource is mana, so it only shows if you have a class resource, such as Energy."] = "주력 자원이 마나인 경우 이를 숨기고, 기력와 같은 직업 자원이 있는 경우에만 표시하도록 설정합니다."
 L["Shadow"] = "그림자"
 L["Show %s"] = "%s 표시"
 --[[Translation missing --]]
@@ -402,9 +387,8 @@ L["Shows the player in the party frames."] = "Shows the player in the party fram
 L["Simple Border"] = "간단한 테두리"
 L["Size"] = "크기"
 L["Size relative to the aura icon"] = "오라 아이콘을 기준으로 한 크기"
---[[Translation missing --]]
-L["Smooth transitions"] = "Smooth transitions"
-L["Smoothly animate bar changes. Does not affect class resources that are split into chunks such as Combo Points, or Holy Power."] = "바의 변경을 부드럽게 움직입니다. 연계 점수나 신성한 힘과 같이 덩어리로 분할된 직업 자원에는 영향을 미치지 않습니다."
+L["Combo Points"] = "연계 점수"
+L["Smoothly animate bar changes. Does not affect class resources that are split into chunks such as Combo Points or Runes."] = "바의 변경을 부드럽게 움직입니다. 연계 점수나 룬과 같이 덩어리로 분할된 직업 자원에는 영향을 미치지 않습니다."
 L["Sort By"] = "정렬 기준"
 L["Sort Direction"] = "정렬 방향"
 L["Sorting"] = "정렬"
@@ -445,16 +429,11 @@ L["Top"] = "상단"
 L["Top-left"] = "왼쪽 상단"
 L["Top-right"] = "오른쪽 상단"
 --[[Translation missing --]]
-L["Transition duration"] = "Transition duration"
---[[Translation missing --]]
 L["Trigger below this percent"] = "Trigger below this percent"
 --[[Translation missing --]]
 L["Trim"] = "Trim"
 --[[Translation missing --]]
-L[ [=[Trim simply removes any letters above the limit.
-Elipsis adds an elipsis to the end of the trimmed name to signify it has been cut short.
-Abbreviate turns any words that would be trimmed into an initial.
-Initialism turns the entire name into initials if it would be trimmed.]=] ] = [=[Trim simply removes any letters above the limit.
+L["Trim simply removes any letters above the limit.\nElipsis adds an elipsis to the end of the trimmed name to signify it has been cut short.\nAbbreviate turns any words that would be trimmed into an initial.\nInitialism turns the entire name into initials if it would be trimmed."] = [=[Trim simply removes any letters above the limit.
 Elipsis adds an elipsis to the end of the trimmed name to signify it has been cut short.
 Abbreviate turns any words that would be trimmed into an initial.
 Initialism turns the entire name into initials if it would be trimmed.]=]
@@ -490,4 +469,3 @@ L["X Offset"] = "X 좌표"
 L["X Spacing"] = "X 간격"
 L["Y Offset"] = "Y 좌표"
 L["Y Spacing"] = "Y 간격"
-L["Z Offset"] = "Z 좌표"

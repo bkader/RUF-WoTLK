@@ -244,29 +244,6 @@ local function AlphaAnimationDataUpdate(self)
 	self:GetParent().Alpha.current = parent:GetAlpha()
 end
 
-function RUF.AnimateAlpha(self, to, duration)
-	self.Alpha.current = self:GetAlpha()
-	self.Alpha.target = to or 1
-
-	if not self.Animator then
-		local animationGroup = self:CreateAnimationGroup()
-		self.Animator = animationGroup
-		local animation = animationGroup:CreateAnimation('Alpha')
-		self.Animator.animation = animation
-	end
-
-	local animationGroup = self.Animator
-	local animation = self.Animator.animation
-
-	if animationGroup:IsPlaying() then animationGroup:Stop() end
-	animation:SetFromAlpha(self.Alpha.current)
-	animation:SetToAlpha(self.Alpha.target)
-	animation:SetDuration(duration)
-	animationGroup:Play()
-	animationGroup:SetToFinalAlpha(true)
-	animationGroup:SetScript('OnUpdate', AlphaAnimationDataUpdate)
-end
-
 function RUF:FrameIsDependentOnFrame(frame, otherFrame)
 	if (frame and otherFrame) then
 		if frame == otherFrame then
@@ -455,26 +432,30 @@ function RUF.RefreshTextElements(singleFrame, groupFrame, header, groupNum)
 	unitFrame = _G['oUF_RUF_' .. currentUnit]
 
 	local profileTexts = {}
-	for k, v in pairs(RUF.db.profile.unit[unitFrame.frame].Frame.Text) do
-		if v ~= '' then
-			table.insert(profileTexts, k)
+	if unitFrame.frame then
+		for k, v in pairs(RUF.db.profile.unit[unitFrame.frame].Frame.Text) do
+			if v ~= '' then
+				table.insert(profileTexts, k)
+			end
 		end
 	end
 
-	local existingTexts = { unitFrame.Text:GetChildren() }
-	for old = 1, #existingTexts do
-		local currentText = existingTexts[old]
-		local currentTextName = currentText:GetName()
-		for new = 1, #profileTexts do
-			local newTextName = 'oUF_RUF_' .. currentUnit .. '.Text.' .. profileTexts[new]
-			local exists = false
-			if currentTextName == newTextName then
-				currentText:Show()
-				break
-			end
-			if exists == false then
-				currentText:Hide()
-				unitFrame:Untag(currentText)
+	if unitFrame.Text then
+		local existingTexts = { unitFrame.Text:GetChildren() }
+		for old = 1, #existingTexts do
+			local currentText = existingTexts[old]
+			local currentTextName = currentText:GetName()
+			for new = 1, #profileTexts do
+				local newTextName = 'oUF_RUF_' .. currentUnit .. '.Text.' .. profileTexts[new]
+				local exists = false
+				if currentTextName == newTextName then
+					currentText:Show()
+					break
+				end
+				if exists == false then
+					currentText:Hide()
+					unitFrame:Untag(currentText)
+				end
 			end
 		end
 	end
@@ -587,30 +568,31 @@ function RUF.ToggleFrameLock(status)
 		end
 		for i = 1, #headers do
 			local x1, y1, x2, y2, x3, y3
-			local frameName = _G['oUF_RUF_' .. headers[i]]
-			if frameName then
-				local MoveBG = frameName.MoveBG
+			local frameName = 'oUF_RUF_' .. headers[i]
+			if _G[frameName] then
+				local Mover = _G[frameName].Mover
 				local profile = string.lower(headers[i])
-				MoveBG:Show()
-				frameName:SetMovable(true)
-				MoveBG:SetMovable(true)
+				Mover:EnableMouse(true)
+				_G[frameName]:SetMovable(true)
+				Mover:SetMovable(true)
+				Mover:Show()
 
-				MoveBG:SetScript('OnMouseDown', function(MoveBG)
-					frameName:StartMoving()
-					MoveBG:StartMoving()
-					x1, y1 = select(4, frameName:GetPoint())
+				Mover:SetScript('OnMouseDown', function(Mover)
+					_G[frameName]:StartMoving()
+					Mover:StartMoving()
+					x1, y1 = select(4, _G[frameName]:GetPoint())
 				end)
 
-				MoveBG:SetScript('OnMouseUp', function(MoveBG)
-					x2, y2 = select(4, frameName:GetPoint())
-					frameName:StopMovingOrSizing()
-					MoveBG:StopMovingOrSizing()
+				Mover:SetScript('OnMouseUp', function(Mover)
+					x2, y2 = select(4, _G[frameName]:GetPoint())
+					_G[frameName]:StopMovingOrSizing()
+					Mover:StopMovingOrSizing()
 					x3 = x2-x1
 					y3 = y2-y1
 					RUF.db.profile.unit[profile].Frame.Position.x = RUF.db.profile.unit[profile].Frame.Position.x + x3
 					RUF.db.profile.unit[profile].Frame.Position.y = RUF.db.profile.unit[profile].Frame.Position.y + y3
-					frameName:ClearAllPoints()
-					frameName:SetPoint(
+					_G[frameName]:ClearAllPoints()
+					_G[frameName]:SetPoint(
 						RUF.db.profile.unit[profile].Frame.Position.AnchorFrom,
 						RUF.db.profile.unit[profile].Frame.Position.AnchorFrame,
 						RUF.db.profile.unit[profile].Frame.Position.AnchorTo,
@@ -646,12 +628,13 @@ function RUF.ToggleFrameLock(status)
 		for i = 1, #headers do
 			local frameName = 'oUF_RUF_' .. headers[i]
 			if _G[frameName] then
-				local MoveBG = _G[frameName .. '.MoveBG']
-				MoveBG:Hide()
-				MoveBG:SetMovable(false)
+				local Mover = _G[frameName .. 'Mover']
+				Mover:EnableMouse(false)
+				Mover:Hide()
+				Mover:SetMovable(false)
 				_G[frameName]:SetMovable(false)
-				MoveBG:SetScript('OnMouseDown', nil)
-				MoveBG:SetScript('OnMouseUp', nil)
+				Mover:SetScript('OnMouseDown', nil)
+				Mover:SetScript('OnMouseUp', nil)
 			end
 		end
 	end
