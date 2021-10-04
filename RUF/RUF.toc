@@ -1,18 +1,23 @@
 ## Interface: 30300
 ## Title: RUF [|c5500DBBDRaeli's Unit Frames|r]
 ## Notes: Raeli's Unit Frames. Simple lightweight unitframes using oUF
-## Author: Raeli
-## Version: r254-Release
-## SavedVariables: RUFDB
-## X-SavedVariables: RUFDB
 ## OptionalDeps: oUF, Ace3, AceGUI-3.0-SharedMediaWidgets, LibDualSpec-1.0, LibRangeCheck-2.0, LibSharedMedia-3.0
-## X-Credits: Icon Font created with IcoMoon.io using icons from Freepik & Plainicon, from www.flaticon.com
+## LoadOnDemand: 0
+## SavedVariables: RUFDB
+## DefaultState: enabled
+## Author: Kader (|cff808080bkader#6361|r)
+## Version: r254-Release
+## X-Date: 2021-10-04 @ 18:30 AM |cff808080UTC|r
+## X-Credits: Raeli, Icon Font created with IcoMoon.io using icons from Freepik & Plainicon, from www.flaticon.com
+## X-Category: Unit Frames, Class, Combat, PvP, Roleplay
+## X-Email: |cff20ff20bkader@mail.com|r
+## X-Website: https://github.com/bkader/RUF-WoTLK
+## X-Discord: https://discord.gg/a8z5CyS3eW
 ## X-Curse-Project-ID: 283389
 ## X-WOWI-ID: 25717
 ## X-oUF: RufoUF
 
 Embeds.xml
-
 Elements\Plugins.xml
 
 Localisation\Localisation.xml
