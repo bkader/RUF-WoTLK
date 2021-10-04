@@ -200,8 +200,8 @@ function RUF.SetCastBar(self, unit)
 	Background:Show()
 
 	-- Text
-	local Time = Bar:CreateFontString(nil, "OVERLAY", "Raeli")
-	local Text = Bar:CreateFontString(nil, "OVERLAY", "Raeli")
+	local Time = Bar:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
+	local Text = Bar:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
 
 	if unitProfile.Fill == "REVERSE" then
 		Time:SetPoint("LEFT", Bar, 4, 0)
@@ -212,7 +212,7 @@ function RUF.SetCastBar(self, unit)
 	end
 
 	-- Time
-	local font = RUF:MediaFetch("font", unitProfile.Time.Font or "RUF")
+	local font = RUF:MediaFetch("font", unitProfile.Time.Font, "RUF")
 	local size = unitProfile.Time.Size or 18
 	local outline = unitProfile.Time.Outline or "OUTLINE"
 	local shadow = unitProfile.Time.Shadow or 1
@@ -221,7 +221,7 @@ function RUF.SetCastBar(self, unit)
 	Time:SetFont(font, size, outline)
 
 	-- Cast Text
-	font = RUF:MediaFetch("font", unitProfile.Text.Font or "RUF")
+	font = RUF:MediaFetch("font", unitProfile.Text.Font, "RUF")
 	size = unitProfile.Text.Size or 18
 	outline = unitProfile.Text.Outline or "OUTLINE"
 	shadow = unitProfile.Text.Shadow or 1
@@ -238,23 +238,22 @@ function RUF.SetCastBar(self, unit)
 		Bar.SafeZone = SafeZone
 	end
 
-	-- Register
-	Bar.texture = texture
-	Bar.Background = Background
-	Bar.Border = Border
+	-- Register for oUF
+	Bar.bg = Background
 	Bar.Time = Time
 	Bar.Text = Text
-	self.Cast = Bar
+	Bar.Border = Border
+	self.Castbar = Bar
 
-	self.Cast.OnUpdate = onUpdate
-	self.Cast.PostCastStart = RUF.CastUpdate
-	self.Cast.PostChannelStart = RUF.ChannelUpdate
-	self.Cast.PostCastInterrupted = RUF.CastInterrupted
-	self.Cast.PostCastInterruptible = RUF.CastUpdate
-	self.Cast.UpdateOptions = RUF.CastUpdateOptions
-	self.Cast.Enabled = RUF.db.profile.unit[unit].Frame.Bars.Cast.Enabled
+	self.Castbar.OnUpdate = onUpdate
+	self.Castbar.PostCastStart = RUF.CastUpdate
+	self.Castbar.PostChannelStart = RUF.ChannelUpdate
+	self.Castbar.PostCastInterrupted = RUF.CastInterrupted
+	self.Castbar.PostCastInterruptible = RUF.CastUpdate
+	self.Castbar.UpdateOptions = RUF.CastUpdateOptions
+	self.Castbar.Enabled = RUF.db.profile.unit[unit].Frame.Bars.Cast.Enabled
 
-	r, g, b = RUF:GetBarColor(self.Cast, unit, "Cast")
+	r, g, b = RUF:GetBarColor(self.Castbar, unit, "Cast")
 	Bar:SetStatusBarColor(r, g, b)
 end
 
@@ -293,7 +292,7 @@ function RUF.CastInterrupted(element, unit, name)
 	end
 	bgMult = profileReference.Background.Multiplier
 	a = profileReference.Background.Alpha
-	element.Background:SetVertexColor(r * bgMult, g * bgMult, b * bgMult, a)
+	element.bg:SetVertexColor(r * bgMult, g * bgMult, b * bgMult, a)
 	if element.Text then
 		if unitProfile.Text.Enabled == true then
 			element.Text:SetText(name)
@@ -338,7 +337,7 @@ function RUF.CastUpdate(element, unit, name)
 	end
 	bgMult = profileReference.Background.Multiplier
 	a = profileReference.Background.Alpha
-	element.Background:SetVertexColor(r * bgMult, g * bgMult, b * bgMult, a)
+	element.bg:SetVertexColor(r * bgMult, g * bgMult, b * bgMult, a)
 	if element.Text then
 		if unitProfile.Text.Enabled == true then
 			element.Text:SetText(name)
@@ -383,7 +382,7 @@ function RUF.ChannelUpdate(element, unit, name)
 	end
 	bgMult = profileReference.Background.Multiplier
 	a = profileReference.Background.Alpha
-	element.Background:SetVertexColor(r * bgMult, g * bgMult, b * bgMult, a)
+	element.bg:SetVertexColor(r * bgMult, g * bgMult, b * bgMult, a)
 	if element.Text then
 		if unitProfile.Text.Enabled == true then
 			element.Text:SetText(name)

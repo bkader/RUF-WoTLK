@@ -87,6 +87,7 @@ A default texture will be applied to the StatusBar and Texture widgets if they d
 --]]
 local _, ns = ...
 local oUF = ns.oUF
+local Private = oUF.Private
 
 local select = select
 local GetNetStats = GetNetStats
@@ -125,7 +126,6 @@ local function CastStart(self, event, unit)
 	if (not name or (isTradeSkill and element.hideTradeSkills)) then
 		resetAttributes(element)
 		element:Hide()
-
 		return
 	end
 
@@ -135,8 +135,8 @@ local function CastStart(self, event, unit)
 	element.max = endTime - startTime
 	element.startTime = startTime
 	element.delay = 0
-	element.casting = event == "UNIT_SPELLCAST_START"
-	element.channeling = event == "UNIT_SPELLCAST_CHANNEL_START"
+	element.casting = (event == "UNIT_SPELLCAST_START")
+	element.channeling = (event == "UNIT_SPELLCAST_CHANNEL_START")
 	element.notInterruptible = notInterruptible
 	element.holdTime = 0
 	element.castID = castID
@@ -162,11 +162,25 @@ local function CastStart(self, event, unit)
 	element:SetMinMaxValues(0, element.max)
 	element:SetValue(element.duration)
 
-	if (element.Icon) then element.Icon:SetTexture(texture or FALLBACK_ICON) end
-	if (element.Shield) then element.Shield:SetShown(notInterruptible) end
-	if (element.Spark) then element.Spark:Show() end
-	if (element.Text) then element.Text:SetText(name) end
-	if (element.Time) then element.Time:SetText() end
+	if (element.Icon) then
+		element.Icon:SetTexture(texture or FALLBACK_ICON)
+	end
+	if (element.Spark) then
+		element.Spark:Show()
+	end
+	if (element.Text) then
+		Private.setFont(element.Text)
+		element.Text:SetText(name)
+	end
+	if (element.Time) then
+		Private.setFont(element.Text)
+		element.Time:SetText()
+	end
+	if (element.Shield and notInterruptible) then
+		element.Shield:Shown()
+	elseif (element.Shield) then
+		element.Shield:Hide()
+	end
 
 	local safeZone = element.SafeZone
 	if (safeZone) then
@@ -184,9 +198,22 @@ local function CastStart(self, event, unit)
 		end
 
 		local ratio = (select(3, GetNetStats()) / 1000) / element.max
-		if (ratio > 1) then ratio = 1 end
+		if (ratio > 1) then
+			ratio = 1
+		end
 
 		safeZone[isHoriz and "SetWidth" or "SetHeight"](safeZone, element[isHoriz and "GetWidth" or "GetHeight"](element) * ratio)
+	end
+
+	--[[ Callback: Castbar:PostChannelStart(unit, name)
+	Called after the element has been updated upon a spell channel start.
+
+	* self - the Castbar widget
+	* unit - unit for which the update has been triggered (string)
+	* name - name of the channeled spell (string)
+	--]]
+	if (element.channeling and element.PostChannelStart) then
+		element:PostChannelStart(unit, name)
 	end
 
 	--[[ Callback: Castbar:PostCastStart(unit)
@@ -195,8 +222,8 @@ local function CastStart(self, event, unit)
 	* self - the Castbar widget
 	* unit - the unit for which the update has been triggered (string)
 	--]]
-	if (element.PostCastStart) then
-		element:PostCastStart(unit)
+	if (element.casting and element.PostCastStart) then
+		element:PostCastStart(unit, name)
 	end
 
 	element:Show()
@@ -208,9 +235,10 @@ local function CastUpdate(self, event, unit, _, _, castID)
 	local element = self.Castbar
 	if (not element:IsShown() or element.castID ~= castID) then return end
 
-	local name, startTime, endTime, _
+	local name, startTime, endTime, delayed, _
 	if (event == "UNIT_SPELLCAST_DELAYED") then
 		name, _, _, _, startTime, endTime = UnitCastingInfo(unit)
+		delayed = true
 	else
 		name, _, _, _, startTime, endTime = UnitChannelInfo(unit)
 	end
@@ -223,11 +251,9 @@ local function CastUpdate(self, event, unit, _, _, castID)
 	local delta
 	if (element.casting) then
 		delta = startTime - element.startTime
-
 		element.duration = GetTime() - startTime
 	else
 		delta = element.startTime - startTime
-
 		element.duration = endTime - GetTime()
 	end
 
@@ -242,6 +268,28 @@ local function CastUpdate(self, event, unit, _, _, castID)
 	element:SetMinMaxValues(0, element.max)
 	element:SetValue(element.duration)
 
+	--[[ Callback: Castbar:PostCastDelayed(unit, name)
+	Called after the element has been updated when a spell cast has been delayed.
+
+	* self - the Castbar widget
+	* unit - unit that the update has been triggered (string)
+	* name - name of the delayed spell (string)
+	--]]
+	if (event == "UNIT_SPELLCAST_DELAYED" and element.PostCastDelayed) then
+		return element:PostCastDelayed(unit, name)
+	end
+
+	--[[ Callback: Castbar:PostChannelUpdate(unit, name)
+	Called after the element has been updated after a channeled spell has been delayed or interrupted.
+
+	* self - the Castbar widget
+	* unit - unit for which the update has been triggered (string)
+	* name - name of the channeled spell (string)
+	--]]
+	if (event == "UNIT_SPELLCAST_CHANNEL_UPDATE" and element.PostChannelUpdate) then
+		return element:PostChannelUpdate(unit, name)
+	end
+
 	--[[ Callback: Castbar:PostCastUpdate(unit)
 	Called after the element has been updated when a spell cast or channel has been updated.
 
@@ -249,7 +297,7 @@ local function CastUpdate(self, event, unit, _, _, castID)
 	* unit - the unit that the update has been triggered (string)
 	--]]
 	if (element.PostCastUpdate) then
-		return element:PostCastUpdate(unit)
+		return element:PostCastUpdate(unit, name)
 	end
 end
 
@@ -259,13 +307,23 @@ local function CastStop(self, event, unit, _, _, castID)
 	local element = self.Castbar
 	if (not element:IsShown() or element.castID ~= castID) then return end
 
-	if (mergeTradeskill and self.unit == 'player') then
+	if (mergeTradeskill and self.unit == "player") then
 		if (tradeskillCurrent == tradeskillTotal) then
 			mergeTradeskill = false
 		end
 	end
 
 	resetAttributes(element)
+
+	--[[ Callback: Castbar:PostChannelStop(unit)
+	Called after the element has been updated after a channeled spell has been completed.
+
+	* self - the Castbar widget
+	* unit - unit for which the update has been triggered (string)
+	--]]
+	if (event == "UNIT_SPELLCAST_CHANNEL_STOP" and element.PostChannelStop) then
+		return element:PostChannelStop(unit)
+	end
 
 	--[[ Callback: Castbar:PostCastStop(unit)
 	Called after the element has been updated when a spell cast or channel has stopped.
@@ -288,7 +346,9 @@ local function CastFail(self, event, unit, _, _, castID)
 		element.Text:SetText(event == "UNIT_SPELLCAST_FAILED" and FAILED or INTERRUPTED)
 	end
 
-	if (element.Spark) then element.Spark:Hide() end
+	if (element.Spark) then
+		element.Spark:Hide()
+	end
 
 	element.holdTime = element.timeToHold or 0
 
@@ -325,6 +385,16 @@ local function CastInterruptible(self, event, unit)
 		else
 			element.Shield:Hide()
 		end
+	end
+
+	--[[ Callback: Castbar:PostCastNotInterruptible(unit)
+	Called after the element has been updated when a spell cast has become non-interruptible.
+
+	* self - the Castbar widget
+	* unit - unit for which the update has been triggered (string)
+	--]]
+	if (element.notInterruptible and element.PostCastNotInterruptible) then
+		return element:PostCastNotInterruptible(unit)
 	end
 
 	--[[ Callback: Castbar:PostCastInterruptible(unit)
@@ -372,7 +442,12 @@ local function onUpdate(self, elapsed)
 				if (self.CustomDelayText) then
 					self:CustomDelayText(self.duration)
 				else
-					self.Time:SetFormattedText("%.1f|cffff0000%s%.2f|r", self.duration, isCasting and "+" or "-", self.delay)
+					self.Time:SetFormattedText(
+						"%.1f|cffff0000%s%.2f|r",
+						self.duration,
+						isCasting and "+" or "-",
+						self.delay
+					)
 				end
 			else
 				if (self.CustomTimeText) then
@@ -489,7 +564,7 @@ do
 
 			local safeZone = element.SafeZone
 			if (safeZone and safeZone:IsObjectType("Texture") and not safeZone:GetTexture()) then
-				safeZone:SetColorTexture(1, 0, 0)
+				safeZone:SetVertexColor(1, 0, 0)
 			end
 
 			element:Hide()
@@ -528,10 +603,9 @@ do
 end
 
 hooksecurefunc("DoTradeSkill", function(_, num)
-		tradeskillCurrent = 0
-		tradeskillTotal = num or 1
-		mergeTradeskill = true
-	end
-)
+	tradeskillCurrent = 0
+	tradeskillTotal = num or 1
+	mergeTradeskill = true
+end)
 
 oUF:AddElement("Castbar", Update, Enable, Disable)

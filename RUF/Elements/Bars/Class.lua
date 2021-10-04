@@ -22,8 +22,8 @@ function RUF.SetClassBar(self, unit)
 	local classPowerBar = {}
 	local unitPowerMaxAmount = classPowerData[uClass].unitPowerMaxAmount or 5
 
-	local name = self:GetName() .. ".ClassPower"
-	self.ClassPower = {}
+	local name = self:GetName() .. ".ComboPoints"
+	self.ComboPoints = {}
 
 	local Holder = CreateFrame("Frame", name .. ".Holder", self)
 	Holder.barHeight = RUF.db.profile.unit[unit].Frame.Bars.Class.Height
@@ -96,16 +96,16 @@ function RUF.SetClassBar(self, unit)
 		Background:Show()
 
 		classPowerBar[i] = Bar
-		self.ClassPower[i] = Bar
-		self.ClassPower[i].Border = Border
-		self.ClassPower[i].Background = Background
+		self.ComboPoints[i] = Bar
+		self.ComboPoints[i].Border = Border
+		self.ComboPoints[i].Background = Background
 	end
 
-	self.ClassPower.Override = RUF.ClassUpdate
-	self.ClassPower.UpdateColor = RUF.ClassUpdateColor
-	self.ClassPower.Holder = Holder
-	self.ClassPower.Holder.__owner = self
-	self.ClassPower.UpdateOptions = RUF.ClassUpdateOptions
+	self.ComboPoints.Override = RUF.ClassUpdate
+	self.ComboPoints.UpdateColor = RUF.ClassUpdateColor
+	self.ComboPoints.Holder = Holder
+	self.ComboPoints.Holder.__owner = self
+	self.ComboPoints.UpdateOptions = RUF.ClassUpdateOptions
 
 	-- Force an update to make sure we are showing the correct number of bars for classes with talents that add additional points.
 	RUF.ClassUpdate(self, "PLAYER_TALENT_UPDATE", unit, classPowerData[uClass].classPowerType)
@@ -137,24 +137,24 @@ end
 
 function RUF.ClassUpdate(self, event, unit, powerType)
 	unit = unit or event == "PLAYER_TARGET_CHANGED" and "player" or nil
-	-- Override function of oUF's ClassPower Update function.
+	-- Override function of oUF's ComboPoints Update function.
 	if unit ~= "player" or not self.frame then return end
 	if (powerType == classPowerData[uClass].classPowerType or (unit == "vehicle" and powerType == "COMBO_POINTS")) then
 		return
 	end
 
-	local element = self.ClassPower
+	local element = self.ComboPoints
 	if RUF.db.profile.unit[self.frame].Frame.Bars.Class.Enabled ~= true then
-		self:DisableElement("ClassPower")
+		self:DisableElement("ComboPoints")
 		return
 	end
 
 	local max, cur, oldMax = 5
-	if event ~= "ClassPowerDisable" then
+	if event ~= "ComboPointsDisable" then
 		cur = GetComboPoints(UnitHasVehicleUI("player") and "vehicle" or "player", "target")
 
 		local size = (RUF.db.profile.unit[self.frame].Frame.Size.Width + (max - 1)) / max
-		if event == "UNIT_COMBO_POINTS" or event == "PLAYER_TALENT_UPDATE" or event == "ClassPowerEnable" or event == "ForceUpdate" then
+		if event == "UNIT_COMBO_POINTS" or event == "PLAYER_TALENT_UPDATE" or event == "ComboPointsEnable" or event == "ForceUpdate" then
 			for i = 1, #element do
 				if i > max then
 					if element[i]:IsVisible() then
@@ -195,11 +195,11 @@ function RUF.ClassUpdate(self, event, unit, powerType)
 		end
 	end
 
-	if event == "ClassPowerDisable" then
-		self.ClassPower.Holder:Hide()
+	if event == "ComboPointsDisable" then
+		self.ComboPoints.Holder:Hide()
 	end
-	if event == "ClassPowerEnable" then
-		self.ClassPower.Holder:Show()
+	if event == "ComboPointsEnable" then
+		self.ComboPoints.Holder:Show()
 	end
 end
 
@@ -211,8 +211,8 @@ function RUF.ClassUpdateOptions(self)
 	local r, g, b = unpack(RUF.db.profile.Appearance.Colors.PowerColors[classPowerData[uClass].classPowerID])
 	local bgMult = RUF.db.profile.Appearance.Bars.Class.Background.Multiplier
 	local colorAdd = RUF.db.profile.Appearance.Bars.Class.Color.SegmentMultiplier
-	local element = self.__owner.ClassPower
-	local holder = self.__owner.ClassPower.Holder
+	local element = self.__owner.ComboPoints
+	local holder = self.__owner.ComboPoints.Holder
 	holder:SetHeight(RUF.db.profile.unit[unit].Frame.Bars.Class.Height)
 	holder.barHeight = RUF.db.profile.unit[unit].Frame.Bars.Class.Height
 
@@ -258,7 +258,7 @@ function RUF.ClassUpdateOptions(self)
 		Background:SetVertexColor(r * bgMult, g * bgMult, b * bgMult, RUF.db.profile.Appearance.Bars.Class.Background.Alpha)
 
 		if RUF.db.profile.unit[unit].Frame.Bars.Class.Enabled == true then
-			self.__owner:EnableElement("ClassPower")
+			self.__owner:EnableElement("ComboPoints")
 			if i > unitPowerMaxAmount then
 				if element[i]:IsVisible() then
 					element[i]:Hide()

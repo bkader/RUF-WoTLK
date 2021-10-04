@@ -64,3 +64,9 @@ function Private.validateEvent(event)
 
 	return isOK
 end
+
+function Private.setFont(fs)
+	if fs.GetFont and fs:GetFont() == nil then
+		fs:SetFont(unpack(Private.defaultFont))
+	end
+end

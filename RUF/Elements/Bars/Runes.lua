@@ -1,6 +1,6 @@
 assert(RUF, "RUF not found!")
 local RUF = RUF
-local uClass = RUF.uClass
+local uClass = RUF.uClass or select(2, UnitClass("player"))
 
 function RUF.SetRunes(self, unit)
 	if uClass ~= "DEATHKNIGHT" then return end
