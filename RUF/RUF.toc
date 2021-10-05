@@ -84,7 +84,6 @@ Elements\Text\Tags\Power.lua
 Elements\Text\Tags\Status.lua
 
 # Launch...
-Elements\Prototypes.lua
 Enable.lua
 
 # Options
