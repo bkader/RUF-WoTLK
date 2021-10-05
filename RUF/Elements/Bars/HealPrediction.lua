@@ -1,7 +1,9 @@
 assert(RUF, "RUF not found!")
 local RUF = RUF
-
 local HealComm = LibStub("LibHealComm-4.0")
+
+local UnitHealth = UnitHealth
+local UnitGUID = UnitGUID
 
 function RUF.HealPredictionUpdateColor(element, unit, myIncomingHeal, otherIncomingHeal, absorb)
 	local cur = UnitHealth(unit)
@@ -16,7 +18,6 @@ function RUF.HealPredictionUpdateColor(element, unit, myIncomingHeal, otherIncom
 		element.otherBar:SetStatusBarColor(r, g, b, a)
 	end
 
-	local HealComm = LibStub("LibHealComm-4.0", true)
 	local unitGUID = UnitGUID(unit)
 	local lookAhead = element.lookAhead or 5
 	local healTime, healFrom, healAmount = HealComm:GetNextHealAmount(unitGUID, HealComm.CASTED_HEALS, GetTime() + lookAhead)

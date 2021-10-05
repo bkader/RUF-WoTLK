@@ -2,9 +2,6 @@ assert(RUF, "RUF not found!")
 local RUF = RUF
 local L = LibStub("AceLocale-3.0"):GetLocale("RUF")
 local RUF_Options = RUF:GetModule("Options")
-local _, ns = ...
-local oUF = ns.oUF
-local _, PlayerClass = UnitClass("player")
 
 local GetClassInfo = RUF.GetClassInfo
 
@@ -17,7 +14,7 @@ function RUF_Options.Colors()
 		[5] = FACTION_STANDING_LABEL5,
 		[6] = FACTION_STANDING_LABEL6,
 		[7] = FACTION_STANDING_LABEL7,
-		[8] = FACTION_STANDING_LABEL8,
+		[8] = FACTION_STANDING_LABEL8
 	}
 	local Difficulties = {
 		[0] = L["Very Hard"],
@@ -58,15 +55,15 @@ function RUF_Options.Colors()
 				inline = true,
 				args = {
 					useClassColorsAddon = {
-						order = 0.01,
 						type = "toggle",
 						name = L["Use Class Colors addon"],
 						desc = L["Sets if RUF will use class colours from the Class Colors addon if you have it installed."],
+						order = 0.01,
 						disabled = not CUSTOM_CLASS_COLORS,
 						get = function(info)
 							if (CUSTOM_CLASS_COLORS) and RUF.db.profile.Appearance.Colors.UseClassColors then
 								for classToken, color in next, CUSTOM_CLASS_COLORS do
-									RUF.db.profile.Appearance.Colors.ClassColors[classToken] = {(color.r), (color.g), (color.b)}
+									RUF.db.profile.Appearance.Colors.ClassColors[classToken] = {color.r, color.g, color.b}
 								end
 							end
 							if not CUSTOM_CLASS_COLORS then
@@ -82,21 +79,21 @@ function RUF_Options.Colors()
 							end
 							if (CUSTOM_CLASS_COLORS) and RUF.db.profile.Appearance.Colors.UseClassColors then
 								for classToken, color in next, CUSTOM_CLASS_COLORS do
-									RUF.db.profile.Appearance.Colors.ClassColors[classToken] = {(color.r), (color.g), (color.b)}
+									RUF.db.profile.Appearance.Colors.ClassColors[classToken] = {color.r, color.g, color.b}
 								end
 							end
 							RUF:OptionsUpdateAllBars()
 						end
 					},
 					setBlizzColors = {
-						order = 0.02,
 						type = "execute",
 						name = L["Use Blizard Colors"],
 						desc = L["Set class colors to the default Blizzard colors."],
+						order = 0.02,
 						func = function(info, value)
 							RUF.db.profile.Appearance.Colors.UseClassColors = false
 							for classToken, color in next, RAID_CLASS_COLORS do
-								RUF.db.profile.Appearance.Colors.ClassColors[classToken] = {(color.r), (color.g), (color.b)}
+								RUF.db.profile.Appearance.Colors.ClassColors[classToken] = {color.r, color.g, color.b}
 							end
 							RUF:OptionsUpdateAllBars()
 						end
@@ -110,35 +107,35 @@ function RUF_Options.Colors()
 				}
 			},
 			powerColors = {
-				name = L["Power Colors"],
 				type = "group",
-				order = 1,
+				name = L["Power Colors"],
 				inline = true,
+				order = 1,
 				args = {}
 			},
 			reactionColors = {
-				name = L["Reaction Colors"],
 				type = "group",
-				order = 2,
+				name = L["Reaction Colors"],
 				inline = true,
+				order = 2,
 				args = {}
 			},
 			difficultyColors = {
-				name = L["Difficulty Colors"],
 				type = "group",
-				order = 3,
+				name = L["Difficulty Colors"],
 				inline = true,
+				order = 3,
 				args = {}
 			},
 			miscColors = {
-				name = L["Misc Colors"],
 				type = "group",
-				order = 4,
+				name = L["Misc Colors"],
 				inline = true,
+				order = 4,
 				args = {
 					Disconnected = {
-						name = L["Disconnected"],
 						type = "color",
+						name = L["Disconnected"],
 						order = 0,
 						get = function(info)
 							return unpack(RUF.db.profile.Appearance.Colors.MiscColors.Disconnected)
@@ -149,8 +146,8 @@ function RUF_Options.Colors()
 						end
 					},
 					Tapped = {
-						name = L["Tapped"],
 						type = "color",
+						name = L["Tapped"],
 						order = 0,
 						get = function(info)
 							return unpack(RUF.db.profile.Appearance.Colors.MiscColors.Tapped)
@@ -167,8 +164,8 @@ function RUF_Options.Colors()
 	for i = 1, 11 do
 		if classData[i] then
 			Colors.args.classColors.args[classData[i][2]] = {
-				name = classData[i][1],
 				type = "color",
+				name = classData[i][1],
 				order = 1,
 				get = function(info)
 					return unpack(RUF.db.profile.Appearance.Colors.ClassColors[classData[i][2]])
@@ -200,8 +197,8 @@ function RUF_Options.Colors()
 	for i = 1, #Reactions do
 		if Reactions[i] then
 			Colors.args.reactionColors.args[Reactions[i]] = {
-				name = Reactions[i],
 				type = "color",
+				name = Reactions[i],
 				order = 20 + ((i) + 2) / 100,
 				get = function(info)
 					return unpack(RUF.db.profile.Appearance.Colors.ReactionColors[i])

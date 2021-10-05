@@ -9,7 +9,7 @@
 ## Version: r254-Release
 ## X-Date: 2021-10-04 @ 18:30 AM |cff808080UTC|r
 ## X-Credits: Raeli, Icon Font created with IcoMoon.io using icons from Freepik & Plainicon, from www.flaticon.com
-## X-Category: Unit Frames, Class, Combat, PvP, Roleplay
+## X-Category: UnitFrames, Class, Combat, PvP, Roleplay
 ## X-Email: |cff20ff20bkader@mail.com|r
 ## X-Website: https://github.com/bkader/RUF-WoTLK
 ## X-Discord: https://discord.gg/a8z5CyS3eW
@@ -17,23 +17,80 @@
 ## X-WOWI-ID: 25717
 ## X-oUF: RufoUF
 
+# Embeds
 Embeds.xml
-Elements\Plugins.xml
 
-Localisation\Localisation.xml
+# oUF Plugins
+Elements\Plugins\Absorb_Plugin.lua
+Elements\Plugins\Aura_Plugin.lua
+Elements\Plugins\BarAnimation_Plugin.lua
+Elements\Plugins\HealPrediction_Plugin.lua
+Elements\Plugins\Range_Plugin.lua
 
-Fonts.xml
+# Localization
+Localisation\enUS.lua
+Localisation\deDE.lua
+Localisation\frFR.lua
+Localisation\koKR.lua
+Localisation\zhCN.lua
+
+# Loading...
 Initialize.lua
 Defaults.lua
 Utilities.lua
 DisableBlizzard.lua
 
-Elements\Frame.xml
-Elements\Bars.xml
-Elements\Auras.xml
-Elements\Icons.xml
-Elements\Text.xml
+# Elements: Frames
+Elements\Frame\Background.lua
+Elements\Frame\Border.lua
+Elements\Frame\CombatFader.lua
+Elements\Frame\Portrait.lua
+Elements\Frame\RangeCheck.lua
 
+# Elements: Bars
+Elements\Bars\Shared.lua
+Elements\Bars\Absorb.lua
+Elements\Bars\Cast.lua
+Elements\Bars\Class.lua
+Elements\Bars\HealPrediction.lua
+Elements\Bars\Health.lua
+Elements\Bars\Power.lua
+Elements\Bars\Runes.lua
+
+# Elements: Auras
+Elements\Auras\Shared.lua
+Elements\Auras\Buffs.lua
+Elements\Auras\Debuffs.lua
+
+# Elements: Icons
+Elements\Icons\Indicators.lua
+Elements\Icons\Assist.lua
+Elements\Icons\Combat.lua
+Elements\Icons\GroupRole.lua
+Elements\Icons\Leader.lua
+Elements\Icons\LootMaster.lua
+Elements\Icons\MainTankAssist.lua
+Elements\Icons\PetHappiness.lua
+Elements\Icons\PvPStatus.lua
+Elements\Icons\ReadyCheck.lua
+Elements\Icons\Resting.lua
+Elements\Icons\TargetMark.lua
+
+# Elements: Text
+Elements\Text\Parent.lua
+Elements\Text\Tags\Health.lua
+Elements\Text\Tags\Name.lua
+Elements\Text\Tags\Power.lua
+Elements\Text\Tags\Status.lua
+
+# Launch...
 Enable.lua
 
-Options\Options.xml
+# Options
+Options\Initialize.lua
+Options\Utilities.lua
+Options\Base.lua
+Options\Bars.lua
+Options\Colors.lua
+Options\Text.lua
+Options\Units.lua

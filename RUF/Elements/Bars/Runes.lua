@@ -2,6 +2,11 @@ assert(RUF, "RUF not found!")
 local RUF = RUF
 local uClass = RUF.uClass or select(2, UnitClass("player"))
 
+local unpack, type = unpack, type
+local tsort = table.sort
+local CreateFrame = CreateFrame
+local GetRuneCooldown = GetRuneCooldown
+
 function RUF.SetRunes(self, unit)
 	if uClass ~= "DEATHKNIGHT" then return end
 	local classPowerBar = {}
@@ -122,27 +127,23 @@ end
 function RUF.RunesUpdate(self, event)
 	local element = self.Runes
 	if RUF.db.profile.unit[self.frame].Frame.Bars.Class.Enabled ~= true then
-		self:DisableElement("Runes")
-		return
-	end
+		self:DisableElement("Runes") return end
 
 	if (element.sortOrder == "asc") then
-		table.sort(runemap, ascSort)
+		tsort(runemap, ascSort)
 		hasSortOrder = true
 	elseif (element.sortOrder == "desc") then
-		table.sort(runemap, descSort)
+		tsort(runemap, descSort)
 		hasSortOrder = true
 	elseif (hasSortOrder) then
-		table.sort(runemap)
+		tsort(runemap)
 		hasSortOrder = false
 	end
 
 	local rune, start, duration, runeReady
 	for index, runeID in next, runemap do
 		rune = element[index]
-		if (not rune) then
-			break
-		end
+		if (not rune) then break end
 
 		if (UnitHasVehicleUI("player")) then
 			rune:Hide()
@@ -180,31 +181,19 @@ function RUF.RunesUpdateColor(element, rune)
 			local ig = (g * (((i + colorAdd) * 6.6667) / 100))
 			local ib = (b * (((i + colorAdd) * 6.6667) / 100))
 			realElement[i]:SetStatusBarColor(ir, ig, ib)
-			realElement[i].Background:SetVertexColor(
-				r * bgMult,
-				g * bgMult,
-				b * bgMult,
-				RUF.db.profile.Appearance.Bars.Class.Background.Alpha
-			)
+			realElement[i].Background:SetVertexColor(r * bgMult, g * bgMult, b * bgMult, RUF.db.profile.Appearance.Bars.Class.Background.Alpha)
 		end
 	else
 		local ir = (r * (((rune + colorAdd) * 6.6667) / 100))
 		local ig = (g * (((rune + colorAdd) * 6.6667) / 100))
 		local ib = (b * (((rune + colorAdd) * 6.6667) / 100))
 		element[rune]:SetStatusBarColor(ir, ig, ib)
-		element[rune].Background:SetVertexColor(
-			r * bgMult,
-			g * bgMult,
-			b * bgMult,
-			RUF.db.profile.Appearance.Bars.Class.Background.Alpha
-		)
+		element[rune].Background:SetVertexColor(r * bgMult, g * bgMult, b * bgMult, RUF.db.profile.Appearance.Bars.Class.Background.Alpha)
 	end
 end
 
 function RUF.RunesUpdateOptions(self)
-	if uClass ~= "DEATHKNIGHT" then
-		return
-	end
+	if uClass ~= "DEATHKNIGHT" then return end
 	local unit = self.__owner.frame
 	local texture = RUF:MediaFetch("statusbar", RUF.db.profile.Appearance.Bars.Class.Texture)
 	local r, g, b = unpack(RUF.db.profile.Appearance.Colors.PowerColors[5])

@@ -261,17 +261,9 @@ function RUF.SetDebuffs(self, unit)
 	Debuffs.initialAnchor = RUF.db.profile.unit[unit].Debuffs.Icons.Position.AnchorFrom -- Where icons spawn from in the buff frame
 	Debuffs["spacing-x"] = RUF.db.profile.unit[unit].Debuffs.Icons.Spacing.x
 	Debuffs["spacing-y"] = RUF.db.profile.unit[unit].Debuffs.Icons.Spacing.y
-	if RUF.db.profile.unit[unit].Debuffs.Icons.ClickThrough == true then
-		Debuffs.disableMouse = true
-	else
-		Debuffs.disableMouse = false
-	end
 
-	if RUF.db.profile.unit[unit].Debuffs.Icons.CooldownSpiral == true then
-		Debuffs.disableCooldown = false
-	else
-		Debuffs.disableCooldown = true
-	end
+	Debuffs.disableMouse = (RUF.db.profile.unit[unit].Debuffs.Icons.ClickThrough == true)
+	Debuffs.disableCooldown = not (RUF.db.profile.unit[unit].Debuffs.Icons.CooldownSpiral == true)
 
 	Debuffs.num = RUF.db.profile.unit[unit].Debuffs.Icons.Max
 	Debuffs.CustomFilter = CustomDebuffFilter

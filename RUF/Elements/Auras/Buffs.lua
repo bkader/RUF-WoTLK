@@ -268,17 +268,8 @@ function RUF.SetBuffs(self, unit)
 	Buffs["spacing-x"] = RUF.db.profile.unit[unit].Buffs.Icons.Spacing.x
 	Buffs["spacing-y"] = RUF.db.profile.unit[unit].Buffs.Icons.Spacing.y
 
-	if RUF.db.profile.unit[unit].Buffs.Icons.ClickThrough == true then
-		Buffs.disableMouse = true
-	else
-		Buffs.disableMouse = false
-	end
-
-	if RUF.db.profile.unit[unit].Buffs.Icons.CooldownSpiral == true then
-		Buffs.disableCooldown = false
-	else
-		Buffs.disableCooldown = true
-	end
+	Buffs.disableMouse = (RUF.db.profile.unit[unit].Buffs.Icons.ClickThrough == true)
+	Buffs.disableCooldown = not (RUF.db.profile.unit[unit].Buffs.Icons.CooldownSpiral == true)
 
 	Buffs.num = RUF.db.profile.unit[unit].Buffs.Icons.Max
 

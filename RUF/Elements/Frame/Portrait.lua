@@ -3,6 +3,8 @@ local RUF = RUF
 local _, ns = ...
 local oUF = ns.oUF
 
+local unpack = unpack
+
 local offsetFix = 0.3
 
 local anchorSwaps = {
@@ -25,9 +27,7 @@ end
 
 function RUF.SetFramePortrait(self, unit)
 	local profileReference = RUF.db.profile.unit[unit].Frame.Portrait
-	if not profileReference then
-		return
-	end
+	if not profileReference then return end
 
 	local Portrait = CreateFrame("PlayerModel", nil, self)
 	local Border = CreateFrame("Frame", nil, Portrait)
@@ -145,13 +145,7 @@ function RUF.PortraitUpdateOptions(self)
 			Portrait.Cutaway = false
 			if profileReference.Style == 2 then
 				Portrait:SetSize(profileReference.Width, profileReference.Height)
-				Portrait:SetPoint(
-					profileReference.Position.AnchorFrom,
-					self.__owner,
-					profileReference.Position.AnchorTo,
-					profileReference.Position.x - offsetFix,
-					profileReference.Position.y - offsetFix
-				)
+				Portrait:SetPoint(profileReference.Position.AnchorFrom, self.__owner, profileReference.Position.AnchorTo, profileReference.Position.x - offsetFix, profileReference.Position.y - offsetFix)
 			elseif profileReference.Style == 3 then
 				Portrait:SetSize(profileReference.Width, self.__owner:GetHeight())
 				local anchor = profileReference.Position.AttachedStyleAnchor or "LEFT"

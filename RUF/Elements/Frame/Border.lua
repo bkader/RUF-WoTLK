@@ -57,8 +57,7 @@ local DebuffDispel = { -- DISPELLING ALLIES
 		[3] = {"None"}
 	}
 }
-local BuffDispel = {
-	-- PURGES
+local BuffDispel = { -- PURGES
 	DEATHKNIGHT = {
 		[1] = {"None"},
 		[2] = {"None"},

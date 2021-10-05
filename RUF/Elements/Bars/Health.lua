@@ -1,18 +1,15 @@
 assert(RUF, "RUF not found!")
 local RUF = RUF
 
+local UnitIsTapped = UnitIsTapped
+
 local function DrawRainbow(element)
 	local a, b, c, x, y, z = RUF:GetRainbow()
 	element:GetStatusBarTexture():SetGradient("HORIZONTAL", a, b, c, x, y, z)
 end
 
 function RUF.HealthUpdateColor(element, unit, cur, max)
-	if not element then
-		return
-	end
-	if not element.__owner then
-		return
-	end
+	if not element or not element.__owner then return end
 	local r, g, b = RUF:GetBarColor(element, unit, "Health", "Health", cur)
 
 	-- Create Ticker per element because that's probably better than looping through all oUF objects to check if it should be enabled for those.
@@ -41,9 +38,7 @@ function RUF.HealthUpdateColor(element, unit, cur, max)
 end
 
 function RUF.HealthUpdate(self, event, unit)
-	if (not unit or self.unit ~= unit) then
-		return
-	end
+	if (not unit or self.unit ~= unit) then return end
 	local element = self.Health
 
 	if (element.PreUpdate) then

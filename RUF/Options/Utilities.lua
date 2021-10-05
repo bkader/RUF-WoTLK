@@ -301,7 +301,7 @@ function RUF:OptionsUpdateIndicators(singleFrame,groupFrame,header,indicator)
 
 		local currentIndicator = unitFrame[indicator .. 'Indicator']
 		if not currentIndicator then return end -- When refresh profile,ensure we don't try to update indicators that don't exist.
-		currentIndicator:SetFont([[Interface\Addons\RUF\Media\RUF.ttf]],profileReference.Size,"OUTLINE")
+		currentIndicator:SetFont([[Interface\AddOns\RUF\Media\RUF.ttf]],profileReference.Size,"OUTLINE")
 		currentIndicator:ClearAllPoints()
 		currentIndicator:SetPoint(
 			profileReference.Position.AnchorFrom,

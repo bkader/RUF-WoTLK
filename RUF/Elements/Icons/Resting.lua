@@ -3,66 +3,67 @@ local RUF = RUF
 local _, ns = ...
 local oUF = ns.oUF
 
-local elementName = 'Rest'
-local elementString = RUF.IndicatorGlyphs['Resting']
+local elementName = "Rest"
+local elementString = RUF.IndicatorGlyphs["Resting"]
 
 local function Update(self, event)
 	local element = self.RestIndicator
 	element.Enabled = RUF.db.profile.unit[self.frame].Frame.Indicators[elementName].Enabled
 
-	if(element.PreUpdate) then
+	if (element.PreUpdate) then
 		element:PreUpdate()
 	end
+
 	if element.Enabled == true then
-		self:EnableElement(elementName..'Indicator')
+		self:EnableElement(elementName .. "Indicator")
 		local isResting = IsResting()
-		if(isResting) then
+		if (isResting) then
 			element:SetText(elementString)
-			element:SetWidth(element:GetStringWidth()+2)
+			element:SetWidth(element:GetStringWidth() + 2)
 			element:Show()
 		else
-			element:SetText(' ')
+			element:SetText(" ")
 			element:Hide()
 		end
 		if RUF.db.global.TestMode == true then
 			element:SetText(elementString)
-			element:SetWidth(element:GetStringWidth()+2)
+			element:SetWidth(element:GetStringWidth() + 2)
 			element:Show()
 		end
 	else
-		self:DisableElement('RestIndicator')
+		self:DisableElement("RestIndicator")
 		element:Hide()
 	end
 
-	if(element.PostUpdate) then
+	if (element.PostUpdate) then
 		return element:PostUpdate()
 	end
 end
 
 local function Path(self, ...)
-	return (self.RestIndicator.Override or Update) (self, ...)
+	return (self.RestIndicator.Override or Update)(self, ...)
 end
 
 local function ForceUpdate(element)
-	return Path(element.__owner, 'ForceUpdate')
+	return Path(element.__owner, "ForceUpdate")
 end
 
 local function Enable(self, unit)
 	local element = self.RestIndicator
-	if(element and unit == 'player') then
+	if (element and unit == "player") then
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
-		self:RegisterEvent('PLAYER_UPDATE_RESTING', Path, true)
+		self:RegisterEvent("PLAYER_UPDATE_RESTING", Path, true)
 
 		local profileReference = RUF.db.profile.unit[self.frame].Frame.Indicators[elementName]
-		element:SetFont([[Interface\Addons\RUF\Media\RUF.ttf]], profileReference.Size, 'OUTLINE')
-		element:SetText(' ')
-		element:SetJustifyH('CENTER')
-		element:SetTextColor(191/255,178/255,143/255)
+		element:SetFont([[Interface\AddOns\RUF\Media\RUF.ttf]], profileReference.Size, "OUTLINE")
+		element:SetText(" ")
+		element:SetJustifyH("CENTER")
+		element:SetTextColor(0.749, 0.698, 0.561)
 		element:ClearAllPoints()
 		element:SetPoint(
 			profileReference.Position.AnchorFrom,
-			RUF.GetIndicatorAnchorFrame(self,self.frame,elementName),
+			RUF.GetIndicatorAnchorFrame(self, self.frame, elementName),
 			profileReference.Position.AnchorTo,
 			profileReference.Position.x,
 			profileReference.Position.y
@@ -75,29 +76,28 @@ end
 
 local function Disable(self)
 	local element = self.RestIndicator
-	if(element) then
+	if (element) then
 		element:Hide()
 
-		self:UnregisterEvent('PLAYER_UPDATE_RESTING', Path)
+		self:UnregisterEvent("PLAYER_UPDATE_RESTING", Path)
 	end
 end
 
-oUF:AddElement('RestIndicator', Path, Enable, Disable)
+oUF:AddElement("RestIndicator", Path, Enable, Disable)
 
 function RUF.Indicators.Rest(self, unit)
-	if unit ~= 'player' then return end
+	if unit ~= "player" then return end
 
-	local element = self.Indicators:CreateFontString(self:GetName()..'.RestIndicator', 'OVERLAY')
+	local element = self.Indicators:CreateFontString(self:GetName() .. ".RestIndicator", "OVERLAY")
 	element:SetPoint(
 		RUF.db.profile.unit[unit].Frame.Indicators[elementName].Position.AnchorFrom,
-		RUF.GetIndicatorAnchorFrame(self,unit,elementName),
+		RUF.GetIndicatorAnchorFrame(self, unit, elementName),
 		RUF.db.profile.unit[unit].Frame.Indicators[elementName].Position.AnchorTo,
 		RUF.db.profile.unit[unit].Frame.Indicators[elementName].Position.x,
 		RUF.db.profile.unit[unit].Frame.Indicators[elementName].Position.y
 	)
 
-	element:SetFont([[Interface\Addons\RUF\Media\RUF.ttf]], RUF.db.profile.unit[unit].Frame.Indicators[elementName].Size, 'OUTLINE')
-
+	element:SetFont([[Interface\AddOns\RUF\Media\RUF.ttf]], RUF.db.profile.unit[unit].Frame.Indicators[elementName].Size, "OUTLINE")
 
 	self.RestIndicator = element
 end

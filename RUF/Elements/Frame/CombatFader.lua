@@ -3,6 +3,9 @@ local RUF = RUF
 local _, ns = ...
 local oUF = ns.oUF
 
+local UnitExists = UnitExists
+local InCombatLockdown = InCombatLockdown
+
 local function ChangeAlpha(self, to)
 	self:SetAlpha(to)
 	self.Alpha.target = to

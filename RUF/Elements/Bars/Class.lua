@@ -1,5 +1,9 @@
 assert(RUF, "RUF not found!")
 local RUF = RUF
+
+local unpack = unpack
+local CreateFrame = CreateFrame
+
 local uClass = RUF.uClass
 
 local classPowerData = {

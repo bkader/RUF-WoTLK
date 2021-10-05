@@ -2,6 +2,11 @@ assert(RUF, "RUF not found!")
 local RUF = RUF
 local SA = LibStub("SpecializedAbsorbs-1.0", true)
 
+local random = math.random
+local CreateFrame = CreateFrame
+local UnitHealth = UnitHealth
+local UnitHealthMax = UnitHealthMax
+
 local UnitGetTotalAbsorbs = function(unit)
 	return (SA and unit) and SA.UnitTotal(UnitGUID(unit)) or 0
 end
@@ -58,7 +63,7 @@ function RUF.AbsorbUpdate(self, event, unit)
 	local health, maxHealth = UnitHealth(unit), UnitHealthMax(unit)
 
 	if RUF.db.global.TestMode == true then
-		absorb = math.random(25, 75)
+		absorb = random(25, 75)
 		maxHealth = 100
 	end
 

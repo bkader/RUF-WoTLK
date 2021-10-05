@@ -1,8 +1,0 @@
-<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
-..\FrameXML\UI.xsd">
-<Script file="Text\Parent.lua"/>
-<Script file="Text\Tags\Health.lua"/>
-<Script file="Text\Tags\Name.lua"/>
-<Script file="Text\Tags\Power.lua"/>
-<Script file="Text\Tags\Status.lua"/>
-</Ui>

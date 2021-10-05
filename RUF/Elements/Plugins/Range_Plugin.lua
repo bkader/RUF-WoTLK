@@ -1,11 +1,27 @@
 local _, ns = ...
 local oUF = ns.oUF
-local SpellRange = LibStub("LibSpellRange-1.0")
+local lib = LibStub("LibSpellRange-1.0")
+
+local IsSpellInRange = lib.IsSpellInRange
+local IsSpellKnown = IsSpellKnown
+local UnitIsUnit = UnitIsUnit
+local UnitClass = UnitClass
+local UnitInRange = UnitInRange
+local UnitCanAttack = UnitCanAttack
+local UnitCanAssist = UnitCanAssist
+local UnitIsFriend = UnitIsFriend
+local UnitIsVisible = UnitIsVisible
+local UnitIsConnected = UnitIsConnected
+local UnitIsDeadOrGhost = UnitIsDeadOrGhost
+local CheckInteractDistance = CheckInteractDistance
+
+local uClass = select(2, UnitClass("player"))
+
 local updateFrequency = 0.25 -- TODO Add Option somewhere
 local _FRAMES = {}
 local OnRangeFrame
 
-local FriendSpells = {
+local HelpfulSpells = {
 	PRIEST = {
 		527, -- Purify (40 yards)
 		17, -- Power Word: Shield (40 yards)
@@ -63,7 +79,7 @@ local ResurrectSpells = {
 	}
 }
 
-local HarmSpells = {
+local HarmfulSpells = {
 	PRIEST = {
 		585, -- Smite (30 yars)
 		589 -- Shadow Word: Pain (40 yards)
@@ -118,52 +134,62 @@ local HarmSpells = {
 	}
 }
 
-local function IsUnitInRange(unit)
-	if not unit then return end
-	if (not UnitIsUnit(unit, "Player")) and (UnitInParty(unit) or UnitInRaid(unit)) then
-		for uId in RUF.UnitIterator() do
-			if UnitIsUnit(unit, uId) then
-				unit = uId
-				break
+local function SwapUnit(unit)
+	if (unit and unit:find("party")) then
+		for i = 1, 4 do
+			if (UnitIsUnit(unit, "party" .. i)) then
+				return "party" .. i
 			end
 		end
+	elseif (unit and unit:find("raid")) then
+		for i = 1, 40 do
+			if (UnitIsUnit(unit, "raid" .. i)) then
+				return "raid" .. i
+			end
+		end
+	else
+		return unit
+	end
+end
+
+local function IsUnitInRange(unit)
+	if (not unit) then
+		return
 	end
 
-	local inRange, checkedRange = UnitInRange(unit)
-	if checkedRange and not inRange then
-		return false
+	if (not UnitIsUnit(unit, "player")) and (UnitInParty(unit) or UnitInRaid(unit)) then
+		unit = SwapUnit(unit)
 	end
 
-	if CheckInteractDistance(unit, 1) then
+	if (not UnitIsConnected(unit)) then
 		return true
 	end
 
-	-- dead friend
-	if ResurrectSpells[RUF.uClass] and UnitIsDeadOrGhost(unit) then
-		for _, spellid in ipairs(ResurrectSpells[RUF.uClass]) do
-			if SpellRange.IsSpellInRange(spellid, unit) == 1 then
-				return true
-			end
-		end
+	local inRange, checkedRange = UnitInRange(unit)
+	if (checkedRange and not inRange) then
+		return false -- let blizzard check first
 	end
 
-	-- friendly unit
-	if
-		FriendSpells[RUF.uClass] and (UnitCanAssist("player", unit) or UnitIsFriend("player", unit)) and
-			UnitIsVisible(unit)
-	 then
-		for _, spellid in ipairs(FriendSpells[RUF.uClass]) do
-			if SpellRange.IsSpellInRange(spellid, unit) == 1 then
-				return true
-			end
-		end
+	if (CheckInteractDistance(unit, 1)) then
+		return true -- Compare Achievements range (28 yars)
 	end
 
-	-- enemy unit
-	if HarmSpells[RUF.uClass] and UnitCanAttack("player", unit) and UnitIsVisible(unit) then
-		for _, spellid in ipairs(HarmSpells[RUF.uClass]) do
-			if SpellRange.IsSpellInRange(spellid, unit) == 1 then
-				return true
+	if (not UnitIsVisible(unit)) then
+		return false -- not visible?
+	end
+
+	local spellsTable
+
+	if (UnitCanAttack("player", unit)) then
+		spellsTable = HarmfulSpells[uClass]
+	elseif (UnitCanAssist(unit, "player") or UnitIsFriend(unit, "player")) then
+		spellsTable = UnitIsDeadOrGhost(unit) and ResurrectSpells[uClass] or HelpfulSpells[uClass]
+	end
+
+	if (spellsTable) then
+		for _, spellid in ipairs(spellsTable) do
+			if (IsSpellKnown(spellid) and IsSpellInRange(spellid, unit) == 1) then
+				return true -- yay! finally
 			end
 		end
 	end

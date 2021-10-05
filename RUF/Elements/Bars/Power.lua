@@ -1,6 +1,17 @@
 assert(RUF, "RUF not found!")
 local RUF = RUF
 
+local unpack = unpack
+local random = math.random
+
+local UnitPower = UnitPower
+local UnitPowerMax = UnitPowerMax
+local UnitIsConnected = UnitIsConnected
+local UnitPlayerControlled = UnitPlayerControlled
+local UnitIsTapped = UnitIsTapped
+local UnitPowerType = UnitPowerType
+local CreateFrame = CreateFrame
+
 function RUF.SetPowerBar(self, unit) -- Mana, Rage etc.
 	local Texture = RUF:MediaFetch("statusbar", RUF.db.profile.Appearance.Bars.Power.Texture)
 	local Bar = RUF.StatusBarPrototype(nil, self)
@@ -59,9 +70,7 @@ function RUF.SetPowerBar(self, unit) -- Mana, Rage etc.
 end
 
 function RUF.PowerUpdate(self, event, unit)
-	if (self.unit ~= unit) then
-		return
-	end
+	if (self.unit ~= unit) then return end
 	local element = self.Power
 	if RUF.db.profile.unit[self.frame].Frame.Bars.Power.Enabled == 0 then
 		self:DisableElement("Power")
@@ -90,7 +99,7 @@ function RUF.PowerUpdate(self, event, unit)
 	element.Background:SetVertexColor(r * bgMult, g * bgMult, b * bgMult, a)
 
 	if RUF.db.global.TestMode == true then
-		cur = math.random(25, 75)
+		cur = random(25, 75)
 		max = 100
 	end
 

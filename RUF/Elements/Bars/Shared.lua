@@ -1,6 +1,21 @@
 assert(RUF, "RUF not found!")
 local RUF = RUF
-local uClass = RUF.uClass
+
+local unpack = unpack
+local random = math.random
+local tinsert = table.insert
+
+local UnitCanAttack = UnitCanAttack
+local UnitClass = UnitClass
+local UnitHealth = UnitHealth
+local UnitHealthMax = UnitHealthMax
+local UnitInParty = UnitInParty
+local UnitIsPlayer = UnitIsPlayer
+local UnitPlayerControlled = UnitPlayerControlled
+local UnitPower = UnitPower
+local UnitPowerMax = UnitPowerMax
+local UnitPowerType = UnitPowerType
+local UnitReaction = UnitReaction
 
 function RUF:GetBarColor(element, unit, barType, overridePowerType, testCurrent)
 	local pType, uClass, _
@@ -114,7 +129,7 @@ function RUF:GetBarColor(element, unit, barType, overridePowerType, testCurrent)
 			cur, max = UnitHealth(unit), UnitHealthMax(unit)
 		end
 		if RUF.db.global.TestMode == true then
-			cur = testCurrent or math.random(25, 75)
+			cur = testCurrent or random(25, 75)
 			if barType == "Power" then
 				max = 100
 			end
@@ -129,13 +144,8 @@ function RUF:GetBarColor(element, unit, barType, overridePowerType, testCurrent)
 end
 
 function RUF.SetBarLocation(self, unit)
-	if not self then
-		return
-	end
-	if unit == "ACTIVE_TALENT_GROUP_CHANGED" then
-		unit = "player"
-	end
-	if unit == "PLAYER_ENTERING_WORLD" then
+	if not self then return end
+	if unit == "ACTIVE_TALENT_GROUP_CHANGED" or "PLAYER_ENTERING_WORLD" then
 		unit = "player"
 	end
 	local profileUnit = self.frame
@@ -154,16 +164,16 @@ function RUF.SetBarLocation(self, unit)
 		end
 		if self.ClassPower and profileReference.Class.Enabled == true then
 			if profileReference.Class.Position.Anchor == "TOP" then
-				table.insert(barsAtTop, "ClassPower")
+				tinsert(barsAtTop, "ClassPower")
 			else
-				table.insert(barsAtBottom, "ClassPower")
+				tinsert(barsAtBottom, "ClassPower")
 			end
 		end
 		if self.Runes and profileReference.Class.Enabled == true then
 			if profileReference.Class.Position.Anchor == "TOP" then
-				table.insert(barsAtTop, "Runes")
+				tinsert(barsAtTop, "Runes")
 			else
-				table.insert(barsAtBottom, "Runes")
+				tinsert(barsAtBottom, "Runes")
 			end
 		end
 
@@ -180,9 +190,9 @@ function RUF.SetBarLocation(self, unit)
 		end
 		if powerShouldShow == true then
 			if profileReference.Power.Position.Anchor == "TOP" then
-				table.insert(barsAtTop, "Power")
+				tinsert(barsAtTop, "Power")
 			else
-				table.insert(barsAtBottom, "Power")
+				tinsert(barsAtBottom, "Power")
 			end
 		end
 		local bottomOffset
@@ -251,9 +261,9 @@ function RUF.SetBarLocation(self, unit)
 		end
 		if powerShouldShow then
 			if profileReference.Power.Position.Anchor == "TOP" then
-				table.insert(barsAtTop, "Power")
+				tinsert(barsAtTop, "Power")
 			else
-				table.insert(barsAtBottom, "Power")
+				tinsert(barsAtBottom, "Power")
 			end
 		end
 		local bottomOffset
