@@ -180,10 +180,8 @@ function RUF:OnEnable()
 
 		-- Spawn single unit frames
 		local frames = RUF.frameList.frames
-		local groupFrames = RUF.frameList.groupFrames
-		local headers = RUF.frameList.headers
-
-		for _, frameName in ipairs(frames) do
+		for i = 1, #RUF.frameList.frames do
+			local frameName = RUF.frameList.frames[i]
 			local unit = frameName:lower()
 			if _G["oUF_RUF_" .. frameName] then
 				if _G["oUF_RUF_" .. frameName]:GetObjectType() ~= "Button" then
@@ -207,174 +205,169 @@ function RUF:OnEnable()
 		end
 
 		-- Spawn Headers
-		for _, header in ipairs(headers) do
-			for i = 4, 1, -1 do
-				if _G["oUF_RUF_" .. header .. "UnitButton" .. i] then
-					if _G["oUF_RUF_" .. header .. "UnitButton" .. i]:GetObjectType() ~= "Button" then
-						_G["oUF_RUF_" .. header .. "UnitButton" .. i] = nil
+		for i = 1, #RUF.frameList.headers do
+			local name = RUF.frameList.headers[i]
+			if name then
+				for j = 5, 1, -1 do
+					if _G["oUF_RUF_" .. name .. "UnitButton" .. j] then
+						if _G["oUF_RUF_" .. name .. "UnitButton" .. j]:GetObjectType() ~= "Button" then
+							_G["oUF_RUF_" .. name .. "UnitButton" .. j] = nil
+						end
 					end
 				end
-			end
-			local profile = RUF.db.profile.unit[string.lower(header)]
-			local template = (header == "PartyPet") and "SecureGroupPetHeaderTemplate" or "SecureGroupHeaderTemplate"
-			local anchorFrom
-			if profile.Frame.Position.growth == "BOTTOM" then
-				anchorFrom = "TOP"
-			elseif profile.Frame.Position.growth == "TOP" then
-				anchorFrom = "BOTTOM"
-			end
-
-			local growthDirection
-			if profile.Frame.Position.growthDirection then
-				if profile.Frame.Position.growthDirection == "VERTICAL" then
-					growthDirection = 5
-				elseif profile.Frame.Position.growthDirection == "HORIZONTAL" then
-					growthDirection = 1
+				local profile = RUF.db.profile.unit[string.lower(name)]
+				local template = (name == "PartyPet") and "SecureGroupPetHeaderTemplate" or "SecureGroupHeaderTemplate"
+				local anchorFrom
+				if profile.Frame.Position.growth == "BOTTOM" then
+					anchorFrom = "TOP"
+				elseif profile.Frame.Position.growth == "TOP" then
+					anchorFrom = "BOTTOM"
 				end
-			end
 
-			local showIn = "party"
-			if profile.showRaid then
-				showIn = "party, raid"
-			end
-			if profile.showArena then
-				showIn = "[@arena1,exists]show;[@arena2,exists]show;[@arena3,exists]show;" .. showIn
-			end
-
-			local startingIndex = -3
-
-			self:SpawnHeader(
-				"oUF_RUF_" .. header, template, showIn,
-				"showSolo", false,
-				"showParty", true,
-				"showRaid", false,
-				"showPlayer", profile.showPlayer,
-				"yOffset", profile.Frame.Position.offsety,
-				"unitsPerColumn", growthDirection,
-				"maxColumns", 5,
-				"columnSpacing", profile.Frame.Position.offsetx,
-				"columnAnchorPoint", profile.Frame.Position.growthHoriz,
-				"Point", anchorFrom
-			):SetPoint(
-				profile.Frame.Position.AnchorFrom,
-				profile.Frame.Position.AnchorFrame,
-				profile.Frame.Position.AnchorTo,
-				profile.Frame.Position.x,
-				profile.Frame.Position.y
-			)
-
-			local partyNum = GetNumSubgroupMembers()
-			local currentHeader = _G["oUF_RUF_" .. header]
-			currentHeader.Enabled = profile.Enabled
-			currentHeader:SetAttribute("startingIndex", startingIndex + partyNum)
-			currentHeader:Show()
-			currentHeader:SetAttribute("startingIndex", 1)
-			currentHeader:SetClampedToScreen(true)
-			RegisterStateDriver(currentHeader, "visibility", currentHeader.visibility)
-			if profile.Enabled == false then
-				for j = 1, 5 do
-					local disableFrame = _G["oUF_RUF_" .. header .. "UnitButton" .. j]
-					if disableFrame then
-						_G["oUF_RUF_" .. header .. "UnitButton" .. j]:Disable()
+				local growthDirection
+				if profile.Frame.Position.growthDirection then
+					if profile.Frame.Position.growthDirection == "VERTICAL" then
+						growthDirection = 5
+					elseif profile.Frame.Position.growthDirection == "HORIZONTAL" then
+						growthDirection = 1
 					end
 				end
-			end
 
-			-- Create Party Holder for dragging.
-			local Mover = CreateFrame("Frame", currentHeader:GetName() .. "Mover", currentHeader)
-			Mover:SetAllPoints(currentHeader)
-			local Background = Mover:CreateTexture("$parentBG", "BACKGROUND")
-			Background:SetTexture(RUF:MediaFetch("background", "Solid"))
-			Background:SetAllPoints(Mover)
-			Background:SetVertexColor(0, 0, 0, 0)
-			Mover:SetFrameStrata("HIGH")
-			Mover:Hide()
-			currentHeader.Mover = Mover
-		end
-
-		-- Spawn single frames for Boss, Arena, and Party Targets
-		for _, fname in ipairs(groupFrames) do
-			local frameName = "oUF_RUF_" .. fname
-			local profile = string.lower(fname)
-			local AnchorFrom
-			if RUF.db.profile.unit[profile].Frame.Position.growth == "BOTTOM" then
-				AnchorFrom = "TOP"
-			elseif RUF.db.profile.unit[profile].Frame.Position.growth == "TOP" then
-				AnchorFrom = "BOTTOM"
-			end
-			for u = 1, 5 do
-				local unitName = fname .. u
-				if fname:match("Target") then
-					unitName = fname:gsub("Target", "") .. u .. "Target"
+				local showIn = "party"
+				if profile.showRaid then
+					showIn = "party, raid"
 				end
-				local frame = self:Spawn(unitName)
-				local unitFrame = _G["oUF_RUF_" .. unitName]
-				if unitFrame then
-					if unitFrame:GetObjectType() ~= "Button" then
-						unitFrame = nil
-					end
-				end
-				if u == 1 then
-					frame:SetPoint(
-						RUF.db.profile.unit[profile].Frame.Position.AnchorFrom,
-						RUF.db.profile.unit[profile].Frame.Position.AnchorFrame,
-						RUF.db.profile.unit[profile].Frame.Position.AnchorTo,
-						RUF.db.profile.unit[profile].Frame.Position.x,
-						RUF.db.profile.unit[profile].Frame.Position.y
-					)
-				else
-					local previousUnit = _G[frameName .. u - 1]
-					if fname:match("Target") then
-						previousUnit = _G["oUF_RUF_" .. fname:gsub("Target", "") .. u - 1 .. "Target"]
-					end
-					frame:SetPoint(
-						AnchorFrom,
-						previousUnit,
-						RUF.db.profile.unit[profile].Frame.Position.growth,
-						RUF.db.profile.unit[profile].Frame.Position.offsetx,
-						RUF.db.profile.unit[profile].Frame.Position.offsety
-					)
-				end
-				if RUF.db.profile.unit[profile].Enabled == false and unitFrame then
-					unitFrame:Disable()
-					unitFrame:SetAttribute("oUF-enableArenaPrep", false)
+				if profile.showArena then
+					showIn = "[@arena1,exists]show;[@arena2,exists]show;[@arena3,exists]show;" .. showIn
 				end
 
-				if profile == "partypet" or profile == "partytarget" then
-					local unitType = string.gsub(profile, "party", "")
-					if RUF.db.profile.unit.party.showPlayer and unitFrame then
-						if u == 1 then
-							unitFrame:SetAttribute("unit", unitType)
-							unitFrame.unit = unitType
-						else
-							if unitType == "pet" then
-								unitFrame:SetAttribute("unit", "partypet" .. u - 1)
-								unitFrame.unit = "partypet" .. u - 1
-							elseif unitType == "target" then
-								unitFrame:SetAttribute("unit", "party" .. u - 1 .. "target")
-								unitFrame.unit = "party" .. u - 1 .. "target"
-							end
+				local header = self:SpawnHeader("oUF_RUF_" .. name, template, showIn,
+					"showSolo", false,
+					"showParty", true,
+					"showRaid", false,
+					"showPlayer", profile.showPlayer,
+					"yOffset", profile.Frame.Position.offsety,
+					"unitsPerColumn", growthDirection,
+					"maxColumns", 5,
+					"columnSpacing", profile.Frame.Position.offsetx,
+					"columnAnchorPoint", profile.Frame.Position.growthHoriz,
+					"point", anchorFrom
+				)
+				header:SetPoint(profile.Frame.Position.AnchorFrom, profile.Frame.Position.AnchorFrame, profile.Frame.Position.AnchorTo, profile.Frame.Position.x, profile.Frame.Position.y)
+
+				header.Enabled = profile.Enabled
+				header:Show()
+				header:SetAttribute("startingIndex", 1) -- FIXME
+				header:SetClampedToScreen(true)
+				RegisterStateDriver(header, "visibility", header.visibility)
+				if profile.Enabled == false then
+					for j = 1, 5 do
+						local disableFrame = _G["oUF_RUF_" .. name .. "UnitButton" .. j]
+						if disableFrame then
+							_G["oUF_RUF_" .. name .. "UnitButton" .. j]:Disable()
 						end
 					end
 				end
 
-				if profile == "partypet" or profile == "partytarget" then
-					local unitType = string.gsub(profile, "party", "")
-					local prefix, suffix
-					if profile == "partypet" then
-						prefix = "pet"
-						suffix = ""
-					elseif profile == "partytarget" then
-						prefix = ""
-						suffix = "target"
+				-- Create Party Holder for dragging.
+				local Mover = CreateFrame("Frame", "oUF_RUF_" .. name .. "Mover", header)
+				Mover:SetAllPoints(header)
+				local Background = Mover:CreateTexture("$parentBG", "BACKGROUND")
+				Background:SetTexture(RUF:MediaFetch("background", "Solid"))
+				Background:SetAllPoints(Mover)
+				Background:SetVertexColor(0, 0, 0, 0)
+				Mover:SetFrameStrata("HIGH")
+				Mover:Hide()
+				header.Mover = Mover
+			end
+		end
+
+		-- Spawn single frames for Boss, Arena, and Party Targets
+		for i = 1, #RUF.frameList.groupFrames do
+			local group = RUF.frameList.groupFrames[i]
+			if group then
+				local frameName = "oUF_RUF_" .. group
+				local profile = string.lower(group)
+				local AnchorFrom
+				if RUF.db.profile.unit[profile].Frame.Position.growth == "BOTTOM" then
+					AnchorFrom = "TOP"
+				elseif RUF.db.profile.unit[profile].Frame.Position.growth == "TOP" then
+					AnchorFrom = "BOTTOM"
+				end
+				for u = 1, 5 do
+					local unitName = group .. u
+					if group:match("Target") then
+						unitName = group:gsub("Target", "") .. u .. "Target"
 					end
-					if RUF.db.profile.unit.party.showPlayer and unitFrame then
-						if u == 1 then
-							unitFrame:SetAttribute("unit", unitType)
-							unitFrame.unit = unitType
-						else
-							unitFrame:SetAttribute("unit", "party" .. prefix .. u - 1 .. suffix)
-							unitFrame.unit = "party" .. prefix .. u - 1 .. suffix
+					local frame = self:Spawn(unitName)
+					local unitFrame = _G["oUF_RUF_" .. unitName]
+					if unitFrame then
+						if unitFrame:GetObjectType() ~= "Button" then
+							unitFrame = nil
+						end
+					end
+					if u == 1 then
+						frame:SetPoint(
+							RUF.db.profile.unit[profile].Frame.Position.AnchorFrom,
+							RUF.db.profile.unit[profile].Frame.Position.AnchorFrame,
+							RUF.db.profile.unit[profile].Frame.Position.AnchorTo,
+							RUF.db.profile.unit[profile].Frame.Position.x,
+							RUF.db.profile.unit[profile].Frame.Position.y
+						)
+					else
+						local previousUnit = _G[frameName .. u - 1]
+						if group:match("Target") then
+							previousUnit = _G["oUF_RUF_" .. group:gsub("Target", "") .. u - 1 .. "Target"]
+						end
+						frame:SetPoint(
+							AnchorFrom,
+							previousUnit,
+							RUF.db.profile.unit[profile].Frame.Position.growth,
+							RUF.db.profile.unit[profile].Frame.Position.offsetx,
+							RUF.db.profile.unit[profile].Frame.Position.offsety
+						)
+					end
+					if RUF.db.profile.unit[profile].Enabled == false and unitFrame then
+						unitFrame:Disable()
+						unitFrame:SetAttribute("oUF-enableArenaPrep", false)
+					end
+
+					if profile == "partypet" or profile == "partytarget" then
+						local unitType = string.gsub(profile, "party", "")
+						if RUF.db.profile.unit.party.showPlayer and unitFrame then
+							if u == 1 then
+								unitFrame:SetAttribute("unit", unitType)
+								unitFrame.unit = unitType
+							else
+								if unitType == "pet" then
+									unitFrame:SetAttribute("unit", "partypet" .. u - 1)
+									unitFrame.unit = "partypet" .. u - 1
+								elseif unitType == "target" then
+									unitFrame:SetAttribute("unit", "party" .. u - 1 .. "target")
+									unitFrame.unit = "party" .. u - 1 .. "target"
+								end
+							end
+						end
+					end
+
+					if profile == "partypet" or profile == "partytarget" then
+						local unitType = string.gsub(profile, "party", "")
+						local prefix, suffix
+						if profile == "partypet" then
+							prefix = "pet"
+							suffix = ""
+						elseif profile == "partytarget" then
+							prefix = ""
+							suffix = "target"
+						end
+						if RUF.db.profile.unit.party.showPlayer and unitFrame then
+							if u == 1 then
+								unitFrame:SetAttribute("unit", unitType)
+								unitFrame.unit = unitType
+							else
+								unitFrame:SetAttribute("unit", "party" .. prefix .. u - 1 .. suffix)
+								unitFrame.unit = "party" .. prefix .. u - 1 .. suffix
+							end
 						end
 					end
 				end
@@ -398,5 +391,7 @@ function RUF:OnEnable()
 		end
 	end
 
-	RUF:UpdateAllUnitSettings()
+	-- it sadly has to be delayed!
+	RUF.After(2, RUF.UpdateAllUnitSettings)
+	-- RUF:UpdateAllUnitSettings()
 end

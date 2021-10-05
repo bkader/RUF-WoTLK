@@ -3,14 +3,19 @@ local RUF = RUF
 local _, ns = ...
 local oUF = ns.oUF
 
+local LGT = LibStub("LibGroupTalents-1.0")
+
 local UnitGroupRolesAssigned = RUF.UnitGroupRolesAssigned
+local GetSpecializationRole = RUF.GetSpecializationRole
 
 local elementName = "Role"
 local elementStringDAMAGER = RUF.IndicatorGlyphs["Role-DPS"]
 local elementStringHEALER = RUF.IndicatorGlyphs["Role-Heal"]
 local elementStringTANK = RUF.IndicatorGlyphs["Role-Tank"]
 
-local function Update(self, event)
+local function Update(self, event, unit, role)
+	if not (unit and self.unit and unit == self.unit) then return end
+
 	local element = self.RoleIndicator
 	element.Enabled = RUF.db.profile.unit[self.frame].Frame.Indicators[elementName].Enabled
 
@@ -20,7 +25,7 @@ local function Update(self, event)
 
 	if element.Enabled == true then
 		self:EnableElement(elementName .. "Indicator")
-		local role = UnitGroupRolesAssigned(self.unit)
+		role = role or UnitGroupRolesAssigned(unit)
 		if role == "TANK" then
 			element:SetText(elementStringTANK)
 			element:SetWidth(element:GetStringWidth() + 2)
@@ -65,6 +70,12 @@ local function ForceUpdate(element)
 	return Path(element.__owner, "ForceUpdate")
 end
 
+local function UpdateLGT(self, event, _, unit)
+	if (unit == self.unit) then
+		RUF.After(0.25, function() Path(self, event, unit, GetSpecializationRole(unit)) end)
+	end
+end
+
 local function Enable(self)
 	local element = self.RoleIndicator
 	if (element) then
@@ -76,6 +87,9 @@ local function Enable(self)
 			self:RegisterEvent("PARTY_MEMBERS_CHANGED", Path, true)
 			self:RegisterEvent("RAID_ROSTER_UPDATE", Path, true)
 		end
+
+		self.UpdateLGT = UpdateLGT
+		LGT.RegisterCallback(self, "LibGroupTalents_Update", "UpdateLGT")
 
 		local profileReference = RUF.db.profile.unit[self.frame].Frame.Indicators[elementName]
 		element:SetFont([[Interface\AddOns\RUF\Media\RUF.ttf]], profileReference.Size, "OUTLINE")
@@ -103,6 +117,10 @@ local function Disable(self)
 		self:UnregisterEvent("PLAYER_ROLES_ASSIGNED", Path)
 		self:UnregisterEvent("PARTY_MEMBERS_CHANGED", Path)
 		self:UnregisterEvent("RAID_ROSTER_UPDATE", Path)
+
+		-- unregister LGT
+		self.UpdateLGT = nil
+		LGT.UnregisterAllCallbacks(self)
 	end
 end
 

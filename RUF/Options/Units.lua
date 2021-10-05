@@ -138,7 +138,6 @@ local function UnitGroup(singleFrame, groupFrame, header)
 						set = function(info, value)
 							RUF.db.profile.unit[profileName].Enabled = value
 							RUF:OptionsUpdateFrame(singleFrame, groupFrame, header)
-							RUF:UpdateOptions()
 						end
 					},
 					toggleForVehicle = {
@@ -155,7 +154,6 @@ local function UnitGroup(singleFrame, groupFrame, header)
 						set = function(info, value)
 							RUF.db.profile.unit[profileName].toggleForVehicle = value
 							RUF:OptionsUpdateFrame(singleFrame, groupFrame, header)
-							RUF:UpdateOptions()
 						end
 					},
 					showRaid = {
@@ -181,8 +179,7 @@ local function UnitGroup(singleFrame, groupFrame, header)
 							RUF.db.profile.unit[profileName].showRaid = value
 							RUF:OptionsUpdateFrame(singleFrame, groupFrame, header)
 							if header ~= "none" then
-								RUF.TogglePartyChildren("partypet")
-								RUF.TogglePartyChildren("partytarget")
+								RUF.TogglePartyChildrenGroupStatus()
 							elseif profileName == "partytarget" then
 								RUF.TogglePartyChildren("partytarget")
 							elseif profileName == "partypet" then
@@ -214,8 +211,7 @@ local function UnitGroup(singleFrame, groupFrame, header)
 							RUF.db.profile.unit[profileName].showArena = value
 							RUF:OptionsUpdateFrame(singleFrame, groupFrame, header)
 							if header ~= "none" then
-								RUF.TogglePartyChildren("partypet")
-								RUF.TogglePartyChildren("partytarget")
+								RUF.TogglePartyChildrenGroupStatus()
 							elseif profileName == "partytarget" then
 								RUF.TogglePartyChildren("partytarget")
 							elseif profileName == "partypet" then
@@ -243,9 +239,7 @@ local function UnitGroup(singleFrame, groupFrame, header)
 							RUF:OptionsUpdateFrame(singleFrame, groupFrame, header)
 							RUF:OptionsUpdateFrame(singleFrame, "PartyTarget", "none") -- So we also force Update and Hide/Show the 5th Party Target
 							RUF:OptionsUpdateFrame(singleFrame, "PartyPet", "none")
-							RUF.TogglePartyChildren("partypet")
-							RUF.TogglePartyChildren("partytarget")
-							RUF:UpdateOptions()
+							RUF.TogglePartyChildrenGroupStatus()
 						end
 					},
 					enabledSpacer = {
@@ -356,7 +350,6 @@ local function UnitGroup(singleFrame, groupFrame, header)
 							else
 								RUF.db.profile.unit[profileName].Frame.Position.AnchorFrame = "UIParent"
 							end
-							RUF:UpdateOptions()
 							RUF:OptionsUpdateFrame(singleFrame, groupFrame, header)
 						end
 					},
@@ -456,7 +449,6 @@ local function UnitGroup(singleFrame, groupFrame, header)
 
 							RUF.db.profile.unit[profileName].Frame.Position.growth = value
 							RUF:OptionsUpdateFrame(singleFrame, groupFrame, header)
-							RUF:UpdateOptions()
 						end
 					},
 					partyFrameGrowthDirection = {
@@ -475,7 +467,6 @@ local function UnitGroup(singleFrame, groupFrame, header)
 						set = function(info, value)
 							RUF.db.profile.unit[profileName].Frame.Position.growthDirection = value
 							RUF:OptionsUpdateFrame(singleFrame, groupFrame, header)
-							RUF:UpdateOptions()
 						end
 					},
 					partyFrameSortOrderVert = {
@@ -510,7 +501,6 @@ local function UnitGroup(singleFrame, groupFrame, header)
 							end
 							RUF.db.profile.unit[profileName].Frame.Position.growth = value
 							RUF:OptionsUpdateFrame(singleFrame, groupFrame, header)
-							RUF:UpdateOptions()
 						end
 					},
 					partyFrameSortOrderHoriz = {
@@ -538,7 +528,6 @@ local function UnitGroup(singleFrame, groupFrame, header)
 						set = function(info, value)
 							RUF.db.profile.unit[profileName].Frame.Position.growthHoriz = value
 							RUF:OptionsUpdateFrame(singleFrame, groupFrame, header)
-							RUF:UpdateOptions()
 						end
 					},
 					groupFrameHorizontalOffset = {
@@ -620,8 +609,8 @@ local function UnitGroup(singleFrame, groupFrame, header)
 end
 
 local function BarSettings(singleFrame, groupFrame, header)
-	local ord, referenceUnit, profileName
-	singleFrame, groupFrame, header, ord, referenceUnit, profileName = ProfileData(singleFrame, groupFrame, header)
+	local profileName, _
+	singleFrame, groupFrame, header, _, _, profileName = ProfileData(singleFrame, groupFrame, header)
 
 	local Powers = {["DRUID"] = L["Combo Points"], ["ROGUE"] = L["Combo Points"]}
 
@@ -827,8 +816,8 @@ local function BarSettings(singleFrame, groupFrame, header)
 end
 
 local function TextSettings(singleFrame, groupFrame, header)
-	local ord, referenceUnit, profileName
-	singleFrame, groupFrame, header, ord, referenceUnit, profileName = ProfileData(singleFrame, groupFrame, header)
+	local referenceUnit, profileName, _
+	singleFrame, groupFrame, header, _, referenceUnit, profileName = ProfileData(singleFrame, groupFrame, header)
 
 	local copyList = CopyList(singleFrame, groupFrame, header)
 
@@ -869,7 +858,6 @@ local function TextSettings(singleFrame, groupFrame, header)
 						}
 					}
 					RUF:OptionsAddTexts(singleFrame, groupFrame, header, value)
-					RUF:UpdateOptions()
 				end
 			},
 			removeTextElement = {
@@ -905,7 +893,6 @@ local function TextSettings(singleFrame, groupFrame, header)
 					RUF.db.profile.unit[profileName].Frame.Text = nil
 					RUF.db.profile.unit[profileName].Frame.Text = target
 					RUF:UpdateAllUnitSettings()
-					RUF:UpdateOptions()
 				end
 			}
 		}
@@ -1039,7 +1026,6 @@ local function TextSettings(singleFrame, groupFrame, header)
 							RUF.db.profile.unit[profileName].Frame.Text[textList[i]].Position.AnchorFrame = "Frame"
 						end
 						RUF:OptionsUpdateTexts(singleFrame, groupFrame, header, textList[i])
-						RUF:UpdateOptions()
 					end
 				},
 				anchorFrom = {
@@ -1252,8 +1238,8 @@ local function HideIndicatorOptions(profileName, indicator)
 end
 
 local function IndicatorSettings(singleFrame, groupFrame, header)
-	local ord, referenceUnit, profileName
-	singleFrame, groupFrame, header, ord, referenceUnit, profileName = ProfileData(singleFrame, groupFrame, header)
+	local referenceUnit, profileName, _
+	singleFrame, groupFrame, header, _, referenceUnit, profileName = ProfileData(singleFrame, groupFrame, header)
 
 	local indicators = {
 		[1] = "Assist",
@@ -1419,7 +1405,6 @@ local function IndicatorSettings(singleFrame, groupFrame, header)
 							RUF.db.profile.unit[profileName].Frame.Indicators[indicators[i]].Position.AnchorFrame = "Frame"
 						end
 						RUF:OptionsUpdateIndicators(singleFrame, groupFrame, header, indicators[i])
-						RUF:UpdateOptions()
 					end
 				},
 				anchorPoint = {
@@ -1443,8 +1428,8 @@ local function IndicatorSettings(singleFrame, groupFrame, header)
 end
 
 local function BuffSettings(singleFrame, groupFrame, header)
-	local ord, referenceUnit, profileName
-	singleFrame, groupFrame, header, ord, referenceUnit, profileName = ProfileData(singleFrame, groupFrame, header)
+	local profileName, _
+	singleFrame, groupFrame, header, _, _, profileName = ProfileData(singleFrame, groupFrame, header)
 
 	local copyList = CopyList(singleFrame, groupFrame, header)
 
@@ -1468,7 +1453,6 @@ local function BuffSettings(singleFrame, groupFrame, header)
 					RUF.db.profile.unit[profileName].Buffs = nil
 					RUF.db.profile.unit[profileName].Buffs = target
 					RUF:UpdateAllUnitSettings()
-					RUF:UpdateOptions()
 				end
 			},
 			enabled = {
@@ -1891,15 +1875,15 @@ local function BuffSettings(singleFrame, groupFrame, header)
 end
 
 local function DebuffSettings(singleFrame, groupFrame, header)
-	local ord, referenceUnit, profileName
-	singleFrame, groupFrame, header, ord, referenceUnit, profileName = ProfileData(singleFrame, groupFrame, header)
+	local profileName, _
+	singleFrame, groupFrame, header, _, _, profileName = ProfileData(singleFrame, groupFrame, header)
 
 	local copyList = CopyList(singleFrame, groupFrame, header)
 
 	local debuffOptions = {
 		name = L["Debuffs"],
 		type = "group",
-		order = 40,
+		order = 50,
 		args = {
 			copyUnit = {
 				name = "|cff00B2FA" .. L["Copy Settings from:"] .. "|r",
@@ -1916,7 +1900,6 @@ local function DebuffSettings(singleFrame, groupFrame, header)
 					RUF.db.profile.unit[profileName].Debuffs = nil
 					RUF.db.profile.unit[profileName].Debuffs = target
 					RUF:UpdateAllUnitSettings()
-					RUF:UpdateOptions()
 				end
 			},
 			enabled = {
@@ -2339,8 +2322,8 @@ local function DebuffSettings(singleFrame, groupFrame, header)
 end
 
 local function CastBarSettings(singleFrame, groupFrame, header)
-	local ord, referenceUnit, profileName
-	singleFrame, groupFrame, header, ord, referenceUnit, profileName = ProfileData(singleFrame, groupFrame, header)
+	local profileName, _
+	singleFrame, groupFrame, header, _, _, profileName = ProfileData(singleFrame, groupFrame, header)
 
 	local copyList = CopyList(singleFrame, groupFrame, header, "Cast")
 
@@ -2374,7 +2357,6 @@ local function CastBarSettings(singleFrame, groupFrame, header)
 					RUF.db.profile.unit[profileName].Frame.Bars.Cast = nil
 					RUF.db.profile.unit[profileName].Frame.Bars.Cast = target
 					RUF:UpdateAllUnitSettings()
-					RUF:UpdateOptions()
 				end
 			},
 			enabled = {
@@ -2769,8 +2751,8 @@ local function CastBarSettings(singleFrame, groupFrame, header)
 end
 
 local function PortraitSettings(singleFrame, groupFrame, header)
-	local ord, referenceUnit, profileName
-	singleFrame, groupFrame, header, ord, referenceUnit, profileName = ProfileData(singleFrame, groupFrame, header)
+	local profileName, _
+	singleFrame, groupFrame, header, _, _, profileName = ProfileData(singleFrame, groupFrame, header)
 
 	local copyList = CopyList(singleFrame, groupFrame, header)
 
@@ -2794,7 +2776,6 @@ local function PortraitSettings(singleFrame, groupFrame, header)
 					RUF.db.profile.unit[profileName].Frame.Portrait = nil
 					RUF.db.profile.unit[profileName].Frame.Portrait = target
 					RUF:UpdateAllUnitSettings()
-					RUF:UpdateOptions()
 				end
 			},
 			enabled = {

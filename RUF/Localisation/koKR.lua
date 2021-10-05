@@ -450,7 +450,7 @@ L["URL"] = "URL"
 L["Use a different alpha value for the player frame when you are under max health."] = "Use a different alpha value for the player frame when you are under max health."
 L["Use a different alpha value when you have a target."] = "대상이 있을 때에 다른 투명도 값을 사용합니다."
 L["Use Bar Color"] = "바 색상 사용"
-L["Use Blizard Colors"] = "블리자드 색상 사용"
+L["Use Blizzard Colors"] = "블리자드 색상 사용"
 L["Use Class Colors addon"] = "직업 색상 애드온 사용"
 --[[Translation missing --]]
 L["Vertical"] = "Vertical"

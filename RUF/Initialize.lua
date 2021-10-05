@@ -6,6 +6,7 @@ local ACD = LibStub("AceConfigDialog-3.0")
 local LSM = LibStub("LibSharedMedia-3.0")
 local LGT = LibStub("LibGroupTalents-1.0")
 local includedLayouts = {"Alidie's Layout", "Raeli's Layout"}
+local L = LibStub("AceLocale-3.0"):GetLocale("RUF")
 
 RUF.UIParent = CreateFrame("Frame", "RUFParent", UIParent)
 RUF.UIParent:SetFrameLevel(UIParent:GetFrameLevel())

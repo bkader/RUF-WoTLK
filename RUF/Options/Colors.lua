@@ -87,7 +87,7 @@ function RUF_Options.Colors()
 					},
 					setBlizzColors = {
 						type = "execute",
-						name = L["Use Blizard Colors"],
+						name = L["Use Blizzard Colors"],
 						desc = L["Set class colors to the default Blizzard colors."],
 						order = 0.02,
 						func = function(info, value)

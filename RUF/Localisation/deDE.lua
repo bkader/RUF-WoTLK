@@ -527,7 +527,7 @@ L["Use a different alpha value for the player frame when you are under max healt
 L["Use a different alpha value when you have a target."] = "Use a different alpha value when you have a target."
 L["Use Bar Color"] = "Benutze Leisten Farbe"
 --[[Translation missing --]]
-L["Use Blizard Colors"] = "Use Blizard Colors"
+L["Use Blizzard Colors"] = "Use Blizzard Colors"
 --[[Translation missing --]]
 L["Use Class Colors addon"] = "Use Class Colors addon"
 --[[Translation missing --]]

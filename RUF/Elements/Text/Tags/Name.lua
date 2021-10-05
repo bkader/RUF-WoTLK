@@ -18,9 +18,7 @@ local UnitIsPlayer = UnitIsPlayer
 
 ----------------------------------------------------------------------------------- UNITNAME
 tags["RUF:Name"] = function(unit, realUnit)
-	if not UnitName(unit) then
-		return
-	end
+	if not UnitName(unit) then return end
 	local name = UnitName(unit)
 	if RUF.db.profile.Appearance.Text.Name.Case == 1 then
 		name = upper(name)
@@ -34,7 +32,6 @@ tags["RUF:Name"] = function(unit, realUnit)
 		cur = random(75)
 		max = random(75, 100)
 		r, g, b = RUF:ReturnTextColors(unit, "Name", cur, max)
-	 --val)
 	end
 	local charLimit = RUF.db.profile.Appearance.Text.Name.CharLimit
 	if charLimit == 0 then

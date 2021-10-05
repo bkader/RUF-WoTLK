@@ -1,11 +1,12 @@
 assert(RUF, "RUF not found!")
 local RUF = RUF
-local _,ns = ...
+local _, ns = ...
 local oUF = ns.oUF
-local RUF_Options = RUF:GetModule('Options')
-local L = LibStub('AceLocale-3.0'):GetLocale('RUF')
 
-local TestModeToggle,UnitsSpawned
+local strgsub = string.gsub
+local lower = string.lower
+
+local TestModeToggle, UnitsSpawned
 local anchorSwaps = {
 	["BOTTOM"] = "TOP",
 	["BOTTOMLEFT"] = "TOPRIGHT",
@@ -15,297 +16,283 @@ local anchorSwaps = {
 	["RIGHT"] = "LEFT",
 	["TOP"] = "BOTTOM",
 	["TOPLEFT"] = "BOTTOMRIGHT",
-	["TOPRIGHT"] = "BOTTOMLEFT",
+	["TOPRIGHT"] = "BOTTOMLEFT"
 }
 
 local IsInGroup = RUF.IsInGroup
 local GetNumSubgroupMembers = RUF.GetNumSubgroupMembers
 
-function RUF:UpdateFramePosition(unitFrame,singleFrame,groupFrame,header,i,anchorFrom,anchorFrame,anchorTo,offsetX,offsetY)
-	if not singleFrame then singleFrame = 'none' end
-	if not groupFrame then groupFrame = 'none' end
-	if not header then header = 'none' end
+function RUF:UpdateFramePosition(unitFrame, singleFrame, groupFrame, header, i, anchorFrom, anchorFrame, anchorTo, offsetX, offsetY)
+	singleFrame = singleFrame or "none"
+	groupFrame = groupFrame or "none"
+	header = header or "none"
+
 	local profileReference
-	if header ~= 'none' then
-		profileReference = RUF.db.profile.unit[string.lower(header)].Frame.Position
+	if header ~= "none" then
+		profileReference = RUF.db.profile.unit[strlower(header)].Frame.Position
 	else
 		if i == -1 then
-			profileReference = RUF.db.profile.unit[string.lower(singleFrame)].Frame.Position
+			profileReference = RUF.db.profile.unit[strlower(singleFrame)].Frame.Position
 		else
-			profileReference = RUF.db.profile.unit[string.lower(groupFrame)].Frame.Position
+			profileReference = RUF.db.profile.unit[strlower(groupFrame)].Frame.Position
 		end
 	end
 
 	anchorFrom = anchorFrom or profileReference.AnchorFrom
 	anchorFrame = anchorFrame or profileReference.AnchorFrame
+	if not _G[anchorFrame] then
+		anchorFrame = "UIParent"
+	end
+
 	anchorTo = anchorTo or profileReference.AnchorTo
 	offsetX = offsetX or profileReference.x
 	offsetY = offsetY or profileReference.y
-	if not _G[anchorFrame] then
-		anchorFrame = 'UIParent'
-	end
 	if not i or i == -1 or i == 1 then
 		unitFrame:ClearAllPoints()
-		unitFrame:SetPoint(anchorFrom,anchorFrame,anchorTo,offsetX,offsetY)
+		unitFrame:SetPoint(anchorFrom, anchorFrame, anchorTo, offsetX, offsetY)
 	else
-		local groupAnchorFrom
+		local _, originalAnchorFrame = unitFrame:GetPoint()
 		if profileReference.growth == "BOTTOM" then
-			groupAnchorFrom = "TOP"
+			unitFrame:ClearAllPoints()
+			unitFrame:SetPoint("TOP", originalAnchorFrame, profileReference.growth, profileReference.offsetx, profileReference.offsety)
 		elseif profileReference.growth == "TOP" then
-			groupAnchorFrom = "BOTTOM"
+			unitFrame:ClearAllPoints()
+			unitFrame:SetPoint("BOTTOM", originalAnchorFrame, profileReference.growth, profileReference.offsetx, profileReference.offsety)
 		end
-		local spacingX = profileReference.offsetx
-		local spacingY = profileReference.offsety
-		local _,originalAnchorFrame = unitFrame:GetPoint()
-		unitFrame:ClearAllPoints()
-		unitFrame:SetPoint(groupAnchorFrom,originalAnchorFrame,profileReference.growth,spacingX,spacingY)
 	end
-
 end
 
 function RUF:OptionsUpdateCastbars()
-	-- TODO Castbar Text
-	for k,v in next,oUF.objects do
-		if v.Cast then
-			local Bar = v.Cast
+	for k, v in next, oUF.objects do
+		if v.Castbar then
+			local Bar = v.Castbar
 			local Border = Bar.Border
 			local Background = Bar.bg
 			local Time = Bar.Time
 			local Text = Bar.Text
 			local profileReference = RUF.db.profile.Appearance.Bars.Cast
 			local unitProfile = RUF.db.profile.unit[v.frame].Frame.Bars.Cast
-			local texture = RUF:MediaFetch("statusbar",profileReference.Texture)
+			local texture = RUF:MediaFetch("statusbar", profileReference.Texture)
 
 			Bar:SetStatusBarTexture(texture)
 			Bar:SetFillStyle(unitProfile.Fill)
 			Bar:SetWidth(unitProfile.Width)
 			Bar:SetHeight(unitProfile.Height)
-			local anchorFrame
-			if unitProfile.Position.AnchorFrame == true then
-				anchorFrame = v
-			else
-				anchorFrame = 'UIParent'
-			end
+			local anchorFrame = (unitProfile.Position.AnchorFrame == true) and v or "UIParent"
 			Bar:ClearAllPoints()
-			Bar:SetPoint(
-				unitProfile.Position.AnchorFrom,
-				anchorFrame,
-				unitProfile.Position.AnchorTo,
-				unitProfile.Position.x,
-				unitProfile.Position.y
-			)
+			Bar:SetPoint(unitProfile.Position.AnchorFrom, anchorFrame, unitProfile.Position.AnchorTo, unitProfile.Position.x, unitProfile.Position.y)
 
-			Border:SetBackdrop({edgeFile = RUF:MediaFetch("border",profileReference.Border.Style.edgeFile),edgeSize = profileReference.Border.Style.edgeSize})
-			local borderr,borderg,borderb = unpack(profileReference.Border.Color)
-			Border:SetBackdropBorderColor(borderr,borderg,borderb,profileReference.Border.Alpha)
+			Border:SetBackdrop({
+				edgeFile = RUF:MediaFetch("border", profileReference.Border.Style.edgeFile),
+				edgeSize = profileReference.Border.Style.edgeSize
+			})
 
-			local r,g,b = RUF:GetBarColor(Bar,v.frame,"Cast")
-			Bar:SetStatusBarColor(r,g,b)
+			local r, g, b = unpack(profileReference.Border.Color)
+			Border:SetBackdropBorderColor(r, g, b, profileReference.Border.Alpha)
+
+			r, g, b = RUF:GetBarColor(Bar, v.frame, "Cast")
+			Bar:SetStatusBarColor(r, g, b)
 			if profileReference.Background.UseBarColor == false then
-				r,g,b = unpack(profileReference.Background.CustomColor)
+				r, g, b = unpack(profileReference.Background.CustomColor)
 			end
+
 			local Multiplier = profileReference.Background.Multiplier
-			Background:SetTexture(RUF:MediaFetch("background","Solid"))
-			Background:SetVertexColor(r*Multiplier,g*Multiplier,b*Multiplier,profileReference.Background.Alpha)
+			Background:SetTexture(RUF:MediaFetch("background", "Solid"))
+			Background:SetVertexColor(r * Multiplier, g * Multiplier, b * Multiplier, profileReference.Background.Alpha)
 			Background:SetAllPoints(Bar)
 			Background.colorSmooth = false
 
 			Time:ClearAllPoints()
 			Text:ClearAllPoints()
 			if unitProfile.Fill == "REVERSE" then
-				Time:SetPoint('LEFT',Bar,4,0)
-				Text:SetPoint('RIGHT',Bar,-4,0)
+				Time:SetPoint("LEFT", Bar, 4, 0)
+				Text:SetPoint("RIGHT", Bar, -4, 0)
 			else
-				Time:SetPoint('RIGHT',Bar,-4,0)
-				Text:SetPoint('LEFT',Bar,4,0)
+				Time:SetPoint("RIGHT", Bar, -4, 0)
+				Text:SetPoint("LEFT", Bar, 4, 0)
 			end
 
-			v.Cast.Enabled = unitProfile.Enabled
+			v.Castbar.Enabled = unitProfile.Enabled
 			if Bar.Enabled == false then
-				v:DisableElement('Cast')
-				v.Cast:Hide()
+				v:DisableElement("Castbar")
+				v.Castbar:Hide()
 			else
-				v:EnableElement('Cast')
-				v.Cast:UpdateOptions()
-				v.Cast:Show()
+				v:EnableElement("Castbar")
+				v.Castbar:UpdateOptions()
+				v.Castbar:Show()
 			end
 		end
 	end
 end
 
 function RUF:OptionsUpdateFrameBorders()
-	for k,v in next,oUF.objects do
+	for k, v in next, oUF.objects do
 		local Border = v.Border
 		local offset = RUF.db.profile.Appearance.Border.Offset
-		Border:SetPoint('TOPLEFT',v,'TOPLEFT',-offset,offset)
-		Border:SetPoint('BOTTOMRIGHT',v,'BOTTOMRIGHT',offset,-offset)
-		Border:SetBackdrop({edgeFile = RUF:MediaFetch('border',RUF.db.profile.Appearance.Border.Style.edgeFile),edgeSize = RUF.db.profile.Appearance.Border.Style.edgeSize})
-		local r,g,b = unpack(RUF.db.profile.Appearance.Border.Color)
-		Border:SetBackdropBorderColor(r,g,b,RUF.db.profile.Appearance.Border.Alpha)
+		Border:SetPoint("TOPLEFT", v, "TOPLEFT", -offset, offset)
+		Border:SetPoint("BOTTOMRIGHT", v, "BOTTOMRIGHT", offset, -offset)
+		Border:SetBackdrop({
+			edgeFile = RUF:MediaFetch("border", RUF.db.profile.Appearance.Border.Style.edgeFile),
+			edgeSize = RUF.db.profile.Appearance.Border.Style.edgeSize
+		})
+
+		local r, g, b = unpack(RUF.db.profile.Appearance.Border.Color)
+		Border:SetBackdropBorderColor(r, g, b, RUF.db.profile.Appearance.Border.Alpha)
 
 		if v.GlowBorder then
 			local GlowBorder = v.GlowBorder
 			local glowProfile = RUF.db.profile.Appearance.Border.Glow
 			if glowProfile.Enabled ~= true then
-				v:UnregisterEvent('UNIT_AURA',RUF.UpdateGlowBorder)
-				v:UnregisterEvent('UNIT_TARGET',RUF.UpdateGlowBorder)
+				v:UnregisterEvent("UNIT_AURA", RUF.UpdateGlowBorder)
+				v:UnregisterEvent("UNIT_TARGET", RUF.UpdateGlowBorder)
 			else
-				v:RegisterEvent('UNIT_AURA',RUF.UpdateGlowBorder,true)
-				v:RegisterEvent('UNIT_TARGET',RUF.UpdateGlowBorder,true)
-				GlowBorder:SetPoint('TOPLEFT',v,'TOPLEFT',-glowProfile.Offset,glowProfile.Offset)
-				GlowBorder:SetPoint('BOTTOMRIGHT',v,'BOTTOMRIGHT',glowProfile.Offset,-glowProfile.Offset)
-				GlowBorder:SetBackdrop({edgeFile = RUF:MediaFetch('border',glowProfile.Style.edgeFile),edgeSize = glowProfile.Style.edgeSize})
-				GlowBorder:SetBackdropBorderColor(0,0,0,glowProfile.Alpha)
+				v:RegisterEvent("UNIT_AURA", RUF.UpdateGlowBorder, true)
+				v:RegisterEvent("UNIT_TARGET", RUF.UpdateGlowBorder, true)
+				GlowBorder:SetPoint("TOPLEFT", v, "TOPLEFT", -glowProfile.Offset, glowProfile.Offset)
+				GlowBorder:SetPoint("BOTTOMRIGHT", v, "BOTTOMRIGHT", glowProfile.Offset, -glowProfile.Offset)
+				GlowBorder:SetBackdrop({
+					edgeFile = RUF:MediaFetch("border", glowProfile.Style.edgeFile),
+					edgeSize = glowProfile.Style.edgeSize
+				})
+				GlowBorder:SetBackdropBorderColor(0, 0, 0, glowProfile.Alpha)
 			end
 		end
 	end
 end
 
 function RUF:OptionsUpdateAllAuras()
-	for k,v in next,oUF.objects do
+	for k, v in next, oUF.objects do
 		v.Buff:ForceUpdate()
 		v.Debuff:ForceUpdate()
 	end
 end
 
-function RUF:OptionsUpdateAuras(singleFrame,groupFrame,header,auraType)
-	if not singleFrame then singleFrame = 'none' end
-	if not groupFrame then groupFrame = 'none' end
-	if not header then header = 'none' end
+function RUF:OptionsUpdateAuras(singleFrame, groupFrame, header, auraType)
 	if not auraType then return end
 
-	local function UpdateAura(singleFrame,groupFrame,header,auraType,i)
-		local currentUnit,unitFrame,profileReference
+	singleFrame = singleFrame or "none"
+	groupFrame = groupFrame or "none"
+	header = header or "none"
 
-		if header ~= 'none' then
-			currentUnit = header .. 'UnitButton' .. i
-			profileReference = RUF.db.profile.unit[string.lower(header)][auraType].Icons
-		elseif groupFrame ~= 'none' then
-			if groupFrame:match('Target') then
-				currentUnit = groupFrame:gsub('Target','') .. i .. 'Target'
+	local function UpdateAura(sFrame, gFrame, head, aType, i)
+		local currentUnit, unitFrame, profileReference
+
+		if head ~= "none" then
+			currentUnit = head .. "UnitButton" .. i
+			profileReference = RUF.db.profile.unit[strlower(head)][aType].Icons
+		elseif gFrame ~= "none" then
+			if gFrame:match("Target") then
+				currentUnit = gFrame:gsub("Target", "") .. i .. "Target"
 			else
-				currentUnit = groupFrame .. i
+				currentUnit = gFrame .. i
 			end
-			profileReference = RUF.db.profile.unit[string.lower(groupFrame)][auraType].Icons
+			profileReference = RUF.db.profile.unit[strlower(gFrame)][aType].Icons
 		else
-			currentUnit = singleFrame
-			profileReference = RUF.db.profile.unit[string.lower(singleFrame)][auraType].Icons
+			currentUnit = sFrame
+			profileReference = RUF.db.profile.unit[strlower(sFrame)][aType].Icons
 		end
-		unitFrame = _G['oUF_RUF_' .. currentUnit]
+		unitFrame = _G["oUF_RUF_" .. currentUnit]
 		if not unitFrame then return end
 
-		local currentElement = unitFrame[auraType:sub(1,-2)]
+		local currentElement = unitFrame[aType:sub(1, -2)]
 		if not currentElement then return end
 
 		currentElement:ClearAllPoints()
-		currentElement:SetPoint(
-			profileReference.Position.AnchorFrom,
-			unitFrame,
-			profileReference.Position.AnchorTo,
-			profileReference.Position.x,
-			profileReference.Position.y
-		)
+		currentElement:SetPoint(profileReference.Position.AnchorFrom, unitFrame, profileReference.Position.AnchorTo, profileReference.Position.x, profileReference.Position.y)
 		currentElement.size = profileReference.Width
 		currentElement.width = profileReference.Width
 		currentElement.height = profileReference.Height
-		currentElement['spacing-x'] = profileReference.Spacing.x
-		currentElement['spacing-y'] = profileReference.Spacing.y
+		currentElement["spacing-x"] = profileReference.Spacing.x
+		currentElement["spacing-y"] = profileReference.Spacing.y
 		currentElement.num = profileReference.Max
-		currentElement['growth-x'] = profileReference.Growth.x
-		currentElement['growth-y'] = profileReference.Growth.y
+		currentElement["growth-x"] = profileReference.Growth.x
+		currentElement["growth-y"] = profileReference.Growth.y
 		currentElement.initialAnchor = profileReference.Position.AnchorFrom
 		currentElement.disableMouse = profileReference.ClickThrough
-		currentElement:SetSize((profileReference.Width * profileReference.Columns),(profileReference.Height * profileReference.Rows) + 2)
+		currentElement:SetSize((profileReference.Width * profileReference.Columns), (profileReference.Height * profileReference.Rows) + 2)
 
 		currentElement.Enabled = profileReference.Enabled
 		currentElement:ForceUpdate()
 
+		return true
 	end
 
-	if header ~= 'none' then
-		local headerUnits = { _G['oUF_RUF_' .. header]:GetChildren() }
-		headerUnits[#headerUnits] = nil -- Remove moveBG entry
-		for i = 1,#headerUnits do
-			UpdateAura(singleFrame,groupFrame,header,auraType,i)
+	if header ~= "none" or groupFrame ~= "none" then
+		for i = 1, 6 do
+			if not UpdateAura(singleFrame, groupFrame, header, auraType, i) then
+				break
+			end
 		end
-	elseif groupFrame ~= 'none' then
-		for i = 1,5 do
-			UpdateAura(singleFrame,groupFrame,header,auraType,i)
-		end
-	elseif singleFrame ~= 'none' then
-		UpdateAura(singleFrame,groupFrame,header,auraType,-1)
+	elseif singleFrame ~= "none" then
+		UpdateAura(singleFrame, groupFrame, header, auraType, -1)
 	end
-
 end
 
 function RUF:OptionsUpdateAllIndicators()
-	local frames = RUF.frameList.frames
-	local groupFrames = RUF.frameList.groupFrames
-	local headers = RUF.frameList.headers
-
-	for i = 1,#frames do
-		if _G['oUF_RUF_' .. frames[i]] then
-			for k,v in pairs(RUF.db.profile.unit[string.lower(frames[i])].Frame.Indicators) do
-				if v ~= '' then
-					RUF:OptionsUpdateIndicators(frames[i],nil,nil,k)
+	for i = 1, #RUF.frameList.frames do
+		if _G["oUF_RUF_" .. RUF.frameList.frames[i]] then
+			for k, v in pairs(RUF.db.profile.unit[strlower(RUF.frameList.frames[i])].Frame.Indicators) do
+				if v ~= "" then
+					RUF:OptionsUpdateIndicators(RUF.frameList.frames[i], nil, nil, k)
 				end
 			end
 		end
 	end
-	for i = 1,#groupFrames do
-		if _G['oUF_RUF_' .. groupFrames[i] .. '1'] then
-			for k,v in pairs(RUF.db.profile.unit[string.lower(groupFrames[i])].Frame.Indicators) do
-				if v ~= '' then
-					RUF:OptionsUpdateIndicators(nil,groupFrames[i],nil,k)
+	for i = 1, #RUF.frameList.groupFrames do
+		if _G["oUF_RUF_" .. RUF.frameList.groupFrames[i] .. "1"] then
+			for k, v in pairs(RUF.db.profile.unit[strlower(RUF.frameList.groupFrames[i])].Frame.Indicators) do
+				if v ~= "" then
+					RUF:OptionsUpdateIndicators(nil, RUF.frameList.groupFrames[i], nil, k)
 				end
 			end
 		end
 	end
-	for i = 1,#headers do
-		if _G['oUF_RUF_' .. headers[i]] then
-			for k,v in pairs(RUF.db.profile.unit[string.lower(headers[i])].Frame.Indicators) do
-				if v ~= '' then
-					RUF:OptionsUpdateIndicators(nil,nil,headers[i],k)
+	for i = 1, #RUF.frameList.headers do
+		if _G["oUF_RUF_" .. RUF.frameList.headers[i]] then
+			for k, v in pairs(RUF.db.profile.unit[strlower(RUF.frameList.headers[i])].Frame.Indicators) do
+				if v ~= "" then
+					RUF:OptionsUpdateIndicators(nil, nil, RUF.frameList.headers[i], k)
 				end
 			end
 		end
 	end
-
 end
 
-function RUF:OptionsUpdateIndicators(singleFrame,groupFrame,header,indicator)
-	if not singleFrame then singleFrame = 'none' end
-	if not groupFrame then groupFrame = 'none' end
-	if not header then header = 'none' end
+function RUF:OptionsUpdateIndicators(singleFrame, groupFrame, header, indicator)
 	if not indicator then return end
+	singleFrame = singleFrame or "none"
+	groupFrame = groupFrame or "none"
+	header = header or "none"
 
-	local function UpdateIndicator(singleFrame,groupFrame,header,indicator,i)
-		local currentUnit,unitFrame,profileReference
+	local function UpdateIndicator(sFrame, gFrame, head, indic, i)
+		local currentUnit, unitFrame, profileReference
 
-		if header ~= 'none' then
-			currentUnit = header .. 'UnitButton' .. i
-			profileReference = RUF.db.profile.unit[string.lower(header)].Frame.Indicators[indicator]
-		elseif groupFrame ~= 'none' then
-			if groupFrame:match('Target') then
-				currentUnit = groupFrame:gsub('Target','') .. i .. 'Target'
+		if head ~= "none" then
+			currentUnit = head .. "UnitButton" .. i
+			profileReference = RUF.db.profile.unit[strlower(head)].Frame.Indicators[indic]
+		elseif gFrame ~= "none" then
+			if gFrame:match("Target") then
+				currentUnit = gFrame:gsub("Target", "") .. i .. "Target"
 			else
-				currentUnit = groupFrame .. i
+				currentUnit = gFrame .. i
 			end
-			profileReference = RUF.db.profile.unit[string.lower(groupFrame)].Frame.Indicators[indicator]
+			profileReference = RUF.db.profile.unit[strlower(gFrame)].Frame.Indicators[indic]
 		else
-			currentUnit = singleFrame
-			profileReference = RUF.db.profile.unit[string.lower(singleFrame)].Frame.Indicators[indicator]
+			currentUnit = sFrame
+			profileReference = RUF.db.profile.unit[strlower(sFrame)].Frame.Indicators[indic]
 		end
-		unitFrame = _G['oUF_RUF_' .. currentUnit]
+
+		unitFrame = _G["oUF_RUF_" .. currentUnit]
 		if not unitFrame then return end
 
-		local currentIndicator = unitFrame[indicator .. 'Indicator']
-		if not currentIndicator then return end -- When refresh profile,ensure we don't try to update indicators that don't exist.
-		currentIndicator:SetFont([[Interface\AddOns\RUF\Media\RUF.ttf]],profileReference.Size,"OUTLINE")
+		local currentIndicator = unitFrame[indic .. "Indicator"]
+		if not currentIndicator then return end
+
+		currentIndicator:SetFont([[Interface\AddOns\RUF\Media\RUF.ttf]], profileReference.Size, "OUTLINE")
 		currentIndicator:ClearAllPoints()
 		currentIndicator:SetPoint(
 			profileReference.Position.AnchorFrom,
-			RUF.GetIndicatorAnchorFrame(unitFrame,unitFrame.frame,indicator), -- Args: Frame, Unit, Element
+			RUF.GetIndicatorAnchorFrame(unitFrame, unitFrame.frame, indic), -- Args: Frame, Unit, Element
 			profileReference.Position.AnchorTo,
 			profileReference.Position.x,
 			profileReference.Position.y
@@ -313,200 +300,189 @@ function RUF:OptionsUpdateIndicators(singleFrame,groupFrame,header,indicator)
 		currentIndicator.Enabled = profileReference.Enabled
 		currentIndicator:ForceUpdate()
 
+		return true
 	end
 
-	if header ~= 'none' then
-		local headerUnits = { _G['oUF_RUF_' .. header]:GetChildren() }
-		headerUnits[#headerUnits] = nil -- Remove moveBG entry
-		for i = 1,#headerUnits do
-			UpdateIndicator(singleFrame,groupFrame,header,indicator,i)
+	if header ~= "none" or groupFrame ~= "none" then
+		for i = 1, 6 do
+			if not UpdateIndicator(singleFrame, groupFrame, header, indicator, i) then
+				break
+			end
 		end
-	elseif groupFrame ~= 'none' then
-		for i = 1,5 do
-			UpdateIndicator(singleFrame,groupFrame,header,indicator,i)
-		end
-	elseif singleFrame ~= 'none' then
-		UpdateIndicator(singleFrame,groupFrame,header,indicator,-1)
+	elseif singleFrame ~= "none" then
+		UpdateIndicator(singleFrame, groupFrame, header, indicator, -1)
 	end
-
 end
 
-function RUF:OptionsAddTexts(singleFrame,groupFrame,header,textName)
-	if not singleFrame then singleFrame = 'none' end
-	if not groupFrame then groupFrame = 'none' end
-	if not header then header = 'none' end
+function RUF:OptionsAddTexts(singleFrame, groupFrame, header, textName)
 	if not textName then return end
+	singleFrame = singleFrame or "none"
+	groupFrame = groupFrame or "none"
+	header = header or "none"
 
-	local function AddText(singleFrame,groupFrame,header,textName,i)
-		local currentUnit,unitFrame
+	local function AddText(sFrame, gFrame, head, tName, i)
+		local currentUnit, unitFrame
 
-		if header ~= 'none' then
-			currentUnit = header .. 'UnitButton' .. i
-		elseif groupFrame ~= 'none' then
-			if groupFrame:match('Target') then
-				currentUnit = groupFrame:gsub('Target','') .. i .. 'Target'
+		if head ~= "none" then
+			currentUnit = head .. "UnitButton" .. i
+		elseif gFrame ~= "none" then
+			if gFrame:match("Target") then
+				currentUnit = gFrame:gsub("Target", "") .. i .. "Target"
 			else
-				currentUnit = groupFrame .. i
+				currentUnit = gFrame .. i
 			end
 		else
-			currentUnit = singleFrame
+			currentUnit = sFrame
 		end
-		unitFrame = _G['oUF_RUF_' .. currentUnit]
-		if not unitFrame then return end
-
-		RUF.CreateTextArea(unitFrame,unitFrame.frame,textName) -- Args: self,unit,textName
-		RUF.SetTextPoints(unitFrame,unitFrame.frame,textName)
+		unitFrame = _G["oUF_RUF_" .. currentUnit]
+		if unitFrame then
+			RUF.CreateTextArea(unitFrame, unitFrame.frame, tName) -- Args: self,unit,tName
+			RUF.SetTextPoints(unitFrame, unitFrame.frame, tName)
+			return true
+		end
+		return false
 	end
 
-	if header ~= 'none' then
-		local headerUnits = { _G['oUF_RUF_' .. header]:GetChildren() }
-		headerUnits[#headerUnits] = nil -- Remove moveBG entry
-		for i = 1,#headerUnits do
-			AddText(singleFrame,groupFrame,header,textName,i)
+	if header ~= "none" or groupFrame ~= "none" then
+		for i = 1, 6 do
+			if not AddText(singleFrame, groupFrame, header, textName, i) then
+				break
+			end
 		end
-	elseif groupFrame ~= 'none' then
-		for i = 1,5 do
-			AddText(singleFrame,groupFrame,header,textName,i)
-		end
-	elseif singleFrame ~= 'none' then
-		AddText(singleFrame,groupFrame,header,textName,-1)
+	elseif singleFrame ~= "none" then
+		AddText(singleFrame, groupFrame, header, textName, -1)
 	end
-
 end
 
-function RUF:OptionsDisableTexts(singleFrame,groupFrame,header,textName)
+function RUF:OptionsDisableTexts(singleFrame, groupFrame, header, textName)
+	if not textName then return end
+	singleFrame = singleFrame or "none"
+	groupFrame = groupFrame or "none"
+	header = header or "none"
 
-	local function RemoveText(singleFrame,groupFrame,header,textName,i)
-		local currentUnit,unitFrame,profileReference
+	local function RemoveText(sFrame, gFrame, head, tName, i)
+		local currentUnit, unitFrame, profileReference
 
-		if header ~= 'none' then
-			currentUnit = header .. 'UnitButton' .. i
-			profileReference = RUF.db.profile.unit[string.lower(header)].Frame.Text[textName]
-		elseif groupFrame ~= 'none' then
-			if groupFrame:match('Target') then
-				currentUnit = groupFrame:gsub('Target','') .. i .. 'Target'
+		if head ~= "none" then
+			currentUnit = head .. "UnitButton" .. i
+			profileReference = RUF.db.profile.unit[strlower(head)].Frame.Text[tName]
+		elseif gFrame ~= "none" then
+			if gFrame:match("Target") then
+				currentUnit = gFrame:gsub("Target", "") .. i .. "Target"
 			else
-				currentUnit = groupFrame .. i
+				currentUnit = gFrame .. i
 			end
-			profileReference = RUF.db.profile.unit[string.lower(groupFrame)].Frame.Text[textName]
+			profileReference = RUF.db.profile.unit[strlower(gFrame)].Frame.Text[tName]
 		else
-			currentUnit = singleFrame
-			profileReference = RUF.db.profile.unit[string.lower(singleFrame)].Frame.Text[textName]
+			currentUnit = sFrame
+			profileReference = RUF.db.profile.unit[strlower(sFrame)].Frame.Text[tName]
 		end
-		unitFrame = _G['oUF_RUF_' .. currentUnit]
+		unitFrame = _G["oUF_RUF_" .. currentUnit]
 		if not unitFrame then return end
 
-		if profileReference == 'DISABLED' then
+		if profileReference == "DISABLED" then
 			if unitFrame.Text[textName] then
 				unitFrame.Text[textName]:Hide()
 			end
 			unitFrame:Untag(unitFrame.Text[textName])
 		end
-
+		return true
 	end
 
-	if header ~= 'none' then
-		local headerUnits = { _G['oUF_RUF_' .. header]:GetChildren() }
-		headerUnits[#headerUnits] = nil -- Remove moveBG entry
-		for i = 1,#headerUnits do
-			RemoveText(singleFrame,groupFrame,header,textName,i)
+	if header ~= "none" or groupFrame ~= "none" then
+		for i = 1, 6 do
+			if not RemoveText(singleFrame, groupFrame, header, textName, i) then
+				break
+			end
 		end
-	elseif groupFrame ~= 'none' then
-		for i = 1,5 do
-			RemoveText(singleFrame,groupFrame,header,textName,i)
-		end
-	elseif singleFrame ~= 'none' then
-		RemoveText(singleFrame,groupFrame,header,textName,-1)
+	elseif singleFrame ~= "none" then
+		RemoveText(singleFrame, groupFrame, header, textName, -1)
 	end
-
 end
 
 function RUF:OptionsUpdateAllTexts()
-	local frames = RUF.frameList.frames
-	local groupFrames = RUF.frameList.groupFrames
-	local headers = RUF.frameList.headers
+	for i = 1, #RUF.frameList.frames do
+		if _G["oUF_RUF_" .. RUF.frameList.frames[i]] then
+			RUF.RefreshTextElements(RUF.frameList.frames[i], nil, nil, -1)
+			for k, v in pairs(RUF.db.profile.unit[strlower(RUF.frameList.frames[i])].Frame.Text) do
+				if v ~= "" then
+					RUF:OptionsUpdateTexts(RUF.frameList.frames[i], nil, nil, k)
+				end
+			end
+		end
+	end
 
-	for i = 1,#frames do
-		if _G['oUF_RUF_' .. frames[i]] then
-			RUF.RefreshTextElements(frames[i],nil,nil,-1)
-			for k,v in pairs(RUF.db.profile.unit[string.lower(frames[i])].Frame.Text) do
-				if v ~= '' then
-					RUF:OptionsUpdateTexts(frames[i],nil,nil,k)
+	for i = 1, #RUF.frameList.groupFrames do
+		if _G["oUF_RUF_" .. RUF.frameList.groupFrames[i] .. "1"] then
+			for groupNum = 1, 5 do
+				if _G["oUF_RUF_" .. RUF.frameList.groupFrames[i] .. i] then
+					RUF.RefreshTextElements(nil, RUF.frameList.groupFrames[i], nil, groupNum)
+				end
+			end
+			for k, v in pairs(RUF.db.profile.unit[strlower(RUF.frameList.groupFrames[i])].Frame.Text) do
+				if v ~= "" then
+					RUF:OptionsUpdateTexts(nil, RUF.frameList.groupFrames[i], nil, k)
 				end
 			end
 		end
 	end
-	for i = 1,#groupFrames do
-		if _G['oUF_RUF_' .. groupFrames[i] .. '1'] then
-			for groupNum = 1,5 do
-				if _G['oUF_RUF_' .. groupFrames[i] .. i] then
-					RUF.RefreshTextElements(nil,groupFrames[i],nil,groupNum)
-				end
-			end
-			for k,v in pairs(RUF.db.profile.unit[string.lower(groupFrames[i])].Frame.Text) do
-				if v ~= '' then
-					RUF:OptionsUpdateTexts(nil,groupFrames[i],nil,k)
-				end
-			end
-		end
-	end
-	for i = 1,#headers do
-		if _G['oUF_RUF_' .. headers[i]] then
-			local headerUnits = { _G['oUF_RUF_' .. headers[i]]:GetChildren() }
+
+	for i = 1, #RUF.frameList.headers do
+		if _G["oUF_RUF_" .. RUF.frameList.headers[i]] then
+			local headerUnits = {_G["oUF_RUF_" .. RUF.frameList.headers[i]]:GetChildren()}
 			headerUnits[#headerUnits] = nil -- Remove MoveBG from list
-			for groupNum = 1,#headerUnits do
-				RUF.RefreshTextElements(nil,nil,headers[i],groupNum)
+			for groupNum = 1, #headerUnits do
+				RUF.RefreshTextElements(nil, nil, RUF.frameList.headers[i], groupNum)
 			end
-			for k,v in pairs(RUF.db.profile.unit[string.lower(headers[i])].Frame.Text) do
-				if v ~= '' then
-					RUF:OptionsUpdateTexts(nil,nil,headers[i],k)
+			for k, v in pairs(RUF.db.profile.unit[strlower(RUF.frameList.headers[i])].Frame.Text) do
+				if v ~= "" then
+					RUF:OptionsUpdateTexts(nil, nil, RUF.frameList.headers[i], k)
 				end
 			end
 		end
 	end
-
 end
 
-function RUF:OptionsUpdateTexts(singleFrame,groupFrame,header,text)
-	if not singleFrame then singleFrame = 'none' end
-	if not groupFrame then groupFrame = 'none' end
-	if not header then header = 'none' end
+function RUF:OptionsUpdateTexts(singleFrame, groupFrame, header, text)
 	if not text then return end
+	singleFrame = singleFrame or "none"
+	groupFrame = groupFrame or "none"
+	header = header or "none"
 
-	local function UpdateText(singleFrame,groupFrame,header,text,i)
-		local currentUnit,unitFrame,profileReference
+	local function UpdateText(sFrame, gFrame, head, text, i)
+		local currentUnit, unitFrame, profileReference
 
-		if header ~= 'none' then
-			currentUnit = header .. 'UnitButton' .. i
-			profileReference = RUF.db.profile.unit[string.lower(header)].Frame.Text[text]
+		if head ~= "none" then
+			currentUnit = head .. "UnitButton" .. i
+			profileReference = RUF.db.profile.unit[strlower(head)].Frame.Text[text]
 			if not profileReference.Position.AnchorTo then
-				RUF.db.profile.unit[string.lower(header)].Frame.Text[text].Position.AnchorTo = profileReference.Position.Anchor
+				RUF.db.profile.unit[strlower(head)].Frame.Text[text].Position.AnchorTo = profileReference.Position.Anchor
 			end
-		elseif groupFrame ~= 'none' then
-			if groupFrame:match('Target') then
-				currentUnit = groupFrame:gsub('Target','') .. i .. 'Target'
+		elseif gFrame ~= "none" then
+			if gFrame:match("Target") then
+				currentUnit = gFrame:gsub("Target", "") .. i .. "Target"
 			else
-				currentUnit = groupFrame .. i
+				currentUnit = gFrame .. i
 			end
-			profileReference = RUF.db.profile.unit[string.lower(groupFrame)].Frame.Text[text]
+			profileReference = RUF.db.profile.unit[strlower(gFrame)].Frame.Text[text]
 			if not profileReference.Position.AnchorTo then
-				RUF.db.profile.unit[string.lower(groupFrame)].Frame.Text[text].Position.AnchorTo = profileReference.Position.Anchor
+				RUF.db.profile.unit[strlower(gFrame)].Frame.Text[text].Position.AnchorTo = profileReference.Position.Anchor
 			end
 		else
-			currentUnit = singleFrame
-			profileReference = RUF.db.profile.unit[string.lower(singleFrame)].Frame.Text[text]
+			currentUnit = sFrame
+			profileReference = RUF.db.profile.unit[strlower(sFrame)].Frame.Text[text]
 			if not profileReference.Position.AnchorTo then
-				RUF.db.profile.unit[string.lower(singleFrame)].Frame.Text[text].Position.AnchorTo = profileReference.Position.Anchor
+				RUF.db.profile.unit[strlower(sFrame)].Frame.Text[text].Position.AnchorTo = profileReference.Position.Anchor
 			end
 		end
-		unitFrame = _G['oUF_RUF_' .. currentUnit]
+		unitFrame = _G["oUF_RUF_" .. currentUnit]
 		if not unitFrame or not unitFrame.Text then return end
 
-		local currentText = unitFrame.Text[text].String
-		if not currentText then return end -- When refresh profile,ensure we don't try to update indicators that don't exist.
+		local currentText = unitFrame.Text[text] and unitFrame.Text[text].String
+		if not currentText then return end
 
-		currentText:SetFont(RUF:MediaFetch('font',profileReference.Font),profileReference.Size,profileReference.Outline)
-		currentText:SetShadowColor(0,0,0,profileReference.Shadow)
+		currentText:SetFont(RUF:MediaFetch("font", profileReference.Font), profileReference.Size, profileReference.Outline)
+		currentText:SetShadowColor(0, 0, 0, profileReference.Shadow)
 		currentText:ClearAllPoints()
 		-- currentText:SetHeight(5) -- FIXME currentText:GetLineHeight())
 		local anchorFrame
@@ -518,7 +494,7 @@ function RUF:OptionsUpdateTexts(singleFrame,groupFrame,header,text)
 		if profileReference.CustomWidth then
 			currentText:SetWordWrap(profileReference.WordWrap or false)
 			currentText:SetWidth(profileReference.Width or 0)
-			currentText:SetJustifyH(profileReference.Justify or 'CENTER')
+			currentText:SetJustifyH(profileReference.Justify or "CENTER")
 			currentText:SetHeight(0)
 		else
 			currentText:SetWidth(0)
@@ -531,131 +507,126 @@ function RUF:OptionsUpdateTexts(singleFrame,groupFrame,header,text)
 			profileReference.Position.y
 		)
 		if profileReference.Enabled then
-			unitFrame:Tag(currentText,profileReference.Tag)
+			unitFrame:Tag(currentText, profileReference.Tag)
 			currentText:UpdateTag()
 			currentText:Show()
 		else
 			unitFrame:Untag(currentText)
-			currentText:SetText('')
+			currentText:SetText("")
 			currentText:Hide()
 		end
+
+		return true
 	end
 
-	if header ~= 'none' then
-		local headerUnits = { _G['oUF_RUF_' .. header]:GetChildren() }
-		headerUnits[#headerUnits] = nil -- Remove moveBG entry
-		for i = 1,#headerUnits do
-			UpdateText(singleFrame,groupFrame,header,text,i)
-		end
-	elseif groupFrame ~= 'none' then
-		for i = 1,5 do
-			UpdateText(singleFrame,groupFrame,header,text,i)
-		end
-	elseif singleFrame ~= 'none' then
-		UpdateText(singleFrame,groupFrame,header,text,-1)
-	end
-
-end
-
-function RUF:OptionsUpdatePortraits(singleFrame,groupFrame,header)
-	if not singleFrame then singleFrame = 'none' end
-	if not groupFrame then groupFrame = 'none' end
-	if not header then header = 'none' end
-
-	local function UpdatePortrait(singleFrame,groupFrame,header,i)
-		local currentUnit,unitFrame,profileReference
-
-		if header ~= 'none' then
-			currentUnit = header .. 'UnitButton' .. i
-			profileReference = RUF.db.profile.unit[string.lower(header)].Frame.Portrait
-		elseif groupFrame ~= 'none' then
-			if groupFrame:match('Target') then
-				currentUnit = groupFrame:gsub('Target','') .. i .. 'Target'
-			else
-				currentUnit = groupFrame .. i
+	if header ~= "none" or groupFrame ~= "none" then
+		for i = 1, 6 do
+			if not UpdateText(singleFrame, groupFrame, header, text, i) then
+				break
 			end
-			profileReference = RUF.db.profile.unit[string.lower(groupFrame)].Frame.Portrait
-		else
-			currentUnit = singleFrame
-			profileReference = RUF.db.profile.unit[string.lower(singleFrame)].Frame.Portrait
 		end
-		unitFrame = _G['oUF_RUF_' .. currentUnit]
-		if unitFrame and unitFrame.Portrait then
-			unitFrame.Portrait.Enabled = profileReference.Enabled
-			unitFrame.Portrait.Cutaway = profileReference.Cutaway
-
-			unitFrame.Portrait:UpdateOptions()
-			unitFrame.Portrait:ForceUpdate()
-		end
-	end
-
-	if header ~= 'none' then
-		local headerUnits = { _G['oUF_RUF_' .. header]:GetChildren() }
-		headerUnits[#headerUnits] = nil -- Remove moveBG entry
-		for i = 1,#headerUnits do
-			UpdatePortrait(singleFrame,groupFrame,header,i)
-		end
-	elseif groupFrame ~= 'none' then
-		for i = 1,5 do
-			UpdatePortrait(singleFrame,groupFrame,header,i)
-		end
-	elseif singleFrame ~= 'none' then
-		UpdatePortrait(singleFrame,groupFrame,header,-1)
+	elseif singleFrame ~= "none" then
+		UpdateText(singleFrame, groupFrame, header, text, -1)
 	end
 end
 
-function RUF:OptionsUpdateFrame(singleFrame,groupFrame,header)
-	if not singleFrame then singleFrame = 'none' end
-	if not groupFrame then groupFrame = 'none' end
-	if not header then header = 'none' end
+function RUF:OptionsUpdatePortraits(singleFrame, groupFrame, header)
+	singleFrame = singleFrame or "none"
+	groupFrame = groupFrame or "none"
+	header = header or "none"
 
-	local function UpdateFrame(singleFrame,groupFrame,header,i)
-		local currentUnit,unitFrame,profileReference
+	local function UpdatePortrait(sFrame, gFrame, head, i)
+		local currentUnit, unitFrame, profileReference
 
-		if header ~= 'none' then
-			currentUnit = header .. 'UnitButton' .. i
-			profileReference = RUF.db.profile.unit[string.lower(header)]
-		elseif groupFrame ~= 'none' then
-			if groupFrame:match('Target') then
-				currentUnit = groupFrame:gsub('Target','') .. i .. 'Target'
+		if head ~= "none" then
+			currentUnit = head .. "UnitButton" .. i
+			profileReference = RUF.db.profile.unit[strlower(head)].Frame.Portrait
+		elseif gFrame ~= "none" then
+			if gFrame:match("Target") then
+				currentUnit = gFrame:gsub("Target", "") .. i .. "Target"
 			else
-				currentUnit = groupFrame .. i
+				currentUnit = gFrame .. i
 			end
-			profileReference = RUF.db.profile.unit[string.lower(groupFrame)]
+			profileReference = RUF.db.profile.unit[strlower(gFrame)].Frame.Portrait
 		else
-			currentUnit = singleFrame
-			profileReference = RUF.db.profile.unit[string.lower(singleFrame)]
+			currentUnit = sFrame
+			profileReference = RUF.db.profile.unit[strlower(sFrame)].Frame.Portrait
 		end
-		unitFrame = _G['oUF_RUF_' .. currentUnit]
+		unitFrame = _G["oUF_RUF_" .. currentUnit]
+		if not unitFrame or not unitFrame.Portrait then return end
+
+		unitFrame.Portrait.Enabled = profileReference.Enabled
+		unitFrame.Portrait.Cutaway = profileReference.Cutaway
+
+		unitFrame.Portrait:UpdateOptions()
+		unitFrame.Portrait:ForceUpdate()
+
+		return true
+	end
+
+	if header ~= "none" or groupFrame ~= "none" then
+		for i = 1, 6 do
+			if not UpdatePortrait(singleFrame, groupFrame, header, i) then
+				break
+			end
+		end
+	elseif singleFrame ~= "none" then
+		UpdatePortrait(singleFrame, groupFrame, header, -1)
+	end
+end
+
+function RUF:OptionsUpdateFrame(singleFrame, groupFrame, header)
+	singleFrame = singleFrame or "none"
+	groupFrame = groupFrame or "none"
+	header = header or "none"
+
+	local function UpdateFrame(sFrame, gFrame, head, i)
+		local currentUnit, unitFrame, profileReference
+
+		if head ~= "none" then
+			currentUnit = head .. "UnitButton" .. i
+			profileReference = RUF.db.profile.unit[strlower(head)]
+		elseif gFrame ~= "none" then
+			if gFrame:match("Target") then
+				currentUnit = gFrame:gsub("Target", "") .. i .. "Target"
+			else
+				currentUnit = gFrame .. i
+			end
+			profileReference = RUF.db.profile.unit[strlower(gFrame)]
+		else
+			currentUnit = sFrame
+			profileReference = RUF.db.profile.unit[strlower(sFrame)]
+		end
+		unitFrame = _G["oUF_RUF_" .. currentUnit]
 		if not unitFrame then return end
 
-		if header == 'none' then
+		if head == "none" then
 			if profileReference.Enabled == false then
 				unitFrame:Disable()
-				if groupFrame == 'Arena' then
-					unitFrame:SetAttribute('oUF-enableArenaPrep', false)
+				if gFrame == "Arena" then
+					unitFrame:SetAttribute("oUF-enableArenaPrep", false)
 				end
 			else
 				unitFrame:Enable()
-				if groupFrame == 'Arena' then
-					unitFrame:SetAttribute('oUF-enableArenaPrep', true)
+				if gFrame == "Arena" then
+					unitFrame:SetAttribute("oUF-enableArenaPrep", true)
 				end
 			end
 		end
 
-		if singleFrame == 'Player' then
+		if sFrame == "Player" then
 			if profileReference.toggleForVehicle == true then
-				unitFrame:SetAttribute('toggleForVehicle', profileReference.toggleForVehicle or false)
-				if _G['oUF_RUF_Pet'] then
-					_G['oUF_RUF_Pet']:SetAttribute('toggleForVehicle', profileReference.toggleForVehicle or false)
+				unitFrame:SetAttribute("toggleForVehicle", profileReference.toggleForVehicle or false)
+				if _G["oUF_RUF_Pet"] then
+					_G["oUF_RUF_Pet"]:SetAttribute("toggleForVehicle", profileReference.toggleForVehicle or false)
 				end
 			end
 		end
 
 		if profileReference.Frame.RangeFading.Enabled == true then
-			if singleFrame ~= 'Player' then
+			if sFrame ~= "Player" then
 				if unitFrame.EnableElement then
-					unitFrame:EnableElement('RangeCheck')
+					unitFrame:EnableElement("RangeCheck")
 					unitFrame.RangeCheck = unitFrame.RangeCheckor or {}
 					unitFrame.RangeCheck.enabled = profileReference.Frame.RangeFading.Enabled
 					unitFrame.RangeCheck.insideAlpha = 1
@@ -663,7 +634,7 @@ function RUF:OptionsUpdateFrame(singleFrame,groupFrame,header)
 				end
 			end
 		elseif unitFrame.DisableElement then
-			unitFrame:DisableElement('RangeCheck')
+			unitFrame:DisableElement("RangeCheck")
 		end
 
 		if unitFrame:GetWidth() ~= profileReference.Frame.Size.Width then
@@ -680,52 +651,45 @@ function RUF:OptionsUpdateFrame(singleFrame,groupFrame,header)
 		end
 
 		if i == -1 then
-			RUF:UpdateFramePosition(unitFrame,singleFrame,groupFrame,header,i)
+			RUF:UpdateFramePosition(unitFrame, sFrame, gFrame, head, i)
 		end
 
-		if groupFrame ~= 'none' then
-			local anchorFrom
-			if profileReference.Frame.Position.growth == "BOTTOM" then
-				anchorFrom = "TOP"
-			elseif profileReference.Frame.Position.growth == "TOP" then
-				anchorFrom = "BOTTOM"
-			end
+		if gFrame ~= "none" then
 			if i == 1 then
-				RUF:UpdateFramePosition(unitFrame,singleFrame,groupFrame,header,i)
-			else
-				RUF:UpdateFramePosition(unitFrame,singleFrame,groupFrame,header,i,anchorFrom,_G['oUF_RUF_' .. groupFrame .. i-1])
+				RUF:UpdateFramePosition(unitFrame, sFrame, gFrame, head, i)
+			elseif profileReference.Frame.Position.growth == "BOTTOM" then
+				RUF:UpdateFramePosition(unitFrame, sFrame, gFrame, head, i, "TOP", _G["oUF_RUF_" .. gFrame .. i - 1])
+			elseif profileReference.Frame.Position.growth == "TOP" then
+				RUF:UpdateFramePosition(unitFrame, sFrame, gFrame, head, i, "BOTTOM", _G["oUF_RUF_" .. gFrame .. i - 1])
 			end
 
-			if groupFrame == 'PartyPet' or groupFrame == 'PartyTarget' and not RUF.db.global.TestMode == true then
-				local unitType = string.gsub(groupFrame, 'Party', '')
-				local prefix,suffix
-				if groupFrame == 'PartyPet' then
-					prefix = 'pet'
-					suffix = ''
-				elseif groupFrame == 'PartyTarget' then
-					prefix = ''
-					suffix = 'target'
+			if gFrame == "PartyPet" or gFrame == "PartyTarget" and not RUF.db.global.TestMode == true then
+				local unitType = strgsub(gFrame, "Party", "")
+				local prefix, suffix
+				if gFrame == "PartyPet" then
+					prefix = "pet"
+					suffix = ""
+				elseif gFrame == "PartyTarget" then
+					prefix = ""
+					suffix = "target"
 				end
 				if RUF.db.profile.unit.party.showPlayer then
 					if i == 1 then
-						unitFrame:SetAttribute('unit', unitType)
+						unitFrame:SetAttribute("unit", unitType)
 						unitFrame.unit = unitType
 					else
-						unitFrame:SetAttribute('unit', 'party' .. prefix .. i-1 .. suffix)
-						unitFrame.unit = 'party' .. prefix .. i-1 .. suffix
+						unitFrame:SetAttribute("unit", "party" .. prefix .. i - 1 .. suffix)
+						unitFrame.unit = "party" .. prefix .. i - 1 .. suffix
 					end
 				else
-					unitFrame:SetAttribute('unit', 'party' .. prefix .. i .. suffix)
-					unitFrame.unit = 'partypet' .. prefix .. i .. suffix
+					unitFrame:SetAttribute("unit", "party" .. prefix .. i .. suffix)
+					unitFrame.unit = "partypet" .. prefix .. i .. suffix
 				end
 			end
-
-
-
 		end
 
-		if header ~= 'none' then
-			local headerFrame = _G['oUF_RUF_' .. header]
+		if head ~= "none" then
+			local headerFrame = _G["oUF_RUF_" .. head]
 			local anchorFrom
 			if profileReference.Frame.Position.growth == "BOTTOM" then
 				anchorFrom = "TOP"
@@ -735,155 +699,146 @@ function RUF:OptionsUpdateFrame(singleFrame,groupFrame,header)
 
 			local growthDirection
 			if profileReference.Frame.Position.growthDirection then
-				if profileReference.Frame.Position.growthDirection == 'VERTICAL' then
+				if profileReference.Frame.Position.growthDirection == "VERTICAL" then
 					growthDirection = 5
-				elseif profileReference.Frame.Position.growthDirection == 'HORIZONTAL' then
+				elseif profileReference.Frame.Position.growthDirection == "HORIZONTAL" then
 					growthDirection = 1
 				end
 			end
 
-			headerFrame:SetAttribute('unitsPerColumn', growthDirection)
-			headerFrame:SetAttribute('columnSpacing', profileReference.Frame.Position.offsetx)
-			headerFrame:SetAttribute('columnAnchorPoint', profileReference.Frame.Position.growthHoriz)
+			headerFrame:SetAttribute("unitsPerColumn", growthDirection)
+			headerFrame:SetAttribute("columnSpacing", profileReference.Frame.Position.offsetx)
+			headerFrame:SetAttribute("columnAnchorPoint", profileReference.Frame.Position.growthHoriz)
 
-			headerFrame:SetAttribute("Point",anchorFrom)
-			headerFrame:SetAttribute('yOffset',profileReference.Frame.Position.offsety)
-			headerFrame:SetAttribute('showPlayer', RUF.db.profile.unit.party.showPlayer)
+			headerFrame:SetAttribute("Point", anchorFrom)
+			headerFrame:SetAttribute("yOffset", profileReference.Frame.Position.offsety)
+			headerFrame:SetAttribute("showPlayer", RUF.db.profile.unit.party.showPlayer)
 
-			RUF:UpdateFramePosition(headerFrame,singleFrame,groupFrame,header)
+			RUF:UpdateFramePosition(headerFrame, sFrame, gFrame, head)
 			headerFrame.Enabled = profileReference.Enabled
 
 			if RUF.db.global.TestMode == true then
 				unitFrame:Disable()
 				if profileReference.Enabled == false then
-					headerFrame.visibility = 'hide'
-					RegisterStateDriver(headerFrame, 'visibility',"hide")
+					headerFrame.visibility = "hide"
+					RegisterStateDriver(headerFrame, "visibility", "hide")
 					unitFrame:Hide()
 				else
-					headerFrame.visibility = 'show'
-					RegisterStateDriver(headerFrame, 'visibility',"show")
+					headerFrame.visibility = "show"
+					RegisterStateDriver(headerFrame, "visibility", "show")
 					unitFrame:Show()
 				end
 			else
 				if profileReference.Enabled == false then
 					unitFrame:Disable()
-					headerFrame.visibility = 'hide'
-					RegisterStateDriver(headerFrame, 'visibility',"hide")
+					headerFrame.visibility = "hide"
+					RegisterStateDriver(headerFrame, "visibility", "hide")
 				else
 					unitFrame:Enable()
-					local showIn = '[group:party,nogroup:raid]show;hide'
+					local showIn = "[group:party,nogroup:raid]show;hide"
 					if profileReference.showRaid then
-						showIn = '[group:party,nogroup:raid]show;[group:raid]show;hide'
+						showIn = "[group:party,nogroup:raid]show;[group:raid]show;hide"
 					end
 					if profileReference.showArena then
-						showIn = '[@arena1,exists]show;[@arena2,exists]show;[@arena3,exists]show;' .. showIn
+						showIn = "[@arena1,exists]show;[@arena2,exists]show;[@arena3,exists]show;" .. showIn
 					end
 					headerFrame.visibility = showIn
-					RegisterStateDriver(headerFrame, 'visibility',headerFrame.visibility)
+					RegisterStateDriver(headerFrame, "visibility", headerFrame.visibility)
 				end
 			end
 			unitFrame:ClearAllPoints()
-
 		end
 
+		return true
 	end
 
-	if header ~= 'none' then
-		local headerUnits = { _G['oUF_RUF_' .. header]:GetChildren() }
-		headerUnits[#headerUnits] = nil -- Remove moveBG entry
-		for i = 1,#headerUnits do
-			UpdateFrame(singleFrame,groupFrame,header,i)
+	if header ~= "none" or groupFrame ~= "none" then
+		for i = 1, 6 do
+			if not UpdateFrame(singleFrame, groupFrame, header, i) then
+				break
+			end
 		end
-	elseif groupFrame ~= 'none' then
-		for i = 1,5 do
-			UpdateFrame(singleFrame,groupFrame,header,i)
-		end
-	elseif singleFrame ~= 'none' then
-		UpdateFrame(singleFrame,groupFrame,header,-1)
+	elseif singleFrame ~= "none" then
+		UpdateFrame(singleFrame, groupFrame, header, -1)
 	end
-
 end
 
 function RUF:OptionsUpdateAllBars()
-	local frames = RUF.frameList.frames
-	local groupFrames = RUF.frameList.groupFrames
-	local headers = RUF.frameList.headers
-
-	for i = 1,#frames do
-		if _G['oUF_RUF_' .. frames[i]] then
-			RUF:OptionsUpdateBars(frames[i],nil,nil,'Health')
-			RUF:OptionsUpdateBars(frames[i],nil,nil,'Power')
-			RUF:OptionsUpdateBars(frames[i],nil,nil,'HealPrediction')
-			RUF:OptionsUpdateBars(frames[i],nil,nil,'Absorb')
+	for i = 1, #RUF.frameList.frames do
+		if _G["oUF_RUF_" .. RUF.frameList.frames[i]] then
+			RUF:OptionsUpdateBars(RUF.frameList.frames[i], nil, nil, "Health")
+			RUF:OptionsUpdateBars(RUF.frameList.frames[i], nil, nil, "Power")
+			RUF:OptionsUpdateBars(RUF.frameList.frames[i], nil, nil, "HealPrediction")
+			RUF:OptionsUpdateBars(RUF.frameList.frames[i], nil, nil, "Absorb")
 			if i == 1 then
-				RUF:OptionsUpdateBars(frames[i],nil,nil,'Class')
+				RUF:OptionsUpdateBars(RUF.frameList.frames[i], nil, nil, "Class")
 			end
 		end
 	end
-	for i = 1,#groupFrames do
-		RUF:OptionsUpdateBars(nil,groupFrames[i],nil,'Health')
-		RUF:OptionsUpdateBars(nil,groupFrames[i],nil,'Power')
-		RUF:OptionsUpdateBars(nil,groupFrames[i],nil,'HealPrediction')
-		RUF:OptionsUpdateBars(nil,groupFrames[i],nil,'Absorb')
+
+	for i = 1, #RUF.frameList.groupFrames do
+		RUF:OptionsUpdateBars(nil, RUF.frameList.groupFrames[i], nil, "Health")
+		RUF:OptionsUpdateBars(nil, RUF.frameList.groupFrames[i], nil, "Power")
+		RUF:OptionsUpdateBars(nil, RUF.frameList.groupFrames[i], nil, "HealPrediction")
+		RUF:OptionsUpdateBars(nil, RUF.frameList.groupFrames[i], nil, "Absorb")
 	end
-	for i = 1,#headers do
-		RUF:OptionsUpdateBars(nil,nil,headers[i],'Health')
-		RUF:OptionsUpdateBars(nil,nil,headers[i],'Power')
-		RUF:OptionsUpdateBars(nil,nil,headers[i],'HealPrediction')
-		RUF:OptionsUpdateBars(nil,nil,headers[i],'Absorb')
+
+	for i = 1, #RUF.frameList.headers do
+		RUF:OptionsUpdateBars(nil, nil, RUF.frameList.headers[i], "Health")
+		RUF:OptionsUpdateBars(nil, nil, RUF.frameList.headers[i], "Power")
+		RUF:OptionsUpdateBars(nil, nil, RUF.frameList.headers[i], "HealPrediction")
+		RUF:OptionsUpdateBars(nil, nil, RUF.frameList.headers[i], "Absorb")
 	end
 
 	RUF:OptionsUpdateCastbars()
-
 end
 
-function RUF:OptionsUpdateBars(singleFrame,groupFrame,header,bar)
-	if not singleFrame then singleFrame = 'none' end
-	if not groupFrame then groupFrame = 'none' end
-	if not header then header = 'none' end
+function RUF:OptionsUpdateBars(singleFrame, groupFrame, header, bar)
 	if not bar then return end
+	singleFrame = singleFrame or "none"
+	groupFrame = groupFrame or "none"
+	header = header or "none"
 
-	local function UpdateBar(singleFrame,groupFrame,header,bar,i)
-		local currentUnit,unitFrame,profileReference
+	local function UpdateBar(sFrame, gFrame, head, bar, i)
+		local currentUnit, unitFrame, profileReference
 
-		if header ~= 'none' then
-			currentUnit = header .. 'UnitButton' .. i
-			profileReference = RUF.db.profile.unit[string.lower(header)].Frame.Bars[bar]
-		elseif groupFrame ~= 'none' then
-			if groupFrame:match('Target') then
-				currentUnit = groupFrame:gsub('Target','') .. i .. 'Target'
+		if head ~= "none" then
+			currentUnit = head .. "UnitButton" .. i
+			profileReference = RUF.db.profile.unit[strlower(head)].Frame.Bars[bar]
+		elseif gFrame ~= "none" then
+			if gFrame:match("Target") then
+				currentUnit = gFrame:gsub("Target", "") .. i .. "Target"
 			else
-				currentUnit = groupFrame .. i
+				currentUnit = gFrame .. i
 			end
-			profileReference = RUF.db.profile.unit[string.lower(groupFrame)].Frame.Bars[bar]
+			profileReference = RUF.db.profile.unit[strlower(gFrame)].Frame.Bars[bar]
 		else
-			currentUnit = singleFrame
-			profileReference = RUF.db.profile.unit[string.lower(singleFrame)].Frame.Bars[bar]
+			currentUnit = sFrame
+			profileReference = RUF.db.profile.unit[strlower(sFrame)].Frame.Bars[bar]
 		end
-		unitFrame = _G['oUF_RUF_' .. currentUnit]
-		if not unitFrame then return end
+		unitFrame = _G["oUF_RUF_" .. currentUnit]
+		if not unitFrame or not unitFrame[bar] then return end
 
-		if not unitFrame[bar] then return end
 		unitFrame[bar].UpdateOptions(unitFrame[bar])
 		unitFrame[bar]:ForceUpdate()
 		if bar then
 			unitFrame[bar].UpdateOptions(unitFrame[bar])
 		end
-		if bar == 'Power' or bar == 'Absorb' then
-				if profileReference.Enabled == 0 then
-					unitFrame:DisableElement(bar)
-				elseif profileReference.Enabled == 1 then
-					unitFrame[bar].hideAtZero = true
-					unitFrame:DisableElement(bar)
-					unitFrame:EnableElement(bar)
-					unitFrame[bar]:ForceUpdate()
-				else
-					unitFrame[bar].hideAtZero = false
-					unitFrame:DisableElement(bar)
-					unitFrame:EnableElement(bar)
-					unitFrame[bar]:ForceUpdate()
-				end
-		elseif bar == 'Class' then
+		if bar == "Power" or bar == "Absorb" then
+			if profileReference.Enabled == 0 then
+				unitFrame:DisableElement(bar)
+			elseif profileReference.Enabled == 1 then
+				unitFrame[bar].hideAtZero = true
+				unitFrame:DisableElement(bar)
+				unitFrame:EnableElement(bar)
+				unitFrame[bar]:ForceUpdate()
+			else
+				unitFrame[bar].hideAtZero = false
+				unitFrame:DisableElement(bar)
+				unitFrame:EnableElement(bar)
+				unitFrame[bar]:ForceUpdate()
+			end
+		elseif bar == "Class" then
 			if profileReference.Enabled == true then
 				unitFrame:EnableElement(bar)
 				if unitFrame[bar] then
@@ -893,48 +848,44 @@ function RUF:OptionsUpdateBars(singleFrame,groupFrame,header,bar)
 				unitFrame:DisableElement(bar)
 			end
 		end
+		return true
 	end
 
-	if header ~= 'none' then
-		local headerUnits = { _G['oUF_RUF_' .. header]:GetChildren() }
-		headerUnits[#headerUnits] = nil -- Remove moveBG entry
-		for i = 1,#headerUnits do
-			UpdateBar(singleFrame,groupFrame,header,bar,i)
+	if header ~= "none" or groupFrame ~= "none" then
+		for i = 1, 6 do
+			if not UpdateBar(singleFrame, groupFrame, header, bar, i) then
+				break
+			end
 		end
-	elseif groupFrame ~= 'none' then
-		for i = 1,5 do
-			UpdateBar(singleFrame,groupFrame,header,bar,i)
-		end
-	elseif singleFrame ~= 'none' then
-		UpdateBar(singleFrame,groupFrame,header,bar,-1)
+	elseif singleFrame ~= "none" then
+		UpdateBar(singleFrame, groupFrame, header, bar, -1)
 	end
-
 end
 
 function RUF:SpawnUnits()
-	if UnitsSpawned == true then return end
+	if UnitsSpawned then return end
 	TestModeToggle = true
 
-	local headers = RUF.frameList.headers
-	local partyNum = 0
-	local startingIndex = -4
+	local partyNum, startingIndex = 0, -4
 	if IsInGroup() then
 		startingIndex = -3
 		partyNum = GetNumSubgroupMembers()
 	end
 
-	for i = 1,#headers do
-		local currentHeader = _G['oUF_RUF_' .. headers[i]]
-		currentHeader:SetAttribute('startingIndex', startingIndex + partyNum)
+	for i = 1, #RUF.frameList.headers do
+		local currentHeader = _G["oUF_RUF_" .. RUF.frameList.headers[i]]
+		currentHeader:SetAttribute("startingIndex", startingIndex + partyNum)
 		if currentHeader.Enabled then
-			RegisterStateDriver(currentHeader, 'visibility','show')
+			RegisterStateDriver(currentHeader, "visibility", "show")
 		end
 	end
 
-	for k,v in next,oUF.objects do
+	for k, v in next, oUF.objects do
 		v.oldUnit = v.unit
-		if v.realUnit then v.oldUnit = v.realUnit end
-		v:SetAttribute('unit','player')
+		if v.realUnit then
+			v.oldUnit = v.realUnit
+		end
+		v:SetAttribute("unit", "player")
 		v:Disable()
 		if RUF.db.profile.unit[v.frame].Enabled then
 			if RUF.db.global.TestModeShowUnits then
@@ -942,7 +893,7 @@ function RUF:SpawnUnits()
 			else
 				v.Text.DisplayName:Hide()
 			end
-			if v.oldUnit == 'party5target' or v.oldUnit == 'PartyPet5' then
+			if v.oldUnit == "party5target" or v.oldUnit == "PartyPet5" then
 				if RUF.db.profile.unit.party.showPlayer then
 					v:Show()
 				else
@@ -954,41 +905,39 @@ function RUF:SpawnUnits()
 		else
 			v:Hide()
 		end
-		if v.Cast then
-			v.Cast:Show()
-			v.Cast:OnUpdate()
+		if v.Castbar then
+			v.Castbar:Show()
+			v.Castbar:OnUpdate()
 		end
 	end
 	UnitsSpawned = true
 end
 
 function RUF:RestoreUnits()
-	if UnitsSpawned ~= true then return end
+	if not UnitsSpawned then return end
 	TestModeToggle = false
 
-	local headers = RUF.frameList.headers
-	local partyNum = GetNumSubgroupMembers()
-	for i = 1,#headers do
-		local currentHeader = _G['oUF_RUF_' .. headers[i]]
-		currentHeader:SetAttribute('startingIndex',1)
+	for i = 1, #RUF.frameList.headers do
+		local currentHeader = _G["oUF_RUF_" .. RUF.frameList.headers[i]]
+		currentHeader:SetAttribute("startingIndex", 1)
 		if currentHeader.Enabled then
-			RegisterStateDriver(currentHeader, 'visibility',currentHeader.visibility)
+			RegisterStateDriver(currentHeader, "visibility", currentHeader.visibility)
 		else
-			RegisterStateDriver(currentHeader, 'visibility',"hide")
+			RegisterStateDriver(currentHeader, "visibility", "hide")
 		end
 	end
 
-	for k,v in next,oUF.objects do
-		if v.Cast then
-			v.Cast:Show()
-			v.Cast:OnUpdate()
+	for k, v in next, oUF.objects do
+		if v.Castbar then
+			v.Castbar:Show()
+			v.Castbar:OnUpdate()
 		end
 		v.realUnit = v.oldUnit
 		v.unit = v.oldUnit
-		v:SetAttribute('unit',v.unit)
+		v:SetAttribute("unit", v.unit)
 		v.Text.DisplayName:Hide()
 		v:Hide()
-		if v.unit == 'party5target' or v.unit == 'PartyPet5' then
+		if v.unit == "party5target" or v.unit == "PartyPet5" then
 			if RUF.db.profile.unit.party.showPlayer and RUF.db.profile.unit[v.frame].Enabled then
 				v:Show()
 			else
@@ -1015,36 +964,33 @@ function RUF:TestMode()
 	else
 		if TestModeToggle == true and not InCombatLockdown() then
 			RUF:RestoreUnits()
-			RUF:OptionsUpdateFrame('none', 'PartyTarget', 'none') -- So we also force Update and Hide/Show the 5th Party Target
-			RUF:OptionsUpdateFrame('none', 'PartyPet', 'none')
-			RUF.TogglePartyChildren('partypet')
-			RUF.TogglePartyChildren('partytarget')
+			RUF:OptionsUpdateFrame("none", "PartyTarget", "none") -- So we also force Update and Hide/Show the 5th Party Target
+			RUF:OptionsUpdateFrame("none", "PartyPet", "none")
+			RUF.TogglePartyChildren("partypet")
+			RUF.TogglePartyChildren("partytarget")
 		end
 	end
 end
 
 function RUF:UpdateAllUnitSettings()
-	local frames = RUF.frameList.frames
-	local groupFrames = RUF.frameList.groupFrames
-	local headers = RUF.frameList.headers
+	for i = 1, #RUF.frameList.frames do
+		RUF:OptionsUpdateFrame(RUF.frameList.frames[i])
+		RUF:OptionsUpdateAuras(RUF.frameList.frames[i], nil, nil, "Buffs")
+		RUF:OptionsUpdateAuras(RUF.frameList.frames[i], nil, nil, "Debuffs")
+		RUF:OptionsUpdatePortraits(RUF.frameList.frames[i])
+	end
 
-	for i = 1,#frames do
-		RUF:OptionsUpdateFrame(frames[i])
-		RUF:OptionsUpdateAuras(frames[i],nil,nil,'Buffs')
-		RUF:OptionsUpdateAuras(frames[i],nil,nil,'Debuffs')
-		RUF:OptionsUpdatePortraits(frames[i])
+	for i = 1, #RUF.frameList.groupFrames do
+		RUF:OptionsUpdateFrame(nil, RUF.frameList.groupFrames[i])
+		RUF:OptionsUpdateAuras(nil, RUF.frameList.groupFrames[i], nil, "Buffs")
+		RUF:OptionsUpdateAuras(nil, RUF.frameList.groupFrames[i], nil, "Debuffs")
+		RUF:OptionsUpdatePortraits(nil, RUF.frameList.groupFrames[i])
 	end
-	for i = 1,#groupFrames do
-		RUF:OptionsUpdateFrame(nil,groupFrames[i])
-		RUF:OptionsUpdateAuras(nil,groupFrames[i],nil,'Buffs')
-		RUF:OptionsUpdateAuras(nil,groupFrames[i],nil,'Debuffs')
-		RUF:OptionsUpdatePortraits(nil,groupFrames[i])
-	end
-	for i = 1,#headers do
-		RUF:OptionsUpdateFrame(nil,nil,headers[i])
-		RUF:OptionsUpdateAuras(nil,nil,headers[i],'Buffs')
-		RUF:OptionsUpdateAuras(nil,nil,headers[i],'Debuffs')
-		RUF:OptionsUpdatePortraits(nil,nil,headers[i])
+	for i = 1, #RUF.frameList.headers do
+		RUF:OptionsUpdateFrame(nil, nil, RUF.frameList.headers[i])
+		RUF:OptionsUpdateAuras(nil, nil, RUF.frameList.headers[i], "Buffs")
+		RUF:OptionsUpdateAuras(nil, nil, RUF.frameList.headers[i], "Debuffs")
+		RUF:OptionsUpdatePortraits(nil, nil, RUF.frameList.headers[i])
 	end
 
 	RUF:OptionsUpdateAllBars()

@@ -1,6 +1,6 @@
 assert(RUF, "RUF not found!")
 local RUF = RUF
-local SA = LibStub("SpecializedAbsorbs-1.0", true)
+local SA = LibStub("SpecializedAbsorbs-1.0")
 
 local random = math.random
 local CreateFrame = CreateFrame

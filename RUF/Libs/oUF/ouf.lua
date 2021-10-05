@@ -551,9 +551,7 @@ local function generateName(unit, ...)
 	local raid, party, groupFilter, unitsuffix
 	for i = 1, select("#", ...), 2 do
 		local att, val = select(i, ...)
-		if (att == "oUF-initialConfigFunction") then
-			unitsuffix = val:match("unitsuffix[%p%s]+(%a+)")
-		elseif (att == "showRaid") then
+		if (att == "showRaid") then
 			raid = val ~= false and val ~= nil
 		elseif (att == "showParty") then
 			party = val ~= false and val ~= nil
@@ -692,7 +690,7 @@ do
 		header:SetAttribute("template", "oUF_ClickCastUnitTemplate") -- For Clique
 		for i = 1, select("#", ...), 2 do
 			local att, val = select(i, ...)
-			if (not att) then break end
+			if (not att) then end
 			header:SetAttribute(att, val)
 		end
 

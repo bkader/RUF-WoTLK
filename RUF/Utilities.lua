@@ -387,9 +387,7 @@ function RUF.TogglePartyChildrenGroupStatus()
 end
 
 function RUF.TogglePartyChildren(childUnit) -- TODO: Implement this better.
-	if InCombatLockdown() then
-		return
-	end
+	if InCombatLockdown() then return end
 
 	local unitFrame
 	local showRaid = RUF.db.profile.unit[childUnit].showRaid or false

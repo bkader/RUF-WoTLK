@@ -23,6 +23,7 @@ ignore = {
 	"11./SLASH_.*", -- Setting an undefined (Slash handler) global variable
 	"11./BINDING_.*", -- Setting an undefined (Keybinding header) global variable
 	"113/LE_.*", -- Accessing an undefined (Lua ENUM type) global variable
+	"113/oUF_.*", -- Accessing an undefined global variable
 	"113/NUM_LE_.*", -- Accessing an undefined (Lua ENUM type) global variable
 	"111/[A-Z][A-Z0-9_]+",	-- Setting an undefined global variable
 	"113/[A-Z][A-Z0-9_]+",	-- Accessing an undefined global variable (GlobalStrings and Constants 2char+)
