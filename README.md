@@ -30,4 +30,4 @@ You can configure RUF by typing `/ruf` in game.
 
 You can report issues on [GitHub](https://github.com/bkader/RUF-WoTLK/issues) or contact/tag me directly on [Discord](https://discord.gg/a8z5CyS3eW).
 
-Although not required, if you'd like to support me and keep the addons I make or backport working, **PayPal** or **Paysera** donations are most welcome: **bkader[at]mail.com**.
+Although not required, if you'd like to support me and keep the addons I make or backport for free working, **PayPal** or **Paysera** donations are most welcome: **bkader[at]mail.com**.
