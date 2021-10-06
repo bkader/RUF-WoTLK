@@ -29,9 +29,9 @@ function RUF.SetFramePortrait(self, unit)
 	local profileReference = RUF.db.profile.unit[unit].Frame.Portrait
 	if not profileReference then return end
 
-	local Portrait = CreateFrame("PlayerModel", nil, self)
-	local Border = CreateFrame("Frame", nil, Portrait)
-	local Background = Portrait:CreateTexture(nil, "BACKGROUND")
+	local Portrait = self.Portrait or CreateFrame("PlayerModel", nil, self)
+	local Border = Portrait.Border or CreateFrame("Frame", nil, Portrait)
+	local Background = Portrait.Background or Portrait:CreateTexture(nil, "BACKGROUND")
 
 	Portrait:SetFrameLevel(self.Health:GetFrameLevel() + 1)
 
