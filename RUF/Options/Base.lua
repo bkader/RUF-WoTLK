@@ -482,7 +482,7 @@ function RUF_Options.MainOptions()
 										name = L["Play sound on highlight"],
 										desc = L["Plays a sound when a removable aura is found on a unit. Does not affect target units."],
 										order = 0.08,
-										width = "full",
+										width = "double",
 										get = function(info)
 											return RUF.db.profile.Appearance.Border.Glow.SoundEnabled
 										end,

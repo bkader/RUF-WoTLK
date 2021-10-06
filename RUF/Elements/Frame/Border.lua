@@ -150,11 +150,9 @@ function RUF.UpdateGlowBorder(self, event)
 		if name == nil or auraTypes == "None" then
 			removable = false
 			break
-		else
-			if tContains(auraTypes, debuffType) then
-				removable = true
-				dispelType = debuffType
-			end
+		elseif debuffType and tContains(auraTypes, debuffType) then
+			removable = true
+			dispelType = debuffType
 		end
 	end
 	if removable == true then

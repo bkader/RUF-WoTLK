@@ -1,10 +1,9 @@
 local L = LibStub("AceLocale-3.0"):NewLocale("RUF", "zhCN")
 if not L then return end
 L["%s and class specific resources for other classes."] = "%s 并为其他职业分配职业专用资源"
-L["%s, %s, and class specific resources for other classes."] = "%s, %s, 并为其他职业分配职业专用资源"
-L["0%"] = true
-L["100%"] = true
-L["50%"] = true
+L["0%"] = "0%"
+L["100%"] = "100%"
+L["50%"] = "50%"
 L["A simple border around the edge of each buff or debuff icon."] = "每个buff或debuff图标边缘的简易边框"
 L["A text area with that name already exists!"] = "具有该名称的文本区域已存在!"
 L["Abbreviate"] = "缩写"

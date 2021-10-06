@@ -950,6 +950,7 @@ function RUF:RestoreUnits()
 		end
 	end
 
+	RUF.ResetPartyFrames()
 	UnitsSpawned = false
 end
 

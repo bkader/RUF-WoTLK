@@ -12,6 +12,7 @@ local tonumber = tonumber
 local Round = RUF.Round
 local GetPhysicalScreenSize = RUF.GetPhysicalScreenSize
 local IsInGroup, IsInRaid = RUF.IsInGroup, RUF.IsInRaid
+local GetNumSubgroupMembers = RUF.GetNumSubgroupMembers
 
 function RUF:Print_Self(message) -- Send a message to your default chat window.
 	ChatFrame1:AddMessage("|c5500DBBDRaeli's Unit Frames|r: " .. format(message))
@@ -379,6 +380,16 @@ function RUF.ReturnTextColors(self, unit, tag, cur, max, test) -- Get Text Color
 		r, g, b = unpack(RUF.db.profile.Appearance.Text[tag].Color.BaseColor)
 	end
 	return r, g, b
+end
+
+function RUF.ResetPartyFrames()
+	local partyNum = GetNumSubgroupMembers() + (RUF.db.profile.unit.party.showPlayer and 1 or 0)
+	for i = 1, 5 do
+		local unitFrame = _G["oUF_RUF_PartyUnitButton" .. i]
+		if unitFrame and i > partyNum then
+			unitFrame:Disable()
+		end
+	end
 end
 
 function RUF.TogglePartyChildrenGroupStatus()

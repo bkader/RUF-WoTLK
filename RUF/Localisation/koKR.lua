@@ -2,11 +2,9 @@ local L = LibStub("AceLocale-3.0"):NewLocale("RUF", "koKR")
 if not L then return end
 --[[Translation missing --]]
 L["%s and class specific resources for other classes."] = "%s and class specific resources for other classes."
---[[Translation missing --]]
-L["%s, %s, and class specific resources for other classes."] = "%s, %s, and class specific resources for other classes."
-L["0%"] = true
-L["100%"] = true
-L["50%"] = true
+L["0%"] = "0%"
+L["100%"] = "100%"
+L["50%"] = "50%"
 L["A simple border around the edge of each buff or debuff icon."] = "각 버프나 디버프 아이콘의 가장자리를 감싸는 간단한 테두리입니다."
 --[[Translation missing --]]
 L["A text area with that name already exists!"] = "A text area with that name already exists!"

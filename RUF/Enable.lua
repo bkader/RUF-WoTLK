@@ -251,15 +251,16 @@ function RUF:OnEnable()
 					"maxColumns", 5,
 					"columnSpacing", profile.Frame.Position.offsetx,
 					"columnAnchorPoint", profile.Frame.Position.growthHoriz,
-					"point", anchorFrom
+					"point", anchorFrom,
+					"startingIndex", 1
 				)
 				header:SetPoint(profile.Frame.Position.AnchorFrom, profile.Frame.Position.AnchorFrame, profile.Frame.Position.AnchorTo, profile.Frame.Position.x, profile.Frame.Position.y)
+				RegisterStateDriver(header, "visibility", header.visibility)
 
 				header.Enabled = profile.Enabled
 				header:Show()
-				header:SetAttribute("startingIndex", 1) -- FIXME
+
 				header:SetClampedToScreen(true)
-				RegisterStateDriver(header, "visibility", header.visibility)
 				if profile.Enabled == false then
 					for j = 1, 5 do
 						local disableFrame = _G["oUF_RUF_" .. name .. "UnitButton" .. j]
