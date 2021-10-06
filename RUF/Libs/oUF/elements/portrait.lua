@@ -67,7 +67,6 @@ local function Update(self, event, unit)
 				element:ClearModel()
 				element:SetUnit(unit)
 				element:SetCamera(0)
-				element:SetModelScale(1)
 				element:SetPosition(0, 0, 0)
 			else
 				element:SetCamera(0)
