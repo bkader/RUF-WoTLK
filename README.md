@@ -4,7 +4,7 @@
 
 ## Examples (_from retail_)
 
-<p align="center"><<img src="https://user-images.githubusercontent.com/4732702/136260639-7f31e51f-39c3-418d-85cc-230e72b1cdad.png" alt="RUF Examples"></p>
+<p align="center"><img src="https://user-images.githubusercontent.com/4732702/136260639-7f31e51f-39c3-418d-85cc-230e72b1cdad.png" alt="RUF Examples"></p>
 
 ## Features
 
