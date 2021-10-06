@@ -16,7 +16,8 @@ local UnitHealth = UnitHealth
 local UnitHealthMax = UnitHealthMax
 local UnitIsPlayer = UnitIsPlayer
 
------------------------------------------------------------------------------------ UNITNAME
+---------------------------------------------------------------------------------
+-- Name
 tags["RUF:Name"] = function(unit, realUnit)
 	if not UnitName(unit) then return end
 	local name = UnitName(unit)

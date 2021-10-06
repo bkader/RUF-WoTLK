@@ -16,7 +16,8 @@ local UnitPower = UnitPower
 local UnitPowerMax = UnitPowerMax
 local UnitPowerType = UnitPowerType
 
------------------------------------------------------------------------------------ POWER
+---------------------------------------------------------------------------------
+-- Current Power & Percent
 tags["RUF:CurPowerPerc"] = function(unit, realunit)
 	if not UnitName(unit) then return end
 	local pType, pToken, altr, altg, altb = UnitPowerType(unit)
@@ -57,6 +58,8 @@ tags["RUF:CurPowerPerc"] = function(unit, realunit)
 end
 events["RUF:CurPowerPerc"] = "UNIT_POWER"
 
+---------------------------------------------------------------------------------
+-- Current Pewer Percent
 tags["RUF:PowerPerc"] = function(unit, realunit)
 	if not UnitName(unit) then return end
 	local pType, pToken, altr, altg, altb = UnitPowerType(unit)
@@ -76,6 +79,8 @@ tags["RUF:PowerPerc"] = function(unit, realunit)
 end
 events["RUF:PowerPerc"] = "UNIT_POWER"
 
+---------------------------------------------------------------------------------
+-- Current Power.
 tags["RUF:CurPower"] = function(unit, realunit)
 	if not UnitName(unit) then return end
 	local pType, pToken, altr, altg, altb = UnitPowerType(unit)
@@ -111,7 +116,8 @@ tags["RUF:CurPower"] = function(unit, realunit)
 end
 events["RUF:CurPower"] = "UNIT_POWER"
 
------------------------------------------------------------------------------------ MANA
+---------------------------------------------------------------------------------
+-- Current Mana & Percent
 tags["RUF:CurManaPerc"] = function(unit)
 	if not UnitName(unit) then return end
 	local pType, pToken, altr, altg, altb = UnitPowerType(unit)
@@ -156,6 +162,8 @@ tags["RUF:CurManaPerc"] = function(unit)
 end
 events["RUF:CurManaPerc"] = "UNIT_POWER"
 
+---------------------------------------------------------------------------------
+-- Current Mana Percent
 tags["RUF:ManaPerc"] = function(unit)
 	if not UnitName(unit) then return end
 	local pType, pToken, altr, altg, altb = UnitPowerType(unit)
@@ -178,6 +186,8 @@ tags["RUF:ManaPerc"] = function(unit)
 end
 events["RUF:ManaPerc"] = "UNIT_POWER"
 
+---------------------------------------------------------------------------------
+-- Current Mana
 tags["RUF:CurMana"] = function(unit)
 	if not UnitName(unit) then return end
 	local pType, pToken, altr, altg, altb = UnitPowerType(unit)

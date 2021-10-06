@@ -19,8 +19,9 @@ local UnitIsDead = UnitIsDead
 local UnitIsGhost = UnitIsGhost
 local UnitIsConnected = UnitIsConnected
 
------------------------------------------------------------------------------------ HEALTH
-tags["RUF:CurHPPerc"] = function(unit, realunit) -- Current Health and Percent if below 100%.
+---------------------------------------------------------------------------------
+-- Current Health and Percent if below 100%.
+tags["RUF:CurHPPerc"] = function(unit, realunit)
 	if not UnitName(unit) then return end
 	local cur, max = UnitHealth(unit), UnitHealthMax(unit)
 	local r, g, b = RUF:ReturnTextColors(unit, "CurHPPerc", cur, max)
@@ -66,6 +67,8 @@ tags["RUF:CurHPPerc"] = function(unit, realunit) -- Current Health and Percent i
 end
 events["RUF:CurHPPerc"] = "UNIT_HEALTH UNIT_CONNECTION"
 
+---------------------------------------------------------------------------------
+-- Current Health Percent.
 tags["RUF:HPPerc"] = function(unit, realunit)
 	if not UnitName(unit) then return end
 	local cur, max = UnitHealth(unit), UnitHealthMax(unit)
@@ -80,6 +83,8 @@ tags["RUF:HPPerc"] = function(unit, realunit)
 end
 events["RUF:HPPerc"] = "UNIT_HEALTH UNIT_CONNECTION"
 
+---------------------------------------------------------------------------------
+-- Current Health.
 tags["RUF:CurHP"] = function(unit, realunit)
 	if not UnitName(unit) then return end
 	local cur, max = UnitHealth(unit), UnitHealthMax(unit)
@@ -110,7 +115,9 @@ tags["RUF:CurHP"] = function(unit, realunit)
 end
 events["RUF:CurHP"] = "UNIT_HEALTH UNIT_CONNECTION"
 
-tags["RUF:CurMaxHPPerc"] = function(unit, realunit) -- Current Health / Max Health and Percent if below 100%.
+---------------------------------------------------------------------------------
+-- Current Health / Max Health and Percent if below 100%.
+tags["RUF:CurMaxHPPerc"] = function(unit, realunit)
 	if not UnitName(unit) then return end
 	local cur, max = UnitHealth(unit), UnitHealthMax(unit)
 	local r, g, b = RUF:ReturnTextColors(unit, "CurMaxHPPerc", cur, max)
@@ -162,7 +169,9 @@ tags["RUF:CurMaxHPPerc"] = function(unit, realunit) -- Current Health / Max Heal
 end
 events["RUF:CurMaxHPPerc"] = "UNIT_HEALTH UNIT_CONNECTION"
 
-tags["RUF:CurMaxHP"] = function(unit, realunit) -- Current Health / Max Health
+---------------------------------------------------------------------------------
+-- Current Health / Max Health
+tags["RUF:CurMaxHP"] = function(unit, realunit)
 	if not UnitName(unit) then return end
 	local cur, max = UnitHealth(unit), UnitHealthMax(unit)
 	local r, g, b = RUF:ReturnTextColors(unit, "CurMaxHP", cur, max)
@@ -208,6 +217,8 @@ tags["RUF:CurMaxHP"] = function(unit, realunit) -- Current Health / Max Health
 end
 events["RUF:CurMaxHP"] = "UNIT_HEALTH UNIT_CONNECTION"
 
+---------------------------------------------------------------------------------
+-- Max HP
 tags["RUF:MaxHP"] = function(unit, realunit)
 	if not UnitName(unit) then return end
 	local cur, max = UnitHealth(unit), UnitHealthMax(unit)

@@ -14,7 +14,7 @@ local UnitIsAFK = UnitIsAFK
 local UnitIsDND = UnitIsDND
 local UnitClassification = UnitClassification
 
------------------------------------------------------------------------------------ STATUS
+-- level
 tags["RUF:Level"] = function(unit)
 	local profileReference = RUF.db.profile.Appearance.Text.Level
 	local level = UnitLevel(unit)
@@ -53,6 +53,7 @@ tags["RUF:Level"] = function(unit)
 end
 events["RUF:Level"] = "UNIT_LEVEL PLAYER_LEVEL_UP UNIT_CLASSIFICATION_CHANGED"
 
+-- AFKDND
 tags["RUF:AFKDND"] = function(unit)
 	local r, g, b = RUF:ReturnTextColors(unit, "AFKDND")
 	if RUF.db.global.TestMode == true then

@@ -851,6 +851,11 @@ function RUF_Options.MainOptions()
 						name = L["When reporting an issue, please also post the revision number above. Thanks!"],
 						order = 0.6
 					},
+					RevisionDate = {
+						type = "description",
+						name = GetAddOnMetadata("RUF", "X-Date"),
+						order = 0.7
+					},
 					Spacer_FeedbackOnline = {
 						type = "description",
 						name = "\n",
