@@ -180,6 +180,7 @@ local function UnitGroup(singleFrame, groupFrame, header)
 							RUF:OptionsUpdateFrame(singleFrame, groupFrame, header)
 							if header ~= "none" then
 								RUF.TogglePartyChildrenGroupStatus()
+								RUF.ResetPartyFrames()
 							elseif profileName == "partytarget" then
 								RUF.TogglePartyChildren("partytarget")
 							elseif profileName == "partypet" then
@@ -212,6 +213,7 @@ local function UnitGroup(singleFrame, groupFrame, header)
 							RUF:OptionsUpdateFrame(singleFrame, groupFrame, header)
 							if header ~= "none" then
 								RUF.TogglePartyChildrenGroupStatus()
+								RUF.ResetPartyFrames()
 							elseif profileName == "partytarget" then
 								RUF.TogglePartyChildren("partytarget")
 							elseif profileName == "partypet" then
@@ -240,6 +242,9 @@ local function UnitGroup(singleFrame, groupFrame, header)
 							RUF:OptionsUpdateFrame(singleFrame, "PartyTarget", "none") -- So we also force Update and Hide/Show the 5th Party Target
 							RUF:OptionsUpdateFrame(singleFrame, "PartyPet", "none")
 							RUF.TogglePartyChildrenGroupStatus()
+							if profileName == "party" then
+								RUF.ResetPartyFrames()
+							end
 						end
 					},
 					enabledSpacer = {
@@ -1218,42 +1223,50 @@ local function TextSettings(singleFrame, groupFrame, header)
 	return textOptions
 end
 
-local function HideIndicatorOptions(profileName, indicator)
-	-- if indicator == "Honor" then return true end -- Not implemented
-	if indicator == "LootMaster" or indicator == "PetHappiness" then return true end
-	if indicator == "Role" then return true end
-	if (indicator == "InCombat" or indicator == "Rest") and profileName ~= "player" then return true end
-	if indicator == "PetHappiness" then
-		return (profileName ~= "player" and profileName ~= "pet")
-	end
-	if profileName == "arena" then
-		return (indicator == "Assist" or indicator == "Lead" or indicator == "MainTankAssist"or indicator == "Ready")
-	elseif profileName == "pet" then
-		return (indicator ~=  "TargetMark" and indicator ~=  "PvPCombat")
-	elseif profileName == "partypet" then
-		return (indicator ~= "TargetMark" and indicator ~= "PvPCombat")
-	elseif profileName == "boss" then
-		return (indicator ~= "TargetMark")
+local HideIndicatorOptions
+do
+	local profileToIndicators = {
+		arena = {"TargetMark", "Role"},
+		arenatarget = {"TargetMark"},
+		boss = {"TargetMark"},
+		bosstarget = {"TargetMark"},
+		focus = {"TargetMark", "InCombat", "LootMaster", "Lead", "Role", "MainTankAssist", "PvPCombat", "Assist", "Rest", "Ready"},
+		focustarget = {"PetHappiness", "TargetMark"},
+		party = {"Assist", "InCombat", "Lead", "LootMaster", "MainTankAssist", "PvPCombat", "Ready", "Rest", "Role", "TargetMark"},
+		partypet = {"TargetMark"},
+		partytarget = {"TargetMark"},
+		pet = {"PetHappiness", "TargetMark"},
+		pettarget = {"TargetMark"},
+		player = {"TargetMark", "InCombat", "LootMaster", "Lead", "Role", "MainTankAssist", "PvPCombat", "Assist", "Rest", "Ready"},
+		target = {"TargetMark", "LootMaster", "Lead", "Role", "MainTankAssist", "PvPCombat", "Assist", "Ready"},
+		targettarget = {"TargetMark"},
+		targettargettarget = {"TargetMark"}
+	}
+
+	function HideIndicatorOptions(profileName, indicator)
+		if profileName and profileToIndicators[profileName] then
+			return (indicator and not tContains(profileToIndicators[profileName], indicator))
+		end
+		return true -- hide anyways
 	end
 end
 
+local indicators = {
+	[1] = "Assist",
+	[2] = "InCombat",
+	[3] = "Lead",
+	[4] = "LootMaster",
+	[5] = "MainTankAssist",
+	[6] = "PetHappiness",
+	[7] = "PvPCombat",
+	[8] = "Ready",
+	[9] = "Rest",
+	[10] = "Role",
+	[11] = "TargetMark"
+}
 local function IndicatorSettings(singleFrame, groupFrame, header)
 	local referenceUnit, profileName, _
 	singleFrame, groupFrame, header, _, referenceUnit, profileName = ProfileData(singleFrame, groupFrame, header)
-
-	local indicators = {
-		[1] = "Assist",
-		[2] = "InCombat",
-		[3] = "Lead",
-		[4] = "LootMaster",
-		[5] = "MainTankAssist",
-		[6] = "PetHappiness",
-		[7] = "PvPCombat",
-		[8] = "Ready",
-		[9] = "Rest",
-		[10] = "Role",
-		[11] = "TargetMark"
-	}
 
 	local indicatorOptions = {
 		name = L["Indicators"],
@@ -1270,12 +1283,7 @@ local function IndicatorSettings(singleFrame, groupFrame, header)
 			if v ~= "" then
 				if k ~= indicators[i] and _G["oUF_RUF_" .. referenceUnit] then
 					local targetIndicator = k .. "Indicator"
-					if
-						RUF:CanAttach(
-							_G["oUF_RUF_" .. referenceUnit][currentIndicator],
-							_G["oUF_RUF_" .. referenceUnit][targetIndicator]
-						)
-					 then
+					if RUF:CanAttach(_G["oUF_RUF_" .. referenceUnit][currentIndicator], _G["oUF_RUF_" .. referenceUnit][targetIndicator]) then
 						indicatorAnchors[k] = L[k]
 					end
 				end

@@ -67,7 +67,6 @@ function RUF_Options:OnInitialize()
 end
 
 function RUF:UpdateOptions()
-	local Options = LibStub("AceDBOptions-3.0"):GetOptionsTable(self.db)
 	UnitOptions()
 	LibStub("AceConfigRegistry-3.0"):NotifyChange("RUF")
 end

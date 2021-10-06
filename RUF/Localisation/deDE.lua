@@ -409,7 +409,6 @@ L["Right"] = "Rechts"
 L["Role"] = "Group Role"
 L["Rows"] = "Reihen"
 --[[Translation missing --]]
-L["RUF [|c5500DBBDRaeli's Unit Frames|r] needs to reload your UI to properly finish installing on first use. Please do this now."] = "RUF [|c5500DBBDRaeli's Unit Frames|r] needs to reload your UI to properly finish installing on first use. Please do this now."
 L["Segment Multiplier"] = "Segment-Multiplikator"
 L["Set class colors to the default Blizzard colors."] = "Setze Klassenfarben auf die Standard-Blizzard-Farben."
 --[[Translation missing --]]

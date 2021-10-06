@@ -90,6 +90,7 @@ function RUF.SetHealthBar(self, unit)
 	Bar:SetStatusBarTexture(texture)
 	Bar:SetAllPoints(self)
 	Bar:SetFrameLevel(11)
+	Bar:SetFillStyle(RUF.db.profile.unit[unit].Frame.Bars.Health.Fill)
 
 	-- Register with oUF
 	self.Health = Bar
@@ -114,8 +115,7 @@ function RUF.HealthUpdateOptions(self)
 	Bar:SetStatusBarTexture(texture)
 	Bar:SetAllPoints(self.__owner)
 	Bar:SetFrameLevel(10)
-	Bar.FillStyle = RUF.db.profile.unit[unit].Frame.Bars.Health.Fill
-	Bar:SetFillStyle(Bar.FillStyle)
+	Bar:SetFillStyle(RUF.db.profile.unit[unit].Frame.Bars.Health.Fill)
 
 	if Bar.Smooth == true then
 		self.__owner:SmoothBar(Bar)

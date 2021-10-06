@@ -5,14 +5,14 @@ local HealComm = LibStub("LibHealComm-4.0")
 local UnitHealth = UnitHealth
 local UnitGUID = UnitGUID
 
-function RUF.HealPredictionUpdateColor(element, unit, myIncomingHeal, otherIncomingHeal, absorb)
+function RUF.HealPredictionUpdateColor(element, unit, myIncomingHeal, otherIncomingHeal)
 	local cur = UnitHealth(unit)
-	if element.myBar then
+	if (element.myBar) then
 		local r, g, b = RUF:GetBarColor(element, unit, "HealPrediction", "Player", cur)
 		local a = RUF.db.profile.Appearance.Bars.HealPrediction.Player.Color.Alpha
 		element.myBar:SetStatusBarColor(r, g, b, a)
 	end
-	if element.otherBar then
+	if (element.otherBar) then
 		local r, g, b = RUF:GetBarColor(element, unit, "HealPrediction", "Others", cur)
 		local a = RUF.db.profile.Appearance.Bars.HealPrediction.Others.Color.Alpha
 		element.otherBar:SetStatusBarColor(r, g, b, a)
@@ -22,12 +22,20 @@ function RUF.HealPredictionUpdateColor(element, unit, myIncomingHeal, otherIncom
 	local lookAhead = element.lookAhead or 5
 	local healTime, healFrom, healAmount = HealComm:GetNextHealAmount(unitGUID, HealComm.CASTED_HEALS, GetTime() + lookAhead)
 	if not healTime then return end
-	local nextHealer
+
 	local anchorFrom, anchorTo, anchorTexture
-	if element.__owner.Health.FillStyle == "REVERSE" then
+
+	if (element.__owner.Health.fill ~= element.myBar.fill or element.__owner.Health.fill ~= element.otherBar.fill) then
+		element.myBar:SetFillStyle(element.__owner.Health.fill)
+		element.otherBar:SetFillStyle(element.__owner.Health.fill)
+		element.myBar:ClearAllPoints()
+		element.otherBar:ClearAllPoints()
+	end
+
+	if (element.__owner.Health.fill == "REVERSE") then
 		anchorFrom = "RIGHT"
 		anchorTo = "LEFT"
-	elseif element.__owner.Health.FillStyle == "CENTER" then
+	elseif (element.__owner.Health.fill == "CENTER") then
 		anchorFrom = "CENTER"
 		anchorTo = "CENTER"
 	else
@@ -35,32 +43,25 @@ function RUF.HealPredictionUpdateColor(element, unit, myIncomingHeal, otherIncom
 		anchorTo = "RIGHT"
 	end
 
-	element.myBar:ClearAllPoints()
-	element.otherBar:ClearAllPoints()
 	element.myBar:SetPoint("TOP")
 	element.myBar:SetPoint("BOTTOM")
 	element.otherBar:SetPoint("TOP")
 	element.otherBar:SetPoint("BOTTOM")
 
-	element.myBar:SetFillStyle(element.myBar.FillStyle)
-	element.otherBar:SetFillStyle(element.otherBar.FillStyle)
-
-	if healFrom ~= UnitGUID("player") then
+	if (healFrom ~= UnitGUID("player")) then
 		element.otherBar:SetPoint(anchorFrom, element.__owner.Health:GetStatusBarTexture(), anchorTo)
 		if element.otherBar.Enabled then
-			anchorTexture = element.otherBar:GetStatusBarTexture()
+			element.myBar:SetPoint(anchorFrom, element.otherBar.fg, anchorTo)
 		else
-			anchorTexture = element.__owner.Health:GetStatusBarTexture()
+			element.myBar:SetPoint(anchorFrom, element.__owner.Health.fg, anchorTo)
 		end
-		element.myBar:SetPoint(anchorFrom, anchorTexture, anchorTo)
 	else
-		element.myBar:SetPoint(anchorFrom, element.__owner.Health:GetStatusBarTexture(), anchorTo)
+		element.myBar:SetPoint(anchorFrom, element.__owner.Health.fg, anchorTo)
 		if element.myBar.Enabled then
-			anchorTexture = element.myBar:GetStatusBarTexture()
+			element.otherBar:SetPoint(anchorFrom, element.myBar.fg, anchorTo)
 		else
-			anchorTexture = element.__owner.Health:GetStatusBarTexture()
+			element.otherBar:SetPoint(anchorFrom, element.__owner.Health.fg, anchorTo)
 		end
-		element.otherBar:SetPoint(anchorFrom, anchorTexture, anchorTo)
 	end
 end
 
@@ -71,10 +72,10 @@ function RUF.SetHealPrediction(self, unit)
 	PlayerHeals = RUF.StatusBarPrototype(nil, Health)
 	OtherHeals = RUF.StatusBarPrototype(nil, Health)
 	local anchorFrom, anchorTo
-	if Health.FillStyle == "REVERSE" then
+	if (Health.fill == "REVERSE") then
 		anchorFrom = "RIGHT"
 		anchorTo = "LEFT"
-	elseif Health.FillStyle == "CENTER" then
+	elseif (Health.fill == "CENTER") then
 		anchorFrom = "CENTER"
 		anchorTo = "CENTER"
 	else
@@ -84,18 +85,20 @@ function RUF.SetHealPrediction(self, unit)
 
 	local profileReference = RUF.db.profile.Appearance.Bars.HealPrediction
 	local texture = RUF:MediaFetch("statusbar", profileReference.Player.Texture)
+	PlayerHeals:ClearAllPoints()
 	PlayerHeals:SetPoint("TOP")
 	PlayerHeals:SetPoint("BOTTOM")
-	PlayerHeals:SetPoint(anchorFrom, self.Health:GetStatusBarTexture(), anchorTo)
+	PlayerHeals:SetPoint(anchorFrom, Health:GetStatusBarTexture(), anchorTo)
 	PlayerHeals:SetStatusBarTexture(texture)
 	PlayerHeals:SetStatusBarColor(0, 1, 0, 1)
 	PlayerHeals:SetWidth(self:GetWidth())
 	PlayerHeals:SetFrameLevel(11)
+	PlayerHeals:SetFillStyle(Health.fill)
 	PlayerHeals:Hide()
-	PlayerHeals.FillStyle = RUF.db.profile.unit[unit].Frame.Bars.Health.Fill
 	PlayerHeals.Enabled = profileReference.Player.Enabled
 
 	texture = RUF:MediaFetch("statusbar", profileReference.Others.Texture)
+	OtherHeals:ClearAllPoints()
 	OtherHeals:SetPoint("TOP")
 	OtherHeals:SetPoint("BOTTOM")
 	OtherHeals:SetPoint(anchorFrom, PlayerHeals:GetStatusBarTexture(), anchorTo)
@@ -103,8 +106,8 @@ function RUF.SetHealPrediction(self, unit)
 	OtherHeals:SetStatusBarColor(0, 1, 1, 1)
 	OtherHeals:SetWidth(self:GetWidth())
 	OtherHeals:SetFrameLevel(11)
+	OtherHeals:SetFillStyle(Health.fill)
 	OtherHeals:Hide()
-	OtherHeals.FillStyle = RUF.db.profile.unit[unit].Frame.Bars.Health.Fill
 	OtherHeals.Enabled = profileReference.Others.Enabled
 
 	-- Register with oUF
@@ -126,11 +129,12 @@ function RUF.HealPredictionUpdateOptions(self)
 	local PlayerHeals = self.myBar
 	local OtherHeals = self.otherBar
 
+	local FillStyle = RUF.db.profile.unit[unit].Frame.Bars.Health.Fill
 	local anchorFrom, anchorTo, anchorTexture
-	if self.__owner.Health.FillStyle == "REVERSE" then
+	if (FillStyle == "REVERSE") then
 		anchorFrom = "RIGHT"
 		anchorTo = "LEFT"
-	elseif self.__owner.Health.FillStyle == "CENTER" then
+	elseif (FillStyle == "CENTER") then
 		anchorFrom = "CENTER"
 		anchorTo = "CENTER"
 	else
@@ -145,11 +149,11 @@ function RUF.HealPredictionUpdateOptions(self)
 	PlayerHeals:SetPoint(anchorFrom, self.__owner.Health:GetStatusBarTexture(), anchorTo)
 	PlayerHeals:SetStatusBarTexture(texture)
 	PlayerHeals:SetWidth(self.__owner:GetWidth())
+	PlayerHeals:SetFillStyle(FillStyle)
 	PlayerHeals:SetFrameLevel(11)
 	PlayerHeals.Enabled = profileReference.Player.Enabled
-	PlayerHeals.FillStyle = RUF.db.profile.unit[unit].Frame.Bars.Health.Fill
 
-	if PlayerHeals.Enabled then
+	if (PlayerHeals.Enabled) then
 		anchorTexture = PlayerHeals:GetStatusBarTexture()
 	else
 		anchorTexture = self.__owner.Health:GetStatusBarTexture()
@@ -162,8 +166,8 @@ function RUF.HealPredictionUpdateOptions(self)
 	OtherHeals:SetPoint(anchorFrom, anchorTexture, anchorTo)
 	OtherHeals:SetStatusBarTexture(texture)
 	OtherHeals:SetWidth(self.__owner:GetWidth())
+	OtherHeals:SetFillStyle(FillStyle)
 	OtherHeals:SetFrameLevel(11)
-	OtherHeals.FillStyle = RUF.db.profile.unit[unit].Frame.Bars.Health.Fill
 	OtherHeals.Enabled = profileReference.Others.Enabled
 
 	self:ForceUpdate()

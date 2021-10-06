@@ -348,7 +348,6 @@ L["Right"] = "오른쪽"
 L["Role"] = "Group Role"
 L["Rows"] = "행"
 --[[Translation missing --]]
-L["RUF [|c5500DBBDRaeli's Unit Frames|r] needs to reload your UI to properly finish installing on first use. Please do this now."] = "RUF [|c5500DBBDRaeli's Unit Frames|r] needs to reload your UI to properly finish installing on first use. Please do this now."
 L["Segment Multiplier"] = "분할 배율"
 L["Set class colors to the default Blizzard colors."] = "기본 블리자드 색상으로 직업 색상을 설정합니다."
 --[[Translation missing --]]

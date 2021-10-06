@@ -1,7 +1,5 @@
 assert(RUF, "RUF not found!")
 local RUF = RUF
-local _, ns = ...
-local oUF = ns.oUF
 
 RUF.Indicators = RUF.Indicators or {}
 
@@ -39,7 +37,7 @@ RUF.IndicatorGlyphs = {
 }
 
 function RUF.SetIndicators(self, unit)
-	local Indicators = CreateFrame("Frame", nil, self)
+	local Indicators = self.Indicators or CreateFrame("Frame", nil, self)
 
 	Indicators:SetAllPoints(self)
 	Indicators:SetFrameLevel(40)

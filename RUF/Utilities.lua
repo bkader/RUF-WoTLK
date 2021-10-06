@@ -383,10 +383,30 @@ function RUF.ReturnTextColors(self, unit, tag, cur, max, test) -- Get Text Color
 end
 
 function RUF.ResetPartyFrames()
+	if RUF.db.global.TestMode then return end
+
+	local header = _G["oUF_RUF_Party"]
+	if not header then return end
+
+	local profile = RUF.db.profile.unit.party
+	local showIn = "hide"
+	if profile.Enabled and IsInGroup() then
+		if not IsInRaid() then
+			showIn = "party"
+		elseif profile.showRaid then
+			showIn = "party, raid"
+		end
+		if showIn ~= "hide" and profile.showArena then
+			showIn = "[@arena1,exists]show;[@arena2,exists]show;[@arena3,exists]show;" .. showIn
+		end
+	end
+
+	RegisterStateDriver(header, "visibility", showIn)
+
 	local partyNum = GetNumSubgroupMembers() + (RUF.db.profile.unit.party.showPlayer and 1 or 0)
 	for i = 1, 5 do
 		local unitFrame = _G["oUF_RUF_PartyUnitButton" .. i]
-		if unitFrame and i > partyNum then
+		if (unitFrame and (showIn == "hide" or i > partyNum)) then
 			unitFrame:Disable()
 		end
 	end

@@ -5,7 +5,6 @@ local oUF = ns.oUF
 local ACD = LibStub("AceConfigDialog-3.0")
 local LSM = LibStub("LibSharedMedia-3.0")
 local LGT = LibStub("LibGroupTalents-1.0")
-local includedLayouts = {"Alidie's Layout", "Raeli's Layout"}
 local L = LibStub("AceLocale-3.0"):GetLocale("RUF")
 
 RUF.UIParent = CreateFrame("Frame", "RUFParent", UIParent)
@@ -67,28 +66,12 @@ function RUF:OnInitialize()
 
 	--project-revision
 	RUF.db.global.Version = string.match(GetAddOnMetadata("RUF", "Version"), "%d+")
-
-	if not RUFDB.profiles then
-		RUF.FirstRun = true
-		RUFDB.profiles = {}
-		for i = 1, #includedLayouts do
-			RUFDB.profiles[includedLayouts[i]] = RUF.Layout[includedLayouts[i]]
-		end
-	else
-		for i = 1, #includedLayouts do
-			if not RUFDB.profiles[includedLayouts[i]] then
-				RUFDB.profiles[includedLayouts[i]] = RUF.Layout[includedLayouts[i]]
-			end
-		end
-	end
+	RUF.db.profiles = RUF.db.profiles or {}
 
 	-- remove buggy SetFocus
 	for k, v in pairs(UnitPopupMenus) do
 		for x, y in pairs(v) do
-			if
-				y == "SET_FOCUS" or y == "CLEAR_FOCUS" or y == "LOCK_FOCUS_FRAME" or y == "UNLOCK_FOCUS_FRAME" or
-					(RUF.uClass == "HUNTER" and y == "PET_DISMISS")
-			 then
+			if y == "SET_FOCUS" or y == "CLEAR_FOCUS" or y == "LOCK_FOCUS_FRAME" or y == "UNLOCK_FOCUS_FRAME" or (RUF.uClass == "HUNTER" and y == "PET_DISMISS") then
 				table.remove(UnitPopupMenus[k], x)
 			end
 		end
@@ -112,14 +95,6 @@ end
 
 function RUF:ResetProfile()
 	local currentProfile = self.db:GetCurrentProfile()
-
-	for i = 1, #includedLayouts do
-		if includedLayouts[i] == currentProfile then
-			local profile = RUF.db.profile
-			local source = RUF.Layout[includedLayouts[i]]
-			RUF:copyTable(source, profile)
-		end
-	end
 	RUF:RefreshConfig()
 	RUF:GetModule("Options"):RefreshConfig()
 end

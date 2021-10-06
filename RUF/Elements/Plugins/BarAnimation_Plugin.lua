@@ -43,41 +43,25 @@ local function hook(frame)
 	end
 end
 
-for i, frame in ipairs(oUF.objects) do hook(frame) end
+for i, frame in ipairs(oUF.objects) do
+	hook(frame)
+end
 oUF:RegisterInitCallback(hook)
 
-
-local f, min, max, abs = CreateFrame('Frame'), math.min, math.max, math.abs
-f:SetScript('OnUpdate', function()
-	local limit = 30/GetFramerate()
+local f, min, max, abs = CreateFrame("Frame"), math.min, math.max, math.abs
+f:SetScript("OnUpdate", function()
+	local limit = 30 / GetFramerate()
 	for bar, value in pairs(smoothing) do
-		local minVal,maxVal = bar:GetMinMaxValues()
+		local minVal, maxVal = bar:GetMinMaxValues()
 		local curVal = bar:GetValue()
-		local new = curVal + min((value-curVal)/5, max(value-curVal, limit))
+		local new = curVal + min((value - curVal) / 5, max(value - curVal, limit))
 		if new ~= new then
 			new = value
 		end
 		bar:SetValue_(new)
-		local pVal = new
 		if curVal == value or abs(new - value) < 2 then
 			bar:SetValue_(value)
-			pVal = value
 			smoothing[bar] = nil
-		end
-		if bar == bar.__owner.Health and bar.__owner.Portrait then
-			if bar.__owner.Portrait.Enabled == true and bar.__owner.Portrait.Cutaway == true then
-				local Portrait = bar.__owner.Portrait
-				local frameWidth = bar.__owner:GetWidth()
-				local width = frameWidth * (pVal/maxVal)
-				local fillStyle = bar.FillStyle
-				if fillStyle == 'REVERSE' then
-					-- Portrait:SetTexCoord((-frameWidth)+width,0,0,0) -- Right -- FIXME
-				elseif fillStyle == 'CENTER' then
-					-- Portrait:SetTexCoord(((-frameWidth)+width)/2,((-frameWidth)+width)/2,0,0) -- FIXME
-				else
-					-- Portrait:SetTexCoord(0,(-frameWidth)+width,0,0) -- Left -- FIXME
-				end
-			end
 		end
 	end
 end)

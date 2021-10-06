@@ -163,14 +163,6 @@ local function SetupFrames(self, unit)
 end
 
 function RUF:OnEnable()
-	if RUF.FirstRun then
-		local function FirstRunReload()
-			ReloadUI()
-		end
-		RUF:PopUp("RUFFirstRun", L["RUF [|c5500DBBDRaeli's Unit Frames|r] needs to reload your UI to properly finish installing on first use. Please do this now."], L["Accept"], nil, FirstRunReload)
-		StaticPopup_Show("RUFFirstRun")
-	end
-
 	-- Register Combat Fader
 	RUF.CombatFaderRegister()
 
@@ -280,6 +272,8 @@ function RUF:OnEnable()
 				Mover:SetFrameStrata("HIGH")
 				Mover:Hide()
 				header.Mover = Mover
+
+				RUF.After(0.1, RUF.ResetPartyFrames)
 			end
 		end
 
@@ -393,6 +387,5 @@ function RUF:OnEnable()
 	end
 
 	-- it sadly has to be delayed!
-	RUF.After(2, RUF.UpdateAllUnitSettings)
-	-- RUF:UpdateAllUnitSettings()
+	RUF:UpdateAllUnitSettings()
 end
