@@ -273,7 +273,7 @@ function RUF:OnEnable()
 				Mover:Hide()
 				header.Mover = Mover
 
-				RUF.After(0.1, RUF.ResetPartyFrames)
+				RUF.After(0.5, RUF.ResetPartyFrames)
 			end
 		end
 
