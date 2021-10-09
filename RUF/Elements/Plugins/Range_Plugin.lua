@@ -153,15 +153,13 @@ local function SwapUnit(unit)
 end
 
 local function IsUnitInRange(unit)
-	if (not unit) then
-		return
-	end
+	if (not unit) then return end
 
 	if (not UnitIsUnit(unit, "player")) and (UnitInParty(unit) or UnitInRaid(unit)) then
 		unit = SwapUnit(unit)
 	end
 
-	if (not UnitIsConnected(unit)) then
+	if (not unit and UnitIsConnected(unit)) then
 		return true
 	end
 
