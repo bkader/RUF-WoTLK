@@ -4,6 +4,7 @@ local _, ns = ...
 local oUF = ns.oUF
 
 local unpack = unpack
+local UnitHealth = UnitHealth
 
 local offsetFix = 0.3
 
@@ -22,6 +23,28 @@ local anchorSwaps = {
 local function PortraitPostUpdate(self, unit)
 	if self and self.Alpha then
 		self:SetAlpha(self.Alpha)
+	end
+end
+
+local function PortraitOnShow(self)
+	self:SetCamera(0)
+	self:SetPosition(0, 0, 0)
+	if self.PostUpdate then
+		self:PostUpdate()
+	end
+end
+
+local function PortraitOnHide(self)
+	self:SetCamera(0)
+end
+
+local function UNIT_HEALTH(self, _, unit)
+	if unit and self.unit == unit and self.Portrait then
+		if UnitHealth(unit) == 0 and self.Portrait:IsShown() then
+			self.Portrait:Hide()
+		elseif not self.Portrait:IsShown() then
+			RUF.After(0.1, function() self.Portrait:Show() end)
+		end
 	end
 end
 
@@ -75,6 +98,10 @@ function RUF.SetFramePortrait(self, unit)
 		Portrait:ClearAllPoints()
 		Portrait:SetPoint(profileReference.Position.AnchorFrom, self, profileReference.Position.AnchorTo, profileReference.Position.x - offsetFix, profileReference.Position.y - offsetFix)
 	end
+
+	self:RegisterEvent("UNIT_HEALTH", UNIT_HEALTH)
+	Portrait:SetScript("OnShow", PortraitOnShow)
+	Portrait:SetScript("OnHide", PortraitOnHide)
 
 	-- Register with oUF
 	self.Portrait = Portrait
