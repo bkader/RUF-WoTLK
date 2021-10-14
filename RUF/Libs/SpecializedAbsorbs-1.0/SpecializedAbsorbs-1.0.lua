@@ -16,8 +16,7 @@ local UnitExists, UnitGUID, UnitClass, UnitLevel = UnitExists, UnitGUID, UnitCla
 local UnitFactionGroup, UnitInBattleground, GetTalentInfo = UnitFactionGroup, UnitInBattleground, GetTalentInfo
 local GetNumRaidMembers, GetNumPartyMembers = GetNumRaidMembers, GetNumPartyMembers
 
-local CheckFlags = lib.CheckFlags or true
-lib.CheckFlags = CheckFlags
+lib.CheckFlags = lib.CheckFlags or true
 
 ---------------------
 -- Install/Upgrade --
