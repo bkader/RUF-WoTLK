@@ -72,8 +72,7 @@ local function Update(self, event, unit)
 	local unitGUID = UnitGUID(unit)
 	local lookAhead = element.lookAhead or 5
 	myIncomingHeal = (HealComm:GetHealAmount(unitGUID, HealComm.ALL_HEALS, GetTime() + lookAhead, UnitGUID("player")) or 0) * (HealComm:GetHealModifier(unitGUID) or 1) or 0
-	otherIncomingHeal = (HealComm:GetHealAmount(unitGUID, HealComm.ALL_HEALS, GetTime() + lookAhead) or 0) * (HealComm:GetHealModifier(unitGUID) or 1) or 0
-	otherIncomingHeal = otherIncomingHeal - myIncomingHeal
+	otherIncomingHeal = (HealComm:GetOthersHealAmount(unitGUID, HealComm.ALL_HEALS, GetTime() + lookAhead) or 0) * (HealComm:GetHealModifier(unitGUID) or 1) or 0
 	health, maxHealth = UnitHealth(unit), UnitHealthMax(unit)
 	allIncomingHeal = myIncomingHeal + otherIncomingHeal
 
@@ -218,7 +217,6 @@ local function Disable(self)
 			element.otherBar:Hide()
 		end
 
-		self:UnregisterEvent("UNIT_HEALTH_FREQUENT", Path)
 		self:UnregisterEvent("UNIT_HEALTH", Path)
 		self:UnregisterEvent("UNIT_MAXHEALTH", Path)
 

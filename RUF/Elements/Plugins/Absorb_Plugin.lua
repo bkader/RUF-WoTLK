@@ -87,7 +87,6 @@ local function Disable(self)
 
 		self:UnregisterEvent("UNIT_HEALTH", Path)
 		self:UnregisterEvent("UNIT_MAXHEALTH", Path)
-		self:UnregisterEvent("UNIT_ABSORB_AMOUNT_CHANGED", Path)
 		self.UNIT_ABSORB_AMOUNT_CHANGED = nil
 		SA.UnregisterAllCallbacks(self)
 	end

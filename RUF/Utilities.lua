@@ -471,6 +471,8 @@ function RUF.TogglePartyChildren(childUnit) -- TODO: Implement this better.
 			unitFrame:Disable()
 		end
 	end
+
+	RUF.After(0.1, RUF.ResetPartyFrames)
 end
 
 function RUF.RefreshTextElements(singleFrame, groupFrame, header, groupNum)

@@ -273,7 +273,7 @@ function RUF:OnEnable()
 				Mover:Hide()
 				header.Mover = Mover
 
-				RUF.After(0.5, RUF.ResetPartyFrames)
+				RUF.TogglePartyChildrenGroupStatus()
 			end
 		end
 
