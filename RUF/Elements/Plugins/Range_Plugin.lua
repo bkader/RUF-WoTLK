@@ -159,7 +159,7 @@ local function IsUnitInRange(unit)
 		unit = SwapUnit(unit)
 	end
 
-	if (not unit and UnitIsConnected(unit)) then
+	if not (unit and UnitIsConnected(unit)) then
 		return true
 	end
 
