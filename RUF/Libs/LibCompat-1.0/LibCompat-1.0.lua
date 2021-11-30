@@ -4,7 +4,7 @@
 -- @author: Kader B (https://github.com/bkader/LibCompat-1.0)
 --
 
-local MAJOR, MINOR = "LibCompat-1.0", 28
+local MAJOR, MINOR = "LibCompat-1.0", 29
 local lib, oldminor = LibStub:NewLibrary(MAJOR, MINOR)
 if not lib then return end
 
@@ -383,12 +383,57 @@ do
 		return val > minval and val < maxval
 	end
 
+
+	local function BreakUpLargeNumbers(value, dobreak)
+		local retString = ""
+		if value < 1000 then
+			if (value - floor(value)) == 0 then
+				return value
+			end
+			local decimal = floor(value * 100)
+			retString = strsub(decimal, 1, -3)
+			retString = retString .. "."
+			retString = retString .. strsub(decimal, -2)
+			return retString
+		end
+
+		value = floor(value)
+		local strLen = strlen(value)
+		if dobreak then
+			if (strLen > 6) then
+				retString = strsub(value, 1, -7) .. ","
+			end
+			if (strLen > 3) then
+				retString = retString .. strsub(value, -6, -4) .. ","
+			end
+			retString = retString .. strsub(value, -3, -1)
+		else
+			retString = value
+		end
+		return retString
+	end
+
+	local function AbbreviateLargeNumbers(value)
+		local strLen = strlen(value)
+		local retString = value
+		if strLen > 8 then
+			retString = strsub(value, 1, -7) .. SECOND_NUMBER_CAP
+		elseif strLen > 5 then
+			retString = strsub(value, 1, -4) .. FIRST_NUMBER_CAP
+		elseif strLen > 3 then
+			retString = BreakUpLargeNumbers(value)
+		end
+		return retString
+	end
+
 	lib.Lerp = Lerp
 	lib.Round = Round
 	lib.Square = Square
 	lib.Clamp = Clamp
 	lib.WithinRange = WithinRange
 	lib.WithinRangeExclusive = WithinRangeExclusive
+	lib.BreakUpLargeNumbers = BreakUpLargeNumbers
+	lib.AbbreviateLargeNumbers = AbbreviateLargeNumbers
 end
 
 -------------------------------------------------------------------------------
@@ -500,8 +545,8 @@ do
 		end
 	end
 
-	local function IsGroupDead(incPets)
-		for unit in UnitIterator(not incPets) do
+	local function IsGroupDead()
+		for unit in UnitIterator(true) do
 			if not UnitIsDeadOrGhost(unit) then
 				return false
 			end
@@ -509,8 +554,8 @@ do
 		return true
 	end
 
-	local function IsGroupInCombat(incPets)
-		for unit in UnitIterator(not incPets) do
+	local function IsGroupInCombat()
+		for unit in UnitIterator() do
 			if UnitAffectingCombat(unit) then
 				return true
 			end
@@ -841,40 +886,31 @@ do
 	lib.Timer = Timer
 
 	local TickerPrototype = {}
-	local TickerMetatable = {
-		__index = TickerPrototype,
-		__metatable = true
-	}
+	local TickerMetatable = {__index = TickerPrototype}
 
 	local WaitTable = {}
 
 	local new, del
 	do
-		Timer.afterPool = Timer.afterPool or setmetatable({}, {__mode = "k"})
-		Timer.timerPool = Timer.timerPool or setmetatable({}, {__mode = "k"})
-		local afterPool = Timer.afterPool
-		local timerPool = Timer.timerPool
+		local timerPool = {cache = {}, trash = {}}
+		setmetatable(timerPool.cache, {__mode = "v"})
 
-		function new(temp)
-			if temp then
-				local t = next(afterPool) or {}
-				afterPool[t] = nil
-				return t
-			end
-			local t = next(timerPool) or setmetatable({}, TickerMetatable)
-			timerPool[t] = nil
-			return t
+		function new()
+			return tremove(timerPool.cache) or {}
 		end
 
 		function del(t, temp)
 			if t then
-				wipe(t)
+				setmetatable(t, nil)
+				for k, _ in pairs(t) do
+					t[k] = nil
+				end
 				t[true] = true
 				t[true] = nil
-				if temp then
-					afterPool[t] = true
-				else
-					timerPool[t] = true
+				tinsert(timerPool.cache, 1, t)
+				-- 50 recyclable timers should be enough.
+				while #timerPool.cache > 50 do
+					tinsert(timerPool.trash, 1, tremove(timerPool.cache))
 				end
 			end
 		end
@@ -888,7 +924,7 @@ do
 			local ticker = WaitTable[i]
 
 			if ticker._cancelled then
-				del(tremove(WaitTable, i), ticker._temp)
+				del(tremove(WaitTable, i))
 				total = total - 1
 			elseif ticker._delay > elapsed then
 				ticker._delay = ticker._delay - elapsed
@@ -904,7 +940,7 @@ do
 					ticker._delay = ticker._duration
 					i = i + 1
 				elseif ticker._iterations == 1 then
-					del(tremove(WaitTable, i), ticker._temp)
+					del(tremove(WaitTable, i))
 					total = total - 1
 				end
 			end
@@ -941,26 +977,23 @@ do
 	function Timer.After(duration, callback)
 		ValidateArguments(duration, callback, "After")
 
-		local ticker = new(true)
+		local ticker = new()
 
 		ticker._iterations = 1
 		ticker._delay = max(0.01, duration)
 		ticker._callback = callback
-		ticker._temp = true
-		ticker._cancelled = nil -- just in case
 
 		AddDelayedCall(ticker)
 	end
 
 	local function CreateTicker(duration, callback, iterations)
 		local ticker = new()
+		setmetatable(ticker, TickerMetatable)
 
 		ticker._iterations = iterations or -1
 		ticker._delay = max(0.01, duration)
 		ticker._duration = ticker._delay
 		ticker._callback = callback
-		ticker._cancelled = nil -- just in case
-		ticker._temp = nil -- just in case
 
 		AddDelayedCall(ticker)
 		return ticker
@@ -1779,6 +1812,8 @@ local mixins = {
 	"Clamp",
 	"WithinRange",
 	"WithinRangeExclusive",
+	"BreakUpLargeNumbers",
+	"AbbreviateLargeNumbers",
 	-- roster util
 	"IsInRaid",
 	"IsInGroup",
