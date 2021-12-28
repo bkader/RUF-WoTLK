@@ -54,6 +54,5 @@ function RUF.SetIndicators(self, unit)
 	RUF.Indicators.Rest(self, unit)
 	RUF.Indicators.TargetMark(self, unit)
 	RUF.Indicators.Role(self, unit)
-	RUF.Indicators.Role(self, unit)
 	RUF.Indicators.PetHappiness(self, unit)
 end
