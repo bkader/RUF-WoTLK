@@ -77,7 +77,7 @@ function RUF:GetBarColor(element, unit, barType, overridePowerType, testCurrent)
 	end
 	if profileReference.Reaction then
 		if UnitPlayerControlled(unit) and not UnitCanAttack(unit, "player") and not UnitIsPlayer(unit) then -- If the unit is an allied pet then show as blue.
-			r, g, b = unpack(colorProfile.ReactionColors[10])
+			r, g, b = unpack(colorProfile.ReactionColors[5])
 			r = r * colorMult
 			g = g * colorMult
 			b = b * colorMult
