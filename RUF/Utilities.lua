@@ -1,4 +1,3 @@
-assert(RUF, "RUF not found!")
 local RUF = RUF
 
 local gsub = string.gsub
@@ -9,10 +8,14 @@ local max = math.max
 local min = math.min
 local abs = math.abs
 local tonumber = tonumber
-local Round = RUF.Round
-local GetPhysicalScreenSize = RUF.GetPhysicalScreenSize
-local IsInGroup, IsInRaid = RUF.IsInGroup, RUF.IsInRaid
-local GetNumSubgroupMembers = RUF.GetNumSubgroupMembers
+
+local _, ns = ...
+local Compat = ns.Compat
+local GetPhysicalScreenSize = Compat.GetPhysicalScreenSize
+local IsInGroup, IsInRaid = Compat.IsInGroup, Compat.IsInRaid
+local GetNumSubgroupMembers = Compat.GetNumSubgroupMembers
+local C_Timer = Compat.C_Timer
+local Round = Compat.Round
 
 function RUF:Print_Self(message) -- Send a message to your default chat window.
 	ChatFrame1:AddMessage("|c5500DBBDRaeli's Unit Frames|r: " .. format(message))
@@ -472,7 +475,7 @@ function RUF.TogglePartyChildren(childUnit) -- TODO: Implement this better.
 		end
 	end
 
-	RUF.After(0.1, RUF.ResetPartyFrames)
+	C_Timer.After(0.1, RUF.ResetPartyFrames)
 end
 
 function RUF.RefreshTextElements(singleFrame, groupFrame, header, groupNum)

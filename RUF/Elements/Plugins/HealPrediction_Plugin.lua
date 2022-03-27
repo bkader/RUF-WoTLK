@@ -162,6 +162,7 @@ local function HealCommUpdate(self, event, casterGUID, spellID, type, endTime, .
 end
 
 local function ForceUpdate(element)
+	if (not element.__owner.unit) then return end
 	return Path(element.__owner, "ForceUpdate", element.__owner.unit)
 end
 

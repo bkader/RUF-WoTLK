@@ -1,4 +1,4 @@
-assert(RUF, "RUF not found!")
+local _, ns = ...
 local RUF = RUF
 
 local unpack = unpack
@@ -11,10 +11,11 @@ local UnitPlayerControlled = UnitPlayerControlled
 local UnitIsTapped = UnitIsTapped
 local UnitPowerType = UnitPowerType
 local CreateFrame = CreateFrame
+local StatusBarPrototype = ns.Compat.StatusBarPrototype
 
 function RUF.SetPowerBar(self, unit) -- Mana, Rage etc.
 	local Texture = RUF:MediaFetch("statusbar", RUF.db.profile.Appearance.Bars.Power.Texture)
-	local Bar = RUF.StatusBarPrototype(nil, self)
+	local Bar = StatusBarPrototype(nil, self)
 	local Border = CreateFrame("Frame", nil, Bar, BackdropTemplateMixin and "BackdropTemplate")
 	local Background = Bar.bg
 

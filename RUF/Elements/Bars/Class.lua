@@ -1,10 +1,13 @@
-assert(RUF, "RUF not found!")
 local RUF = RUF
 
 local unpack = unpack
 local CreateFrame = CreateFrame
 
-local uClass = RUF.uClass
+local _, ns = ...
+local StatusBarPrototype = ns.Compat.StatusBarPrototype
+
+local uClass = RUF.uClass or select(2, UnitClass("player"))
+RUF.uClass = uClass
 
 local classPowerData = {
 	DRUID = {
@@ -53,7 +56,7 @@ function RUF.SetClassBar(self, unit)
 	local colorAdd = RUF.db.profile.Appearance.Bars.Class.Color.SegmentMultiplier
 
 	for i = 1, unitPowerMaxAmount do
-		local Bar = RUF.StatusBarPrototype(name .. i, Holder)
+		local Bar = StatusBarPrototype(name .. i, Holder)
 		local Border = CreateFrame("Frame", name .. i .. ".Border", Bar)
 		local Background = Bar.bg
 		local size = (RUF.db.profile.unit[unit].Frame.Size.Width + (unitPowerMaxAmount - 1)) / unitPowerMaxAmount

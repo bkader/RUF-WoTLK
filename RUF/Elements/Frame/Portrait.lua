@@ -1,7 +1,9 @@
-assert(RUF, "RUF not found!")
 local RUF = RUF
 local _, ns = ...
 local oUF = ns.oUF
+
+local Compat = ns.Compat
+local C_Timer = Compat.C_Timer
 
 local unpack = unpack
 local UnitHealth = UnitHealth
@@ -43,7 +45,7 @@ local function UNIT_HEALTH(self, _, unit)
 		if UnitHealth(unit) == 0 and self.Portrait:IsShown() then
 			self.Portrait:Hide()
 		elseif not self.Portrait:IsShown() then
-			RUF.After(0.1, function() self.Portrait:Show() end)
+			C_Timer.After(0.1, function() self.Portrait:Show() end)
 		end
 	end
 end

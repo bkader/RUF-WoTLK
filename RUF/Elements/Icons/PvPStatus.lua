@@ -1,4 +1,3 @@
-assert(RUF, "RUF not found!")
 local RUF = RUF
 local _, ns = ...
 local oUF = ns.oUF
@@ -12,9 +11,8 @@ local elementStringAlliance = RUF.IndicatorGlyphs["PvP-Alliance"]
 local elementStringHorde = RUF.IndicatorGlyphs["PvP-Horde"]
 
 local function Update(self, event, unit)
-	if (unit ~= self.unit) then
-		return
-	end
+	if not (unit and self.unit and unit == self.unit) then return end
+
 	local element = self.PvPCombatIndicator
 	element.Enabled = RUF.db.profile.unit[self.frame].Frame.Indicators[elementName].Enabled
 
@@ -86,6 +84,7 @@ local function Path(self, ...)
 end
 
 local function ForceUpdate(element)
+	if (not element.__owner.unit) then return end
 	return Path(element.__owner, "ForceUpdate", element.__owner.unit)
 end
 

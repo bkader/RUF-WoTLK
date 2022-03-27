@@ -1,4 +1,3 @@
-assert(RUF, "RUF not found!")
 local RUF = RUF
 local _, ns = ...
 local oUF = ns.oUF

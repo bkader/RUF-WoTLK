@@ -1,4 +1,3 @@
-assert(RUF, "RUF not found!")
 local RUF = RUF
 local _, ns = ...
 local oUF = ns.oUF
@@ -21,14 +20,13 @@ local function Update(self, event)
 
 	if element.Enabled == true then
 		self:EnableElement(elementName .. "Indicator")
-		local unit = self.unit
-		local unitVehicleUI = UnitHasVehicleUI(unit)
-		if UnitInRaid(unit) and not unitVehicleUI then
-			if GetPartyAssignment("MAINTANK", unit) then
+		local unitVehicleUI = UnitHasVehicleUI(self.unit)
+		if UnitInRaid(self.unit) and not unitVehicleUI then
+			if GetPartyAssignment("MAINTANK", self.unit) then
 				element:SetText(elementStringMAINTANK)
 				element:SetWidth(element:GetStringWidth() + 2)
 				element:SetTextColor(1, 0.745, 0.098)
-			elseif GetPartyAssignment("MAINASSIST", unit) then
+			elseif GetPartyAssignment("MAINASSIST", self.unit) then
 				element:SetText(elementStringMAINASSIST)
 				element:SetWidth(element:GetStringWidth() + 2)
 				element:SetTextColor(1, 0.745, 0.098)
@@ -60,6 +58,7 @@ local function Path(self, ...)
 end
 
 local function ForceUpdate(element)
+	if (not element.__owner.unit) then return end
 	return Path(element.__owner, "ForceUpdate")
 end
 

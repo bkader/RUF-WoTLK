@@ -1,12 +1,12 @@
-assert(RUF, "RUF not found!")
 local RUF = RUF
 local _, ns = ...
 local oUF = ns.oUF
 
 local LGT = LibStub("LibGroupTalents-1.0")
 
-local UnitGroupRolesAssigned = RUF.UnitGroupRolesAssigned
-local GetSpecializationRole = RUF.GetSpecializationRole
+local Compat = ns.Compat
+local UnitGroupRolesAssigned = Compat.UnitGroupRolesAssigned
+local C_Timer = Compat.C_Timer
 
 local elementName = "Role"
 local elementStringDAMAGER = RUF.IndicatorGlyphs["Role-DPS"]
@@ -14,7 +14,8 @@ local elementStringHEALER = RUF.IndicatorGlyphs["Role-Heal"]
 local elementStringTANK = RUF.IndicatorGlyphs["Role-Tank"]
 
 local function Update(self, event, unit, role)
-	if not (unit and self.unit and unit == self.unit) then return end
+	if (unit and unit ~= self.unit) then return end
+	unit = unit or self.unit
 
 	local element = self.RoleIndicator
 	element.Enabled = RUF.db.profile.unit[self.frame].Frame.Indicators[elementName].Enabled
@@ -73,7 +74,7 @@ end
 
 local function UpdateLGT(self, event, _, unit)
 	if (unit == self.unit) then
-		RUF.After(0.25, function() Path(self, event, unit, GetSpecializationRole(unit)) end)
+		C_Timer.After(0.25, function() Path(self, event, unit, UnitGroupRolesAssigned(unit)) end)
 	end
 end
 

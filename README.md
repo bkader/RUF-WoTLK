@@ -1,4 +1,4 @@
-# RUF [Raeli's Unit Frames](https://www.curseforge.com/wow/addons/ruf) r254 - WoTLK
+# RUF [Raeli's Unit Frames](https://www.curseforge.com/wow/addons/ruf) r255 - WoTLK
 
 **RUF** is a configurable Unit Frame addon using oUF. It isn't as fully featured as some unit frames, but should also use less resources while playing than some unit frame addons.
 

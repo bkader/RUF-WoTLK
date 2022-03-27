@@ -1,11 +1,12 @@
-assert(RUF, "RUF not found!")
 local RUF = RUF
 local _, ns = ...
 local oUF = ns.oUF
 
 local UnitInParty = UnitInParty
 local UnitInRaid = UnitInRaid
-local UnitIsGroupLeader = RUF.UnitIsGroupLeader
+
+local Compat = ns.Compat
+local UnitIsGroupLeader = Compat.UnitIsGroupLeader
 
 local elementName = "Lead"
 local elementString = RUF.IndicatorGlyphs["Lead"]
@@ -19,8 +20,7 @@ local function Update(self, event)
 	end
 	if element.Enabled == true then
 		self:EnableElement(elementName .. "Indicator")
-		local unit = self.unit
-		local isLeader = (UnitInParty(unit) or UnitInRaid(unit)) and UnitIsGroupLeader(unit)
+		local isLeader = (UnitInParty(self.unit) or UnitInRaid(self.unit)) and UnitIsGroupLeader(self.unit)
 		if (isLeader) then
 			element:SetText(elementString)
 			element:SetWidth(element:GetStringWidth() + 2)
@@ -50,6 +50,7 @@ local function Path(self, ...)
 end
 
 local function ForceUpdate(element)
+	if (not element.__owner.unit) then return end
 	return Path(element.__owner, "ForceUpdate")
 end
 

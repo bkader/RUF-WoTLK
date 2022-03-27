@@ -1,4 +1,4 @@
-assert(RUF, "RUF not found!")
+local _, ns = ...
 local RUF = RUF
 local L = LibStub("AceLocale-3.0"):GetLocale("RUF")
 
@@ -8,6 +8,7 @@ local CreateFrame = CreateFrame
 local GetFramerate= GetFramerate
 local UnitCastingInfo = UnitCastingInfo
 local UnitChannelInfo = UnitChannelInfo
+local StatusBarPrototype = ns.Compat.StatusBarPrototype
 
 local function onUpdate(self, elapsed)
 	if self.Enabled ~= true then
@@ -161,7 +162,7 @@ function RUF.SetCastBar(self, unit)
 	local profileReference = RUF.db.profile.Appearance.Bars.Cast
 	local unitProfile = RUF.db.profile.unit[unit].Frame.Bars.Cast
 	local texture = RUF:MediaFetch("statusbar", profileReference.Texture)
-	local Bar = RUF.StatusBarPrototype(nil, self)
+	local Bar = StatusBarPrototype(nil, self)
 	local Border = CreateFrame("Frame", nil, Bar)
 	local Background = Bar.bg
 

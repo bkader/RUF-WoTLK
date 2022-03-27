@@ -1,6 +1,4 @@
-assert(RUF, "RUF not found!")
 local RUF = RUF
-
 local CreateFrame = CreateFrame
 
 function RUF.SetFrameBackground(self, unit)

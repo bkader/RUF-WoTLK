@@ -1,4 +1,3 @@
-assert(RUF, "RUF not found!")
 local RUF = RUF
 local _, ns = ...
 local oUF = ns.oUF
@@ -52,6 +51,7 @@ local function Path(self, ...)
 end
 
 local function ForceUpdate(element)
+	if (not element.__owner.unit) then return end
 	return Path(element.__owner, "ForceUpdate")
 end
 

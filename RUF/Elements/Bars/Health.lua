@@ -1,7 +1,8 @@
-assert(RUF, "RUF not found!")
+local _, ns = ...
 local RUF = RUF
 
 local UnitIsTapped = UnitIsTapped
+local StatusBarPrototype = ns.Compat.StatusBarPrototype
 
 local function DrawRainbow(element)
 	local a, b, c, x, y, z = RUF:GetRainbow()
@@ -73,7 +74,7 @@ end
 
 function RUF.SetHealthBar(self, unit)
 	local texture = RUF:MediaFetch("statusbar", RUF.db.profile.Appearance.Bars.Health.Texture)
-	local Bar = RUF.StatusBarPrototype(nil, self)
+	local Bar = StatusBarPrototype(nil, self)
 
 	-- Bar
 	Bar.colorClass = RUF.db.profile.Appearance.Bars.Health.Color.Class

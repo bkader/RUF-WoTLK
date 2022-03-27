@@ -1,9 +1,10 @@
-assert(RUF, "RUF not found!")
 local RUF = RUF
 local L = LibStub("AceLocale-3.0"):GetLocale("RUF")
 local RUF_Options = RUF:GetModule("Options")
 
-local GetClassInfo = RUF.GetClassInfo
+local _, ns = ...
+local Compat = ns.Compat
+local GetClassInfo = Compat.GetClassInfo
 
 function RUF_Options.Colors()
 	local Reactions = {
@@ -161,7 +162,7 @@ function RUF_Options.Colors()
 			}
 		}
 	}
-	for i = 1, 11 do
+	for i = 1, 10 do
 		if classData[i] then
 			Colors.args.classColors.args[classData[i][2]] = {
 				type = "color",

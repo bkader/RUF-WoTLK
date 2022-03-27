@@ -1,4 +1,3 @@
-assert(RUF, "RUF not found!")
 local RUF = RUF
 local _, ns = ...
 local oUF = ns.oUF
@@ -12,6 +11,8 @@ local elementString3 = RUF.IndicatorGlyphs["PetHappiness3"]
 local elementStringAlternative = RUF.IndicatorGlyphs["PetHappiness-Alternative"]
 
 local function Update(self, event)
+	if not (self.unit and self.unit == "pet") then return end
+
 	local element = self.PetHappinessIndicator
 	element.Enabled = RUF.db.profile.unit[self.frame].Frame.Indicators[elementName].Enabled
 
@@ -60,6 +61,7 @@ local function Path(self, ...)
 end
 
 local function ForceUpdate(element)
+	if (not element.__owner.unit) then return end
 	return Path(element.__owner, "ForceUpdate")
 end
 

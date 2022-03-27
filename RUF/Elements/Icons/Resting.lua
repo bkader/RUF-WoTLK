@@ -1,4 +1,3 @@
-assert(RUF, "RUF not found!")
 local RUF = RUF
 local _, ns = ...
 local oUF = ns.oUF
@@ -7,6 +6,8 @@ local elementName = "Rest"
 local elementString = RUF.IndicatorGlyphs["Resting"]
 
 local function Update(self, event)
+	if not self.unit or self.unit ~= "player" then return end
+
 	local element = self.RestIndicator
 	element.Enabled = RUF.db.profile.unit[self.frame].Frame.Indicators[elementName].Enabled
 
@@ -45,6 +46,7 @@ local function Path(self, ...)
 end
 
 local function ForceUpdate(element)
+	if (not element.__owner.unit) then return end
 	return Path(element.__owner, "ForceUpdate")
 end
 

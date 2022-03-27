@@ -445,6 +445,7 @@ local function Update(self, event, unit)
 end
 
 local function ForceUpdate(element)
+	if (not element.__owner.unit) then return end
 	return Update(element.__owner, "ForceUpdate", element.__owner.unit)
 end
 

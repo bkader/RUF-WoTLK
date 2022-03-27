@@ -1,4 +1,3 @@
-assert(RUF, "RUF not found!")
 local RUF = RUF
 
 RUF.Indicators = RUF.Indicators or {}
@@ -54,5 +53,6 @@ function RUF.SetIndicators(self, unit)
 	RUF.Indicators.Rest(self, unit)
 	RUF.Indicators.TargetMark(self, unit)
 	RUF.Indicators.Role(self, unit)
+	RUF.Indicators.LootMaster(self, unit)
 	RUF.Indicators.PetHappiness(self, unit)
 end

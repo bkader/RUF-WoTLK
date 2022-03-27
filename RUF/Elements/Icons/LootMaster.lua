@@ -1,4 +1,3 @@
-assert(RUF, "RUF not found!")
 local RUF = RUF
 local _, ns = ...
 local oUF = ns.oUF
@@ -19,7 +18,6 @@ local function Update(self, event)
 
 	if element.Enabled == true then
 		self:EnableElement(elementName .. "Indicator")
-		local unit = self.unit
 		local lootMethod, partyLooter, raidLooter = GetLootMethod()
 		local lootMaster
 		if partyLooter then
@@ -31,7 +29,7 @@ local function Update(self, event)
 		if raidLooter then
 			lootMaster = "raid" .. raidLooter
 		end
-		if lootMethod == "master" and UnitName(lootMaster) == UnitName(unit) then
+		if lootMethod == "master" and UnitName(lootMaster) == UnitName(self.unit) then
 			element:SetText(elementString)
 			element:SetWidth(element:GetStringWidth() + 2)
 			element:Show()
@@ -61,6 +59,7 @@ local function Path(self, ...)
 end
 
 local function ForceUpdate(element)
+	if (not element.__owner.unit) then return end
 	return Path(element.__owner, "ForceUpdate")
 end
 

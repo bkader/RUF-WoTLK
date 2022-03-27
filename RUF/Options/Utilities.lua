@@ -1,4 +1,3 @@
-assert(RUF, "RUF not found!")
 local RUF = RUF
 local _, ns = ...
 local oUF = ns.oUF
@@ -19,8 +18,9 @@ local anchorSwaps = {
 	["TOPRIGHT"] = "BOTTOMLEFT"
 }
 
-local IsInGroup = RUF.IsInGroup
-local GetNumSubgroupMembers = RUF.GetNumSubgroupMembers
+local Compat = ns.Compat
+local IsInGroup = Compat.IsInGroup
+local GetNumSubgroupMembers = Compat.GetNumSubgroupMembers
 
 function RUF:UpdateFramePosition(unitFrame, singleFrame, groupFrame, header, i, anchorFrom, anchorFrame, anchorTo, offsetX, offsetY)
 	singleFrame = singleFrame or "none"

@@ -1,10 +1,10 @@
-assert(RUF, "RUF not found!")
 local RUF = RUF
 local _, ns = ...
 local oUF = ns.oUF
 
-local UnitIsGroupAssistant = RUF.UnitIsGroupAssistant
-local UnitIsGroupLeader = RUF.UnitIsGroupLeader
+local Compat = ns.Compat
+local UnitIsGroupAssistant = Compat.UnitIsGroupAssistant
+local UnitIsGroupLeader = Compat.UnitIsGroupLeader
 
 local elementName = "Assist"
 local elementString = RUF.IndicatorGlyphs["Assist"]
@@ -19,8 +19,7 @@ local function Update(self, event)
 
 	if element.Enabled == true then
 		self:EnableElement(elementName .. "Indicator")
-		local unit = self.unit
-		local isAssistant = UnitInRaid(unit) and UnitIsGroupAssistant(unit) and not UnitIsGroupLeader(unit)
+		local isAssistant = UnitInRaid(self.unit) and UnitIsGroupAssistant(self.unit) and not UnitIsGroupLeader(self.unit)
 		if element:IsObjectType("FontString") then
 			if isAssistant then
 				element:SetText(elementString)
@@ -52,6 +51,7 @@ local function Path(self, ...)
 end
 
 local function ForceUpdate(element)
+	if (not element.__owner.unit) then return end
 	return Path(element.__owner, "ForceUpdate")
 end
 

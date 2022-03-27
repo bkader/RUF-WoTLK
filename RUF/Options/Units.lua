@@ -1,11 +1,11 @@
-assert(RUF, "RUF not found!")
 local RUF = RUF
 local _, ns = ...
 local oUF = ns.oUF
 local RUF_Options = RUF:GetModule("Options")
 local L = LibStub("AceLocale-3.0"):GetLocale("RUF")
 
-local uClass = RUF.uClass
+local uClass = RUF.uClass or select(2, UnitClass("player"))
+RUF.uClass = uClass
 
 local tagList = {}
 local localisedTags = {}
@@ -2820,7 +2820,7 @@ local function PortraitSettings(singleFrame, groupFrame, header)
 					[3] = L["Attached"]
 				},
 				disabled = function()
-					if not RUF.db.profile.unit[profileName].Frame.Portrait.Enabled == true then
+					if RUF.db.profile.unit[profileName].Frame.Portrait.Enabled ~= true then
 						return true
 					end
 					return false
@@ -2839,7 +2839,7 @@ local function PortraitSettings(singleFrame, groupFrame, header)
 				type = "toggle",
 				order = 0.2,
 				disabled = function()
-					if not RUF.db.profile.unit[profileName].Frame.Portrait.Enabled == true then
+					if RUF.db.profile.unit[profileName].Frame.Portrait.Enabled ~= true then
 						return true
 					end
 					if RUF.db.profile.unit[profileName].Frame.Portrait.Style ~= 1 then
@@ -2867,7 +2867,7 @@ local function PortraitSettings(singleFrame, groupFrame, header)
 				step = 0.01,
 				bigStep = 0.05,
 				disabled = function()
-					if not RUF.db.profile.unit[profileName].Frame.Portrait.Enabled == true then
+					if RUF.db.profile.unit[profileName].Frame.Portrait.Enabled ~= true then
 						return true
 					end
 					if RUF.db.profile.unit[profileName].Frame.Portrait.Style ~= 1 then
@@ -2901,7 +2901,7 @@ local function PortraitSettings(singleFrame, groupFrame, header)
 				order = 10,
 				inline = true,
 				hidden = function()
-					if not RUF.db.profile.unit[profileName].Frame.Portrait.Enabled == true then
+					if RUF.db.profile.unit[profileName].Frame.Portrait.Enabled ~= true then
 						return true
 					end
 					if RUF.db.profile.unit[profileName].Frame.Portrait.Style ~= 2 then
@@ -3018,7 +3018,7 @@ local function PortraitSettings(singleFrame, groupFrame, header)
 				order = 10,
 				inline = true,
 				hidden = function()
-					if not RUF.db.profile.unit[profileName].Frame.Portrait.Enabled == true then
+					if RUF.db.profile.unit[profileName].Frame.Portrait.Enabled ~= true then
 						return true
 					end
 					if RUF.db.profile.unit[profileName].Frame.Portrait.Style ~= 3 then
@@ -3072,7 +3072,7 @@ local function PortraitSettings(singleFrame, groupFrame, header)
 				order = 11,
 				inline = true,
 				hidden = function()
-					if not RUF.db.profile.unit[profileName].Frame.Portrait.Enabled == true then
+					if RUF.db.profile.unit[profileName].Frame.Portrait.Enabled ~= true then
 						return true
 					end
 					if RUF.db.profile.unit[profileName].Frame.Portrait.Style == 1 then
@@ -3170,7 +3170,7 @@ local function PortraitSettings(singleFrame, groupFrame, header)
 				order = 12,
 				inline = true,
 				hidden = function()
-					if not RUF.db.profile.unit[profileName].Frame.Portrait.Enabled == true then
+					if RUF.db.profile.unit[profileName].Frame.Portrait.Enabled ~= true then
 						return true
 					end
 					if RUF.db.profile.unit[profileName].Frame.Portrait.Style == 1 then

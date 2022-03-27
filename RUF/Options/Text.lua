@@ -1,4 +1,3 @@
-assert(RUF, "RUF not found!")
 local RUF = RUF
 local RUF_Options = RUF:GetModule("Options")
 

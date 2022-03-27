@@ -1,4 +1,4 @@
-local RUF = LibStub("AceAddon-3.0"):NewAddon("RUF", "LibCompat-1.0", "AceConsole-3.0", "AceEvent-3.0")
+local RUF = LibStub("AceAddon-3.0"):NewAddon("RUF", "AceConsole-3.0", "AceEvent-3.0")
 _G.RUF = RUF
 local _, ns = ...
 local oUF = ns.oUF

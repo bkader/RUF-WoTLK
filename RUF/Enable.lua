@@ -1,11 +1,11 @@
-assert(RUF, "RUF not found!")
 local RUF = RUF
 local _, ns = ...
 local oUF = ns.oUF
 local L = LibStub("AceLocale-3.0"):GetLocale("RUF")
 
-local IsInGroup = RUF.IsInGroup
-local GetNumSubgroupMembers = RUF.GetNumSubgroupMembers
+local Compat = ns.Compat
+local IsInGroup = Compat.IsInGroup
+local GetNumSubgroupMembers = Compat.GetNumSubgroupMembers
 
 local function SetClassColors()
 	local function customClassColors()

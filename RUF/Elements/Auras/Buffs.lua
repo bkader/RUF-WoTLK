@@ -1,6 +1,6 @@
-assert(RUF, "RUF not found!")
 local RUF = RUF
-local uClass = RUF.uClass
+local uClass = RUF.uClass or select(2, UnitClass("player"))
+RUF.uClass = uClass
 
 local pairs, select = pairs, select
 local unpack, tonumber = unpack, tonumber
@@ -9,8 +9,11 @@ local UnitIsFriend = UnitIsFriend
 local UnitInRaid = UnitInRaid
 local UnitClass = UnitClass
 local UnitPlayerOrPetInParty = UnitPlayerOrPetInParty
-local IsInGroup, IsInRaid = RUF.IsInGroup, RUF.IsInRaid
-local GetSpecialization = RUF.GetSpecialization
+
+local _, ns = ...
+local Compat = ns.Compat
+local IsInGroup, IsInRaid = Compat.IsInGroup, Compat.IsInRaid
+local GetSpecialization = Compat.GetSpecialization
 
 local BuffDispel = { -- PURGES
 	DEATHKNIGHT = {
@@ -269,7 +272,7 @@ function RUF.SetBuffs(self, unit)
 	Buffs["spacing-y"] = RUF.db.profile.unit[unit].Buffs.Icons.Spacing.y
 
 	Buffs.disableMouse = (RUF.db.profile.unit[unit].Buffs.Icons.ClickThrough == true)
-	Buffs.disableCooldown = not (RUF.db.profile.unit[unit].Buffs.Icons.CooldownSpiral == true)
+	Buffs.disableCooldown = (RUF.db.profile.unit[unit].Buffs.Icons.CooldownSpiral ~= true)
 
 	Buffs.num = RUF.db.profile.unit[unit].Buffs.Icons.Max
 

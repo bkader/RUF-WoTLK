@@ -1,7 +1,8 @@
-assert(RUF, "RUF not found!")
 local RUF = RUF
 
-local GetSpecialization = RUF.GetSpecialization
+local _, ns = ...
+local Compat = ns.Compat
+local GetSpecialization = Compat.GetSpecialization
 
 do
 	local TalenMonitor = CreateFrame("Frame")

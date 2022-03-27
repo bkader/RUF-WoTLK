@@ -1,8 +1,10 @@
-assert(RUF, "RUF not found!")
 local RUF = RUF
-local uClass = RUF.uClass
+local uClass = RUF.uClass or select(2, UnitClass("player"))
+RUF.uClass = uClass
 
-local GetSpecialization = RUF.GetSpecialization
+local _, ns = ...
+local Compat = ns.Compat
+local GetSpecialization = Compat.GetSpecialization
 
 local DebuffDispel = { -- DISPELLING ALLIES
 	DEATHKNIGHT = {

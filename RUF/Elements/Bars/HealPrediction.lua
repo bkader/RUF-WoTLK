@@ -1,9 +1,10 @@
-assert(RUF, "RUF not found!")
+local _, ns = ...
 local RUF = RUF
 local HealComm = LibStub("LibHealComm-4.0")
 
 local UnitHealth = UnitHealth
 local UnitGUID = UnitGUID
+local StatusBarPrototype = ns.Compat.StatusBarPrototype
 
 function RUF.HealPredictionUpdateColor(element, unit, myIncomingHeal, otherIncomingHeal)
 	local cur = UnitHealth(unit)
@@ -69,8 +70,8 @@ function RUF.SetHealPrediction(self, unit)
 	local PlayerHeals, OtherHeals
 	local Health = self.Health
 
-	PlayerHeals = RUF.StatusBarPrototype(nil, Health)
-	OtherHeals = RUF.StatusBarPrototype(nil, Health)
+	PlayerHeals = StatusBarPrototype(nil, Health)
+	OtherHeals = StatusBarPrototype(nil, Health)
 	local anchorFrom, anchorTo
 	if (Health.fill == "REVERSE") then
 		anchorFrom = "RIGHT"

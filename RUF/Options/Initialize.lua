@@ -1,4 +1,3 @@
-assert(RUF, "RUF not found!")
 local RUF = RUF
 local ACD = LibStub("AceConfigDialog-3.0")
 

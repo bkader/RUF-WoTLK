@@ -1,4 +1,3 @@
-assert(RUF, "RUF not found!")
 local RUF = RUF
 local _, ns = ...
 local oUF = ns.oUF
@@ -30,9 +29,8 @@ local function Update(self, event)
 
 	if element.Enabled == true then
 		self:EnableElement(elementName .. "Indicator")
-		local unit = self.unit
-		local status = GetReadyCheckStatus(unit)
-		if UnitExists(unit) and status then
+		local status = GetReadyCheckStatus(self.unit)
+		if UnitExists(self.unit) and status then
 			if (status == "ready") then
 				element:SetText(elementStringYes)
 				element:SetWidth(element:GetStringWidth() + 2)
@@ -82,6 +80,7 @@ local function Path(self, ...)
 end
 
 local function ForceUpdate(element)
+	if (not element.__owner.unit) then return end
 	return Path(element.__owner, "ForceUpdate")
 end
 

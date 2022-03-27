@@ -1,8 +1,8 @@
-assert(RUF, "RUF not found!")
 local RUF = RUF
 local L = LibStub("AceLocale-3.0"):GetLocale("RUF")
 local RUF_Options = RUF:GetModule("Options")
 local uClass = RUF.uClass or select(2, UnitClass("player"))
+RUF.uClass = uClass
 
 function RUF_Options.Bars()
 	local LocalisedBar = {

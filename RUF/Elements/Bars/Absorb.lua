@@ -1,4 +1,4 @@
-assert(RUF, "RUF not found!")
+local _, ns = ...
 local RUF = RUF
 local SA = LibStub("SpecializedAbsorbs-1.0")
 
@@ -6,6 +6,7 @@ local random = math.random
 local CreateFrame = CreateFrame
 local UnitHealth = UnitHealth
 local UnitHealthMax = UnitHealthMax
+local StatusBarPrototype = ns.Compat.StatusBarPrototype
 
 local UnitGetTotalAbsorbs = function(unit)
 	return (SA and unit) and SA.UnitTotal(UnitGUID(unit)) or 0
@@ -13,7 +14,7 @@ end
 
 function RUF.SetAbsorbBar(self, unit)
 	local Texture = RUF:MediaFetch("statusbar", RUF.db.profile.Appearance.Bars.Absorb.Texture)
-	local Bar = RUF.StatusBarPrototype(nil, self)
+	local Bar = StatusBarPrototype(nil, self)
 	local Border = CreateFrame("Frame", nil, Bar)
 	local Background = Bar.bg
 

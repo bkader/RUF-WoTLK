@@ -1,11 +1,14 @@
-assert(RUF, "RUF not found!")
 local RUF = RUF
 local uClass = RUF.uClass or select(2, UnitClass("player"))
+RUF.uClass = uClass
 
 local unpack, type = unpack, type
 local tsort = table.sort
 local CreateFrame = CreateFrame
 local GetRuneCooldown = GetRuneCooldown
+
+local _, ns = ...
+local StatusBarPrototype = ns.Compat.StatusBarPrototype
 
 function RUF.SetRunes(self, unit)
 	if uClass ~= "DEATHKNIGHT" then return end
@@ -35,7 +38,7 @@ function RUF.SetRunes(self, unit)
 	local colorAdd = RUF.db.profile.Appearance.Bars.Class.Color.SegmentMultiplier
 
 	for i = 1, 6 do
-		local Bar = RUF.StatusBarPrototype(name .. i, Holder)
+		local Bar = StatusBarPrototype(name .. i, Holder)
 		local Border = CreateFrame("Frame", name .. i .. ".Border", Bar)
 		local Background = Bar.bg
 		local size = (RUF.db.profile.unit[unit].Frame.Size.Width + 5) / 6

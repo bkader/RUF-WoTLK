@@ -1,4 +1,3 @@
-assert(RUF, "RUF not found!")
 local RUF = RUF
 
 function RUF:RangeCheckPostUpdate(frame, unit)
